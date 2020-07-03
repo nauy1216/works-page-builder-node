@@ -1,26 +1,30 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view>
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+	<div>
+		<element-comp :properties="data"></element-comp>
+	</div>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
-
-		},
-		methods: {
-
+import ELementComponent from '@/components/element-component.vue'
+import elementComp from '@/components/element-comp.vue'
+import data from '../data.js'
+export default {
+	components: {
+		ELementComponent,elementComp
+	},
+	data() {
+		return {
+			data: null
 		}
+	},
+	created() {
+		this.data = data
+		console.log('data', this.data)
+	},
+	methods: {
+
 	}
+}
 </script>
 
 <style>
