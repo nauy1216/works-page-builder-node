@@ -8,15 +8,18 @@ export default {
 
         mergeProperties(properties, defaultProperties) {
             properties.attr = Object.assign(defaultProperties.attr, properties.attr)
+            return properties
         }
     },
     computed: {
         styleStr() {
             return this.generateStyleStr(this.properties.style)
+        },
+        config() {
+            let config = this.mergeProperties(this.properties, this.$options.defaultProperties)
+            config.styleStr = this.generateStyleStr(config.style)
+            return config
         }
-    },
-    created() {
-        this.mergeProperties(this.properties, this.$options.defaultProperties)
     },
     watch: {
         properties: {

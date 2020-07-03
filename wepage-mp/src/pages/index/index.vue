@@ -5,12 +5,11 @@
 </template>
 
 <script>
-import ELementComponent from '@/components/element-component.vue'
 import elementComp from '@/components/element-comp.vue'
 import data from '../data.js'
 export default {
 	components: {
-		ELementComponent,elementComp
+		elementComp
 	},
 	data() {
 		return {
