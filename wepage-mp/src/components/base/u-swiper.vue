@@ -56,10 +56,5 @@ export default {
 </script>
 
 <style scoped>
-	.swiper-item {
-		display: block;
-		height: 300rpx;
-		line-height: 300rpx;
-		text-align: center;
-	}
+
 </style>
