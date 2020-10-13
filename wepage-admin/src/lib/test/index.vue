@@ -6,21 +6,25 @@
 </template>
 
 <script lang="ts">
-import { PropOptions, ComponentOptions } from "vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  label: "测试",
-  icon: "el-icon-star-on",
-  components: {}
-} as ComponentOptions<Vue>)
-export default class Test extends Vue {
-  @Prop({
-    type: Number,
-    default: 0,
-    label: "msg"
-  } as PropOptions)
-  msg = 0;
-}
+import Vue from "vue";
+export default Vue.extend({
+  name: "Test",
+  config: {
+    label: "测试",
+    icon: "el-icon-star-on",
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 100
+  },
+  props: {
+    msg: {
+      type: Number,
+      default: 0,
+      label: "msg"
+    }
+  }
+});
 </script>
 <style scoped lang="scss">
 .test {

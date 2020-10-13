@@ -3,14 +3,16 @@
     <Left class="left"></Left>
     <div class="content">
       <vue-draggable-resizable
-        :w="400"
-        :h="400"
+        v-for="(comp, index) in compList"
+        :key="index"
+        :w="comp.extendOptions.config.width"
+        :h="comp.extendOptions.config.height"
         :parent="true"
         :debug="false"
-        :min-width="200"
-        :min-height="200"
+        :min-width="comp.extendOptions.config.width"
+        :min-height="comp.extendOptions.config.height"
       >
-        <p>vue-draggable-resizable</p>
+        <component :is="comp"></component>
       </vue-draggable-resizable>
     </div>
     <div class="right"></div>
@@ -20,24 +22,33 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Left from "./components/left.vue";
-@Component({
+export default Vue.extend({
   components: {
     Left
+  },
+  data() {
+    return {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      compList: [] as Vue[]
+    };
+  },
+  created() {
+    this.$eventBus.$on("addComponent", comp => {
+      this.compList.push(comp);
+    });
+  },
+  methods: {
+    onDrag(data: any) {
+      console.log("onDrag", data);
+    },
+    onResize() {
+      console.log();
+    }
   }
-})
-export default class Index extends Vue {
-  private x = 0;
-  private y = 0;
-  private width = 0;
-  private height = 0;
-
-  onDrag(data: any) {
-    console.log("onDrag", data);
-  }
-  onResize() {
-    console.log();
-  }
-}
+});
 </script>
 <style scoped lang="scss">
 .editor {

@@ -9,7 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setSelectComp(state, comp) {
-      state.selectComp = comp
+      state.selectComp = comp;
     }
   },
   actions: {},
