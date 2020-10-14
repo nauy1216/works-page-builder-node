@@ -23,9 +23,6 @@
         :z-index="comp.config.zIndex"
         :active.sync="comp.config.active"
         :grid="[20, 20]"
-        :isConflictCheck="true"
-        :snap="true"
-        :snapTolerance="10"
         @refLineParams="getRefLineParams"
         @dragging="(left, right) => handleDrag(comp, left, right)"
         @resizing="handleResize"
@@ -37,6 +34,7 @@
         :on-resize-start="handleResizeStart(comp)"
       >
         <div
+          @contextmenu="handleContextMenu($event, comp)"
           :style="{
             width: comp.config.width + 'px',
             height: comp.config.height + 'px'
@@ -68,6 +66,7 @@
         }"
       />
     </div>
+    <ContextMenu ref="contextMenu"></ContextMenu>
   </div>
 </template>
 
@@ -76,11 +75,14 @@ import Vue from "vue";
 import compList from "@/lib/index.ts";
 import { mapState, mapMutations } from "vuex";
 import { EventType } from "@/types/const";
+import ContextMenu from "./ContextMenu.vue";
 
 export default Vue.extend({
+  components: {
+    ContextMenu
+  },
   data() {
     return {
-      active: false,
       compList,
       vLine: [],
       hLine: [],
@@ -91,11 +93,6 @@ export default Vue.extend({
     this.$eventBus.$on(EventType.componentdragStart, comp => {
       this.dragComponent = comp;
     });
-  },
-  watch: {
-    active() {
-      console.log(this.active);
-    }
   },
   computed: {
     ...mapState(["pageConfig"])
@@ -129,17 +126,16 @@ export default Vue.extend({
       this.setActiveComp(comp);
     },
     handleDragStop() {
-      console.log("handleDragStop");
+      //   console.log("handleDragStop");
     },
     handleResizeStop() {
-      console.log("handleResizeStop");
+      //   console.log("handleResizeStop");
     },
     handlePageDrageover(event) {
       event.preventDefault();
       event.stopPropagation();
     },
     handlePageDrop(event) {
-      console.log("handlePageDrop", event.clientX, event.clientY);
       const comp = this.dragComponent as any;
       if (comp && comp.extendOptions) {
         const rect = event.target.getBoundingClientRect();
@@ -153,11 +149,16 @@ export default Vue.extend({
           config,
           data: {}
         });
-        console.log(comp.extendOptions);
       }
     },
     setDragComponent(comp) {
       this.dragComponent = comp;
+    },
+    // 右键菜单
+    handleContextMenu(event, comp) {
+      event.preventDefault();
+      event.stopPropagation();
+      (this.$refs.contextMenu as any).show(event.clientX, event.clientY, comp);
     }
   }
 });

@@ -22,7 +22,16 @@ export default new Vuex.Store({
       state.pageConfig.children.push(comp);
       state.activeComp = comp;
     },
-    clearComponent(state) {
+    removeComponent(state, comp) {
+      const index = state.pageConfig.children.indexOf(comp);
+      if (index > -1) {
+        if (state.activeComp === comp) {
+          state.activeComp = null;
+        }
+        state.pageConfig.children.splice(index, 1);
+      }
+    },
+    clearAllComponent(state) {
       state.pageConfig.children = [];
     }
   },
