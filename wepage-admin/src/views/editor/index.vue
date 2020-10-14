@@ -33,8 +33,7 @@ export default Vue.extend({
     width: 200px;
   }
   .left,
-  .right,
-  .top {
+  .right {
     box-shadow: 0 0 4px 0px #e0e0e0;
   }
   .center {

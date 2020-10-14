@@ -22,7 +22,6 @@
         :min-height="comp.config.height"
         :z-index="comp.config.zIndex"
         :active.sync="comp.config.active"
-        :grid="[20, 20]"
         @refLineParams="getRefLineParams"
         @dragging="(left, right) => handleDrag(comp, left, right)"
         @resizing="handleResize"
@@ -66,7 +65,7 @@
         }"
       />
     </div>
-    <ContextMenu ref="contextMenu"></ContextMenu>
+    <ContextMenu :options="componentMenu" ref="contextMenu"></ContextMenu>
   </div>
 </template>
 
@@ -86,19 +85,38 @@ export default Vue.extend({
       compList,
       vLine: [],
       hLine: [],
-      dragComponent: null
+      dragComponent: null,
+      componentMenu: [] as any
     };
   },
   created() {
     this.$eventBus.$on(EventType.componentdragStart, comp => {
       this.dragComponent = comp;
     });
+    this.componentMenu = [
+      {
+        command: "delete-component",
+        name: "删除",
+        handle: comp => {
+          this.removeComponent(comp);
+        }
+      },
+      {
+        command: "copy-component",
+        name: "复制",
+        handle: comp => {
+          const copy = JSON.parse(JSON.stringify(comp));
+          copy.component = (comp as any).component;
+          this.addComponent(copy);
+        }
+      }
+    ];
   },
   computed: {
     ...mapState(["pageConfig"])
   },
   methods: {
-    ...mapMutations(["setActiveComp", "addComponent"]),
+    ...mapMutations(["setActiveComp", "addComponent", "removeComponent"]),
     // 辅助线回调事件
     getRefLineParams(params) {
       const { vLine, hLine } = params;

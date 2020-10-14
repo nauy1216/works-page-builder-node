@@ -1,17 +1,23 @@
 <template>
   <div class="top-tool" :style="{ top: top + 'px' }">
-    <el-button>保存</el-button>
-    <el-button>预览</el-button>
+    <el-button-group>
+      <el-button @click="save">保存</el-button>
+      <el-button>预览</el-button>
+    </el-button-group>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState } from "vuex";
 export default Vue.extend({
   data() {
     return {
-      top: -100
+      top: 10
     };
+  },
+  computed: {
+    ...mapState(["pageConfig"])
   },
   mounted() {
     // document.addEventListener("mousemove", this.handleMouseMove);
@@ -22,10 +28,13 @@ export default Vue.extend({
   methods: {
     handleMouseMove(ev) {
       if (ev.clientY < 60) {
-        this.top = 0;
+        this.top = 10;
       } else {
         this.top = -100;
       }
+    },
+    save() {
+      console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
     }
   }
 });
@@ -33,13 +42,13 @@ export default Vue.extend({
 <style scoped lang="scss">
 .top-tool {
   position: fixed;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
   height: 60px;
-  background-color: #ffffff;
+  border-radius: 2px;
 }
 </style>

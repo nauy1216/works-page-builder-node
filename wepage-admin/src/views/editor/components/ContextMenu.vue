@@ -3,8 +3,14 @@
     <el-dropdown trigger="click" @command="handleCommand">
       <span ref="trigger" class="trigger"></span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="delete-component">删除</el-dropdown-item>
-        <el-dropdown-item command="copy-component">复制</el-dropdown-item>
+        <!-- <el-dropdown-item command="delete-component">删除</el-dropdown-item>
+        <el-dropdown-item command="copy-component">复制</el-dropdown-item> -->
+        <el-dropdown-item
+          v-for="command in options"
+          :key="command.command"
+          :command="command.command"
+          >{{ command.name }}</el-dropdown-item
+        >
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -12,8 +18,19 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
+export interface MenuCommand {
+  command: string;
+  name: string;
+  handle: (comp: any) => void;
+}
 export default Vue.extend({
+  props: {
+    options: {
+      type: Array,
+      default: () => [] as MenuCommand[]
+    } as any
+  },
   data() {
     return {
       x: 0,
@@ -30,15 +47,10 @@ export default Vue.extend({
       (this.$refs.trigger as HTMLElement).click();
     },
     handleCommand(command) {
-      switch (command) {
-        case "delete-component": {
-          this.removeComponent(this.component);
+      for (const c of this.options as MenuCommand[]) {
+        if (c.command === command) {
+          c.handle(this.component);
           break;
-        }
-        case "copy-component": {
-          const comp = JSON.parse(JSON.stringify(this.component));
-          comp.component = (this.component as any).component;
-          this.addComponent(comp);
         }
       }
     }

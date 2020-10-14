@@ -10,10 +10,10 @@
           @dragstart="handleDragStart($event, comp)"
           @dragend="handleDragEnd($event, comp)"
         >
-          <div slot="reference">
-            <i :class="comp.extendOptions.config.icon"></i>
-            {{ comp.extendOptions.config.alias }}
-          </div>
+          <!-- <div slot="reference"> -->
+          <i :class="comp.extendOptions.config.icon" class="icon"></i>
+          <span class="name">{{ comp.extendOptions.config.alias }}</span>
+          <!-- </div> -->
           <!-- <el-popover placement="right" width="400" trigger="click">
             <div
               :style="{
@@ -71,11 +71,20 @@ export default Vue.extend({
   padding: 20px;
 }
 .left-tool-item {
-  margin: 10px 0;
-  padding: 20px;
+  width: 50%;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
   text-align: left;
   &:hover {
     background-color: #e0e0e0;
+  }
+  .icon {
+    margin-bottom: 10px;
+    font-size: 30px;
   }
 }
 </style>
