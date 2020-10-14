@@ -3,4 +3,5 @@ declare module "*.vue" {
   export default Vue;
 }
 
-declare module "vue-draggable-resizable" {}
+declare module "vue-draggable-resizable-gorkys" {}
+declare module "v-charts" {}

@@ -3,6 +3,8 @@
     <el-button-group>
       <el-button @click="save">保存</el-button>
       <el-button>预览</el-button>
+      <el-button @click="handleScale">+</el-button>
+      <el-button>-</el-button>
     </el-button-group>
   </div>
 </template>
@@ -34,6 +36,9 @@ export default Vue.extend({
       }
     },
     save() {
+      console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
+    },
+    handleScale() {
       console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
     }
   }

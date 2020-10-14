@@ -4,8 +4,10 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import "./style/reset.scss";
-import VueDraggableResizable from "vue-draggable-resizable";
-import "vue-draggable-resizable/dist/VueDraggableResizable.css";
+// import VueDraggableResizable from "vue-draggable-resizable";
+import VueDraggableResizable from "vue-draggable-resizable-gorkys";
+// import "vue-draggable-resizable/dist/VueDraggableResizable.css";
+import "vue-draggable-resizable-gorkys/dist/VueDraggableResizable.css";
 Vue.component("vue-draggable-resizable", VueDraggableResizable);
 
 import ElementUI from "element-ui";
@@ -15,7 +17,7 @@ Vue.use(ElementUI, {
 });
 
 import VCharts from "v-charts";
-Vue.use(VCharts);
+Vue.use(VCharts as any);
 
 Vue.prototype.$eventBus = new Vue();
 

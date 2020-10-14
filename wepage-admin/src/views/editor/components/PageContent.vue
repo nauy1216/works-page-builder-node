@@ -1,8 +1,16 @@
 <template>
-  <div class="view-port" @dragover="handlePageDrageover" @drop="handlePageDrop">
+  <div class="view-port"
+    ref="viewport"
+    @mousedown="handlePageMouseDown"
+    @mouseup="handlePageMouseUp"
+    @mousemove="handlePageMouseMove"
+    @dragover="handlePageDrageover"
+    @drop="handlePageDrop">
     <div
       class="page-content"
+      ref="pageContent"
       :style="{
+        transform: `translate(${scrollLeft+'px'}, ${scrollTop+'px'})`,
         width: pageConfig.width + 'px',
         height: pageConfig.height + 'px',
         background:
@@ -11,24 +19,30 @@
     >
       <vue-draggable-resizable
         v-for="(comp, index) in pageConfig.children"
-        :key="comp.name + index"
+        :key="
+          comp.name + '-' + index + pageConfig.width + '-' + pageConfig.height
+        "
         :x="comp.config.x"
         :y="comp.config.y"
         :w="comp.config.width"
         :h="comp.config.height"
         :parent="true"
         :debug="false"
-        :min-width="comp.config.width"
-        :min-height="comp.config.height"
         :z-index="comp.config.zIndex"
         :active.sync="comp.config.active"
+        :isConflictCheck="false"
+        :snap="true"
+        :snapTolerance="10"
         @refLineParams="getRefLineParams"
         @dragging="(left, right) => handleDrag(comp, left, right)"
-        @resizing="handleResize"
+        @resizing="
+          (left, top, width, height) =>
+            handleResize(comp, left, top, width, height)
+        "
         @deactivated="handleDeactivated(comp)"
         @activated="handleActivated(comp)"
         @dragstop="handleDragStop"
-        @resizestop="handleResizeStop"
+        @resizestop="handleResizeStop(index)"
         :on-drag-start="handleDragStart(comp)"
         :on-resize-start="handleResizeStart(comp)"
       >
@@ -39,10 +53,13 @@
             height: comp.config.height + 'px'
           }"
         >
-          <component :is="compList[comp.name]"></component>
+          <component
+            :is="compList[comp.name]"
+            :key="comp.config.width + '-' + comp.config.height"
+          ></component>
         </div>
       </vue-draggable-resizable>
-      <span
+      <!-- <span
         class="ref-line v-line"
         v-for="(item, index) in vLine"
         v-show="item.display"
@@ -63,7 +80,7 @@
           left: item.origin,
           width: item.lineLength
         }"
-      />
+      /> -->
     </div>
     <ContextMenu :options="componentMenu" ref="contextMenu"></ContextMenu>
   </div>
@@ -86,7 +103,14 @@ export default Vue.extend({
       vLine: [],
       hLine: [],
       dragComponent: null,
-      componentMenu: [] as any
+      componentMenu: [] as any,
+      isStartMove: false,
+      scrollLeft: 0,
+      scrollTop: 0,
+      startX: 0,
+      startY: 0,
+      viewportWidth: 0,
+      viewportHeight: 0,
     };
   },
   created() {
@@ -128,8 +152,11 @@ export default Vue.extend({
       comp.config.x = left;
       comp.config.y = top;
     },
-    handleResize(left, top, width, height) {
-      console.log(left, top, width, height);
+    handleResize(comp, left, top, width, height) {
+      comp.config.x = left;
+      comp.config.y = top;
+      comp.config.width = width;
+      comp.config.height = height;
     },
     handleDragStart(comp) {
       console.log("handleDragStart", comp);
@@ -143,11 +170,12 @@ export default Vue.extend({
     handleActivated(comp) {
       this.setActiveComp(comp);
     },
-    handleDragStop() {
-      //   console.log("handleDragStop");
+    handleDragStop(index) {
+      console.log("handleDragStop", this.$refs.comp, index);
     },
-    handleResizeStop() {
-      //   console.log("handleResizeStop");
+    handleResizeStop(index) {
+      //   this.$refs.comp[index].$forceUpdate()
+      console.log("handleResizeStop", this.$refs.comp, index);
     },
     handlePageDrageover(event) {
       event.preventDefault();
@@ -177,6 +205,33 @@ export default Vue.extend({
       event.preventDefault();
       event.stopPropagation();
       (this.$refs.contextMenu as any).show(event.clientX, event.clientY, comp);
+    },
+    handlePageMouseDown(ev) {
+        if (ev.target.className.indexOf("page-content")>-1 ) {
+            this.isStartMove = true
+            this.startX = ev.clientX
+            this.startY = ev.clientY
+        }
+        console.log("handlePageMouseDown", ev, this.startX,this.startY )
+    },
+    handlePageMouseUp() {
+        console.log("handlePageMouseUp")
+        this.isStartMove = false
+    },
+    handlePageMouseMove(ev) {
+        if (this.isStartMove) {
+            const rect = (this.$refs.viewport as HTMLElement).getBoundingClientRect()
+            this.viewportWidth = rect.width
+            this.viewportHeight = rect.height
+            this.scrollLeft += ev.clientX - this.startX;
+            this.scrollTop += ev.clientY - this.startY;
+            this.scrollLeft = Math.min(0, this.scrollLeft)
+            this.scrollTop = Math.min(0, this.scrollTop)
+            this.scrollLeft = Math.max(-(this.pageConfig.width - this.viewportWidth), this.scrollLeft)
+            this.scrollTop = Math.max(-(this.pageConfig.height - this.viewportHeight), this.scrollTop)
+            this.startX = ev.clientX
+            this.startY = ev.clientY
+        }
     }
   }
 });
@@ -184,9 +239,17 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .view-port {
-  overflow: auto;
+  overflow: hidden;
   .page-content {
     position: relative;
+    zoom: 1;
+  }
+}
+</style>
+<style lang="scss">
+.vdr {
+  .handle {
+    z-index: 100;
   }
 }
 </style>

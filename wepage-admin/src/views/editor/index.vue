@@ -26,20 +26,29 @@ export default Vue.extend({
 .editor {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: space-between;
   .left,
   .right {
+    position: fixed;
+    z-index: 200;
     width: 200px;
-  }
-  .left,
-  .right {
+    background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 4px 0px #e0e0e0;
   }
+  .left {
+    height: 60vh;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .right {
+    height: 60vh;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
   .center {
-    flex: 1 1 960px;
-    flex-grow: 1;
-    flex-shrink: 1;
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
