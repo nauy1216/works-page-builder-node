@@ -10,7 +10,9 @@ Vue.component("vue-draggable-resizable", VueDraggableResizable);
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
-Vue.use(ElementUI);
+Vue.use(ElementUI, {
+  size: "mini"
+});
 
 Vue.prototype.$eventBus = new Vue();
 

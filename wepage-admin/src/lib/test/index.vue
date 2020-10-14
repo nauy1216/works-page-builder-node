@@ -10,7 +10,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "Test",
   config: {
-    label: "测试",
+    alias: "测试",
     icon: "el-icon-star-on",
     x: 0,
     y: 0,

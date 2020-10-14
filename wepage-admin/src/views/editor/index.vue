@@ -1,57 +1,32 @@
 <template>
   <div class="editor">
-    <Left class="left"></Left>
-    <div class="content">
-      <vue-draggable-resizable
-        v-for="(comp, index) in compList"
-        :key="index"
-        :w="comp.extendOptions.config.width"
-        :h="comp.extendOptions.config.height"
-        :parent="true"
-        :debug="false"
-        :min-width="comp.extendOptions.config.width"
-        :min-height="comp.extendOptions.config.height"
-      >
-        <component :is="comp"></component>
-      </vue-draggable-resizable>
+    <TopTool class="top"></TopTool>
+    <LeftTool class="left"></LeftTool>
+    <div class="view-port">
+      <PageContent></PageContent>
     </div>
-    <div class="right"></div>
+    <RightTool class="right"></RightTool>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Left from "./components/left.vue";
+import Vue from "vue";
+import LeftTool from "./components/LeftTool.vue";
+import RightTool from "./components/RightTool.vue";
+import TopTool from "./components/TopTool.vue";
+import PageContent from "./components/PageContent.vue";
 export default Vue.extend({
   components: {
-    Left
-  },
-  data() {
-    return {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      compList: [] as Vue[]
-    };
-  },
-  created() {
-    this.$eventBus.$on("addComponent", comp => {
-      this.compList.push(comp);
-    });
-  },
-  methods: {
-    onDrag(data: any) {
-      console.log("onDrag", data);
-    },
-    onResize() {
-      console.log();
-    }
+    TopTool,
+    LeftTool,
+    RightTool,
+    PageContent
   }
 });
 </script>
 <style scoped lang="scss">
 .editor {
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: space-between;
@@ -59,21 +34,19 @@ export default Vue.extend({
   .right {
     width: 200px;
   }
-  .left {
-    background-color: #e0e0e0;
+  .left,
+  .right,
+  .top {
+    box-shadow: 0 0 4px 0px #e0e0e0;
   }
-  .content {
-    position: relative;
-    background-color: #aaaaaa;
+  .view-port {
     flex: 1 1 960px;
     flex-grow: 1;
     flex-shrink: 1;
+    overflow: auto;
+    .page-content {
+      position: relative;
+    }
   }
-  .right {
-    background-color: #e0e0e0;
-  }
-}
-.vdr {
-  border: 1px dashed black;
 }
 </style>
