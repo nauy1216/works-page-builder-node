@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     activeComp: null, // 当前激活的组件
-    pageConfig: {     
+    pageConfig: {
       alias: "",
       width: 1920,
       height: 1080,
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     },
     addComponent(state, comp) {
       state.pageConfig.children.push(comp);
-      state.activeComp = comp
+      state.activeComp = comp;
     },
     clearComponent(state) {
       state.pageConfig.children = [];

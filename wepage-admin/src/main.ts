@@ -14,6 +14,9 @@ Vue.use(ElementUI, {
   size: "mini"
 });
 
+import VCharts from "v-charts";
+Vue.use(VCharts);
+
 Vue.prototype.$eventBus = new Vue();
 
 Vue.config.productionTip = false;

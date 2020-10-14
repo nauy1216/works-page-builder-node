@@ -22,4 +22,10 @@ export declare interface PageComponentOptionsConfig {
   minHeight?: number; // 组件的最小高度
   maxWidth?: number; // 组件的最大宽度
   maxHeight?: number; // 组件的最大高度
+  active?: boolean; // 当前组件是否处于激活状态
+  zIndex?: number; // 层级
+  grid?: [number, number]; // 网格
+  parent?: boolean; // 设置为true后将无法在其父元素之外拖动或调整大小的组件
+  lockAspectRatio?: boolean; // 用于在调整大小期间保持组件的宽高比
+  isConflictCheck?: boolean; // 冲突检测
 }

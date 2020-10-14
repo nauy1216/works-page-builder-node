@@ -2,9 +2,7 @@
   <div class="editor">
     <TopTool class="top"></TopTool>
     <LeftTool class="left"></LeftTool>
-    <div class="view-port">
-      <PageContent></PageContent>
-    </div>
+    <PageContent class="center"></PageContent>
     <RightTool class="right"></RightTool>
   </div>
 </template>
@@ -39,14 +37,10 @@ export default Vue.extend({
   .top {
     box-shadow: 0 0 4px 0px #e0e0e0;
   }
-  .view-port {
+  .center {
     flex: 1 1 960px;
     flex-grow: 1;
     flex-shrink: 1;
-    overflow: auto;
-    .page-content {
-      position: relative;
-    }
   }
 }
 </style>

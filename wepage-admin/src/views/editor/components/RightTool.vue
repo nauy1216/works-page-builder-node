@@ -1,19 +1,19 @@
 <template>
   <div class="right-tool">
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" v-if="activeComp">
       <el-tab-pane label="布局" name="1">
         <el-form :model="test">
           <el-form-item label="x">
-            <el-input v-model="activeComp.config.x"></el-input>
+            <el-input v-model.number="activeComp.config.x"></el-input>
           </el-form-item>
           <el-form-item label="y">
-            <el-input v-model="activeComp.config.y"></el-input>
+            <el-input v-model.number="activeComp.config.y"></el-input>
           </el-form-item>
           <el-form-item label="width">
-            <el-input v-model="activeComp.config.width"></el-input>
+            <el-input v-model.number="activeComp.config.width"></el-input>
           </el-form-item>
           <el-form-item label="height">
-            <el-input v-model="activeComp.config.height"></el-input>
+            <el-input v-model.number="activeComp.config.height"></el-input>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState,  mapMutations} from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default Vue.extend({
   data() {
