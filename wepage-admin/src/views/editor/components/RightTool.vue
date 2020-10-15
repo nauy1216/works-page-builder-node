@@ -95,6 +95,15 @@
               :step="1"
             ></el-input-number>
           </el-form-item>
+          <el-form-item label="缩放">
+            <el-input-number
+              v-model.number="editorConfig.zoom"
+              :min="1"
+              :max="10"
+              :precision="0"
+              :step="1"
+            ></el-input-number>
+          </el-form-item>
           <!-- <el-form-item label="显示滚动条">
             <el-switch v-model="editorConfig.showScrollbar"> </el-switch>
           </el-form-item> -->

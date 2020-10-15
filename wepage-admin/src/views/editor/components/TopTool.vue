@@ -8,7 +8,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState(["pageConfig"])
+    ...mapState(["pageConfig", "editorConfig"])
   },
   methods: {
     handleMouseMove(ev) {
@@ -21,8 +21,12 @@ export default Vue.extend({
     save() {
       console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
     },
-    handleScale() {
-      console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
+    handleScale(num) {
+      this.editorConfig.zoom += num;
+      this.editorConfig.zoom = Math.max(0, this.editorConfig.zoom);
+      this.editorConfig.zoom = Math.min(10, this.editorConfig.zoom);
+      // editorConfig.zoom
+      // console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
     }
   },
   render() {
@@ -32,10 +36,10 @@ export default Vue.extend({
         <el-button-group>
           <el-button onClick={save}>保存</el-button>
           <el-button>预览</el-button>
-          <el-button onClick={handleScale}>
+          <el-button onClick={() => handleScale(1)}>
             <i class="el-icon-zoom-in"></i>
           </el-button>
-          <el-button>
+          <el-button onClick={() => handleScale(-1)}>
             <i class="el-icon-zoom-out"></i>
           </el-button>
         </el-button-group>

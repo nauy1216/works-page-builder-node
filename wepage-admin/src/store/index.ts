@@ -20,7 +20,8 @@ export default new Vuex.Store({
       gridX: 20,
       gridY: 20,
       showScrollbar: true,
-      parent: true
+      parent: true,
+      zoom: 1
     } as EditorConfig
   },
   mutations: {

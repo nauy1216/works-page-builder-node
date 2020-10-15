@@ -18,7 +18,8 @@
         transform: transform,
         width: pageConfig.width + 'px',
         height: pageConfig.height + 'px',
-        background: createBackground(editorConfig.gridX, editorConfig.gridY)
+        background: createBackground(editorConfig.gridX, editorConfig.gridY),
+        zoom: editorConfig.zoom
       }"
     >
       <vue-draggable-resizable
@@ -105,7 +106,7 @@ export default Vue.extend({
     this.addMoveEvent();
     this.setContextMenuList();
     this.addRefreshEvent();
-    this.watchRefresh()
+    this.watchRefresh();
   },
   computed: {
     ...mapState(["pageConfig", "editorConfig", "dragComp"]),
@@ -142,7 +143,7 @@ export default Vue.extend({
       let timer;
       const handle = () => {
         if (timer) {
-          clearTimeout(timer)
+          clearTimeout(timer);
         }
         timer = setTimeout(() => {
           this.refreshKey++;
@@ -155,7 +156,7 @@ export default Vue.extend({
     },
     watchRefresh() {
       // this.$watch(() => {
-      //   const {x} = 
+      //   const {x} =
       //   return ``
       // }, () => {
       //   this.$eventBus.$emit(EventType.RefreshEditor);
@@ -259,7 +260,6 @@ export default Vue.extend({
       const handlePageMouseMove = ev => {
         if (this.isStartMove) {
           const dom = this.$refs.viewport as HTMLElement;
-          const rect = dom.getBoundingClientRect();
           this.viewportWidth = dom.clientWidth;
           this.viewportHeight = dom.clientHeight;
           this.maxScrollLeft = dom.scrollWidth - this.viewportWidth;
@@ -313,7 +313,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .view-port {
   .page-content {
-    border: 1px solid red;
+    border: 1px solid rgb(64, 158, 255);
     position: relative;
     zoom: 1;
   }
@@ -321,8 +321,51 @@ export default Vue.extend({
 </style>
 <style lang="scss">
 .vdr {
+  // border:1px solid rgb(64, 158, 255) !important;
+  border: 0 !important;
+  &:before {
+    content: "";
+    width: calc(100%);
+    height: calc(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    box-sizing: border-box;
+    border: 1px solid red;
+  }
+  margin: -1px;
   .handle {
     z-index: 100;
+  }
+  .handle-tl {
+    top: -4px !important;
+    left: -4px !important;
+  }
+  .handle-tm {
+    top: -4px !important;
+  }
+  .handle-tr {
+    top: -4px !important;
+    right: -4px !important;
+  }
+  .handle-ml {
+    left: -4px !important;
+  }
+  .handle-ml {
+    right: -4px !important;
+  }
+
+  .handle-bl {
+    bottom: -4px !important;
+    left: -4px !important;
+  }
+  .handle-bm {
+    bottom: -4px !important;
+  }
+  .handle-br {
+    bottom: -4px !important;
+    right: -4px !important;
   }
 }
 </style>
