@@ -54,7 +54,10 @@
               :label="prop.label"
             >
               <!-- <el-input v-model.number="activeComp.data[key]"></el-input> -->
-              <component :is="prop.inputComponent" v-model="activeComp.data[key]"></component>
+              <component
+                :is="prop.inputComponent"
+                v-model="activeComp.data[key]"
+              ></component>
             </el-form-item>
           </el-form>
         </div>
@@ -92,6 +95,12 @@
               :step="1"
             ></el-input-number>
           </el-form-item>
+          <!-- <el-form-item label="显示滚动条">
+            <el-switch v-model="editorConfig.showScrollbar"> </el-switch>
+          </el-form-item> -->
+          <el-form-item label="不超出画布">
+            <el-switch v-model="editorConfig.parent"> </el-switch>
+          </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="代码" name="4">
@@ -99,6 +108,12 @@
           >提交</el-button
         >
         <el-input type="textarea" v-model="code" class="code"></el-input>
+      </el-tab-pane>
+      <el-tab-pane label="编辑器" name="5">
+        <el-button @click="handleEditorCodeChange" style="margin-bottom: 10px;"
+          >提交</el-button
+        >
+        <el-input type="textarea" v-model="editorCode" class="code"></el-input>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -109,11 +124,12 @@ import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 
 export default Vue.extend({
-  data() {
+  data(): any {
     return {
       activeName: "1",
       test: {},
-      code: ""
+      code: "",
+      editorCode: ""
     };
   },
   computed: {
@@ -133,19 +149,34 @@ export default Vue.extend({
   },
   watch: {
     pageConfig: {
-      handler() {
+      handler(this: any) {
         this.code = JSON.stringify(this.pageConfig, null, 2);
+      },
+      deep: true,
+      immediate: true
+    },
+    editorConfig: {
+      handler(this: any) {
+        this.editorCode = JSON.stringify(this.editorConfig, null, 2);
       },
       deep: true,
       immediate: true
     }
   },
   methods: {
-    ...mapMutations(["addComponent", "setPageConfig"]),
-    handleCodeChange() {
+    ...mapMutations(["addComponent", "setPageConfig", "setEditorConfig"]),
+    handleCodeChange(this: any) {
       try {
         const config = JSON.parse(this.code);
         (this as any).setPageConfig(config);
+      } catch {
+        this.$message.error("json解析错误");
+      }
+    },
+    handleEditorCodeChange(this: any) {
+      try {
+        const config = JSON.parse(this.editorCode);
+        this.setEditorConfig(config);
       } catch {
         this.$message.error("json解析错误");
       }

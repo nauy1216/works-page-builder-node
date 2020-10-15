@@ -26,6 +26,9 @@ export default Vue.extend({
 .editor {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .left,
   .right {
     position: fixed;
@@ -36,19 +39,20 @@ export default Vue.extend({
   }
   .left {
     height: 60vh;
-    left: 20px;
+    left: 40px;
     top: 50%;
     transform: translateY(-50%);
   }
   .right {
     height: 60vh;
-    right: 20px;
+    right: 40px;
     top: 50%;
     transform: translateY(-50%);
   }
   .center {
-    width: 100%;
-    height: 100%;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+    box-shadow: 0 0 4px 0 #e0e0e0;
   }
 }
 </style>

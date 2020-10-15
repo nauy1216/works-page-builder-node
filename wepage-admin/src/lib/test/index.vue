@@ -1,5 +1,5 @@
 <template>
-  <div class="test" :style="{background: color}">
+  <div class="test" :style="{ background: color }">
     <p>【msg】 {{ msg }}</p>
   </div>
 </template>
@@ -34,6 +34,8 @@ export default Vue.extend({
 </script>
 <style scoped lang="scss">
 .test {
-  border: 1px solid red;
+  width: 1920px;
+  box-sizing: border-box;
+  background: red !important;
 }
 </style>

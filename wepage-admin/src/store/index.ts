@@ -18,7 +18,9 @@ export default new Vuex.Store({
     // 编辑器设置
     editorConfig: {
       gridX: 20,
-      gridY: 20
+      gridY: 20,
+      showScrollbar: true,
+      parent: true
     } as EditorConfig
   },
   mutations: {
@@ -46,6 +48,9 @@ export default new Vuex.Store({
     },
     setPageConfig(state, config) {
       state.pageConfig = config;
+    },
+    setEditorConfig(state, config) {
+      state.editorConfig = config;
     }
   },
   actions: {},

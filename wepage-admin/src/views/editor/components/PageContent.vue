@@ -2,14 +2,20 @@
   <div
     class="view-port"
     ref="viewport"
+    :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden' }"
     @dragover="handlePageDrageover"
     @drop="handlePageDrop"
+    @contextmenu="
+      ev => {
+        ev.preventDefault();
+      }
+    "
   >
     <div
       class="page-content"
       ref="pageContent"
       :style="{
-        transform: `translate(${scrollLeft + 'px'}, ${scrollTop + 'px'})`,
+        transform: transform,
         width: pageConfig.width + 'px',
         height: pageConfig.height + 'px',
         background: createBackground(editorConfig.gridX, editorConfig.gridY)
@@ -25,7 +31,7 @@
         :y="comp.config.y"
         :w="comp.config.width"
         :h="comp.config.height"
-        :parent="true"
+        :parent="editorConfig.parent"
         :debug="false"
         :active.sync="comp.config.active"
         :isConflictCheck="false"
@@ -50,11 +56,7 @@
             height: comp.config.height + 'px'
           }"
         >
-          <component
-            :is="compList[comp.name]"
-            :key="createCompKey(comp)"
-            v-bind="comp.data"
-          ></component>
+          <component :is="compList[comp.name]" v-bind="comp.data"></component>
         </div>
       </vue-draggable-resizable>
     </div>
@@ -68,6 +70,7 @@ import compList from "@/lib/index.ts";
 import { mapState, mapMutations } from "vuex";
 import ContextMenu from "./ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
+import { EventType } from "@/types/const";
 
 const defaultConfig: PageComponentOptionsConfig = {
   x: 0,
@@ -89,36 +92,74 @@ export default Vue.extend({
       isStartMove: false,
       scrollLeft: 0, // 页面横向滚动距离
       scrollTop: 0,
+      maxScrollLeft: 0, // 页面最大横向滚动距离
+      maxScrollTop: 0,
       startX: 0,
       startY: 0,
       viewportWidth: 0, // 编辑器视口宽度
-      viewportHeight: 0 // 编辑器视口高度
+      viewportHeight: 0, // 编辑器视口高度
+      refreshKey: 0
     };
   },
   created() {
     this.addMoveEvent();
     this.setContextMenuList();
+    this.addRefreshEvent();
+    this.watchRefresh()
   },
   computed: {
-    ...mapState(["pageConfig", "editorConfig", "dragComp"])
+    ...mapState(["pageConfig", "editorConfig", "dragComp"]),
+    transform(this: any) {
+      if (this.editorConfig.showScrollbar) {
+        return `translate(0px, 0px})`;
+      }
+
+      // if (this.scrollLeft === this.maxScrollLeft) {
+      //   return `translate(-100%, ${-this.scrollTop + "px"})`
+      // }
+
+      // if (this.scrollTop === this.maxScrollTop) {
+      //   return `translate(${-this.scrollLeft + "px"}, -100%)`
+      // }
+
+      return `translate(${-this.scrollLeft + "px"}, ${-this.scrollTop + "px"})`;
+    }
   },
   methods: {
     ...mapMutations(["setActiveComp", "addComponent", "removeComponent"]),
     createVdrKey(comp, index) {
-      return (
-        comp.name +
-        "-" +
-        index +
-        this.pageConfig.width +
-        "-" +
-        this.pageConfig.height
-      );
+      // TODO: 性能问题
+      // return `${this.editorConfig.parent} ${index} ${this.pageConfig.width} ${this.pageConfig.height}`;
+      return `${comp.name} ${index} ${this.refreshKey}`;
     },
     createCompKey(comp) {
       return comp.config.width + "-" + comp.config.height;
     },
     createBackground(x, y) {
       return `linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${x}px ${x}px, linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${y}px ${y}px`;
+    },
+    addRefreshEvent() {
+      let timer;
+      const handle = () => {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+          this.refreshKey++;
+        }, 100);
+      };
+      this.$eventBus.$on(EventType.RefreshEditor, handle);
+      this.$once("hook:beforeDestroy", () => {
+        this.$eventBus.$off(EventType.RefreshEditor, handle);
+      });
+    },
+    watchRefresh() {
+      // this.$watch(() => {
+      //   const {x} = 
+      //   return ``
+      // }, () => {
+      //   this.$eventBus.$emit(EventType.RefreshEditor);
+      // })
     },
     handleDrag(comp, left, top) {
       comp.config.x = left;
@@ -129,6 +170,7 @@ export default Vue.extend({
       comp.config.y = top;
       comp.config.width = width;
       comp.config.height = height;
+      this.$eventBus.$emit(EventType.RefreshEditor);
     },
     handleDragStart() {
       //   console.log("handleDragStart", comp);
@@ -214,47 +256,53 @@ export default Vue.extend({
     },
     // 视口增加拖动事件
     addMoveEvent() {
+      const handlePageMouseMove = ev => {
+        if (this.isStartMove) {
+          const dom = this.$refs.viewport as HTMLElement;
+          const rect = dom.getBoundingClientRect();
+          this.viewportWidth = dom.clientWidth;
+          this.viewportHeight = dom.clientHeight;
+          this.maxScrollLeft = dom.scrollWidth - this.viewportWidth;
+          this.maxScrollTop = dom.scrollHeight - this.viewportHeight;
+
+          // console.log("rect", this.maxScrollLeft, dom.scrollWidth, this.viewportWidth);
+          this.scrollLeft += this.startX - ev.clientX;
+          this.scrollTop += this.startY - ev.clientY;
+
+          this.scrollLeft = Math.max(0, this.scrollLeft);
+          this.scrollTop = Math.max(0, this.scrollTop);
+          this.scrollLeft = Math.min(this.maxScrollLeft, this.scrollLeft);
+          this.scrollTop = Math.min(this.maxScrollTop, this.scrollTop);
+
+          if (this.editorConfig.showScrollbar) {
+            dom.scrollTo(this.scrollLeft, this.scrollTop);
+          }
+
+          this.startX = ev.clientX;
+          this.startY = ev.clientY;
+        }
+      };
+
       const handlePageMouseDown = ev => {
+        console.log("handlePageMouseDown");
         if (ev.target.className.indexOf("page-content") > -1) {
           this.isStartMove = true;
           this.startX = ev.clientX;
           this.startY = ev.clientY;
+          document.body.addEventListener("mousemove", handlePageMouseMove);
         }
       };
 
       const handlePageMouseUp = () => {
+        console.log("handlePageMouseUp");
         this.isStartMove = false;
-      };
-
-      const handlePageMouseMove = ev => {
-        if (this.isStartMove) {
-          const rect = (this.$refs
-            .viewport as HTMLElement).getBoundingClientRect();
-          this.viewportWidth = rect.width;
-          this.viewportHeight = rect.height;
-          this.scrollLeft += ev.clientX - this.startX;
-          this.scrollTop += ev.clientY - this.startY;
-          this.scrollLeft = Math.min(0, this.scrollLeft);
-          this.scrollTop = Math.min(0, this.scrollTop);
-          this.scrollLeft = Math.max(
-            -(this.pageConfig.width - this.viewportWidth),
-            this.scrollLeft
-          );
-          this.scrollTop = Math.max(
-            -(this.pageConfig.height - this.viewportHeight),
-            this.scrollTop
-          );
-          this.startX = ev.clientX;
-          this.startY = ev.clientY;
-        }
+        document.body.removeEventListener("mousemove", handlePageMouseMove);
       };
 
       document.body.addEventListener("mousedown", handlePageMouseDown);
-      document.body.addEventListener("mousemove", handlePageMouseMove);
       document.body.addEventListener("mouseup", handlePageMouseUp);
       this.$once("hook:beforeDestroy", () => {
         document.body.removeEventListener("mousedown", handlePageMouseDown);
-        document.body.removeEventListener("mousemove", handlePageMouseMove);
         document.body.removeEventListener("mouseup", handlePageMouseUp);
       });
     }
@@ -264,7 +312,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .view-port {
-  overflow: hidden;
   .page-content {
     position: relative;
     zoom: 1;
@@ -273,6 +320,8 @@ export default Vue.extend({
 </style>
 <style lang="scss">
 .vdr {
+  // 消除边框占用的1px
+  margin: -1px !important;
   .handle {
     z-index: 100;
   }

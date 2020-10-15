@@ -1,1 +1,3 @@
-export enum EventType {}
+export enum EventType {
+  RefreshEditor = "RefreshEditor"
+}

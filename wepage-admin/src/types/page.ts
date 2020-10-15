@@ -25,7 +25,7 @@ export declare interface PageComponentOptionsConfig {
   active?: boolean; // 当前组件是否处于激活状态
   zIndex?: number; // 层级
   grid?: [number, number]; // 网格
-  parent?: boolean; // 设置为true后将无法在其父元素之外拖动或调整大小的组件
+  // parent?: boolean; // 设置为true后将无法在其父元素之外拖动或调整大小的组件
   lockAspectRatio?: boolean; // 用于在调整大小期间保持组件的宽高比
   isConflictCheck?: boolean; // 冲突检测
 }
@@ -33,4 +33,6 @@ export declare interface PageComponentOptionsConfig {
 export declare interface EditorConfig {
   gridX: number; // 网格横向间隔
   gridY: number; // 网格纵向间隔
+  showScrollbar: boolean; // 是否显示滚动条
+  parent: boolean; // 设置为true后将无法在其父元素之外拖动或调整大小的组件
 }
