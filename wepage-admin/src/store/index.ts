@@ -1,10 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { PageConfig, EditorConfig } from "@/types/page";
-
+import { State } from "@/types/store";
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export default new Vuex.Store<State>({
   state: {
     dragComp: null, // 从组件列表中拖动的组件
     activeComp: null, // 当前激活的组件
@@ -14,15 +13,17 @@ export default new Vuex.Store({
       width: 1920,
       height: 1080,
       children: []
-    } as PageConfig,
+    },
     // 编辑器设置
     editorConfig: {
       gridX: 20,
       gridY: 20,
       showScrollbar: true,
       parent: true,
-      zoom: 1
-    } as EditorConfig
+      zoom: 1,
+      showLeftTool: true,
+      showRightTool: true
+    }
   },
   mutations: {
     setActiveComp(state, comp) {

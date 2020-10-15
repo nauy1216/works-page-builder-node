@@ -25,8 +25,6 @@ export default Vue.extend({
       this.editorConfig.zoom += num;
       this.editorConfig.zoom = Math.max(0, this.editorConfig.zoom);
       this.editorConfig.zoom = Math.min(10, this.editorConfig.zoom);
-      // editorConfig.zoom
-      // console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
     }
   },
   render() {
@@ -41,6 +39,21 @@ export default Vue.extend({
           </el-button>
           <el-button onClick={() => handleScale(-1)}>
             <i class="el-icon-zoom-out"></i>
+          </el-button>
+          <el-button>
+            <el-dropdown trigger="click">
+              <span style="font-size:12px; line-height: 12px;">
+                设置<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>
+                  显示组件列表<i class="el-icon-check"></i>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  显示右侧工具栏<i class="el-icon-check"></i>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </el-button>
         </el-button-group>
       </div>

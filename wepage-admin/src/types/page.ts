@@ -36,4 +36,6 @@ export declare interface EditorConfig {
   showScrollbar: boolean; // 是否显示滚动条
   parent: boolean; // 设置为true后将无法在其父元素之外拖动或调整大小的组件
   zoom: number; // 放大
+  showLeftTool: boolean;
+  showRightTool: boolean;
 }

@@ -19,11 +19,26 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { VueConstructor } from "vue";
 import compList from "@/lib/index.ts";
 import { mapMutations } from "vuex";
 
-export default Vue.extend({
+interface Data {
+  compList: { [key: string]: any };
+  activeName: string;
+}
+
+interface Computed {
+  showLeftTool(): boolean;
+}
+
+interface Methods {
+  handleDragStart: (event: Event, comp: VueConstructor) => void;
+  handleDragEnd: () => void;
+  setDragComp: (comp: VueConstructor | null) => void;
+}
+
+export default Vue.extend<Data, Methods, Computed, {}>({
   data() {
     return {
       compList,
@@ -33,10 +48,10 @@ export default Vue.extend({
   methods: {
     ...mapMutations(["addComponent", "setActiveComp", "setDragComp"]),
     handleDragStart(event, comp) {
-      (this as any).setDragComp(comp);
+      this.setDragComp(comp);
     },
     handleDragEnd() {
-      (this as any).setDragComp(null);
+      this.setDragComp(null);
     }
   }
 });

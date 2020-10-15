@@ -2,7 +2,7 @@
 import Vue from "vue";
 export default Vue.extend({
   render() {
-    return <div>jjj</div>;
+    return <div>bottom</div>;
   }
 });
 </script>

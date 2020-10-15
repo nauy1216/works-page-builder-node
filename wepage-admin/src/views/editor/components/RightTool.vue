@@ -53,7 +53,6 @@
               :key="key"
               :label="prop.label"
             >
-              <!-- <el-input v-model.number="activeComp.data[key]"></el-input> -->
               <component
                 :is="prop.inputComponent"
                 v-model="activeComp.data[key]"

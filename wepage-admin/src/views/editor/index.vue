@@ -1,9 +1,9 @@
 <template>
   <div class="editor">
-    <TopTool class="top"></TopTool>
+    <TopTool class="top" v-show="showLeftTool"></TopTool>
     <LeftTool class="left"></LeftTool>
-    <PageContent class="center"></PageContent>
     <RightTool class="right"></RightTool>
+    <PageContent class="main"></PageContent>
   </div>
 </template>
 
@@ -13,12 +13,22 @@ import LeftTool from "./components/LeftTool.vue";
 import RightTool from "./components/RightTool.vue";
 import TopTool from "./components/TopTool.vue";
 import PageContent from "./components/PageContent.vue";
-export default Vue.extend({
+
+interface Computed {
+  showLeftTool(): boolean;
+}
+
+export default Vue.extend<{}, {}, Computed, {}>({
   components: {
     TopTool,
     LeftTool,
     RightTool,
     PageContent
+  },
+  computed: {
+    showLeftTool() {
+      return this.$store.state.editorConfig.showLeftTool;
+    }
   }
 });
 </script>
@@ -49,7 +59,7 @@ export default Vue.extend({
     top: 50%;
     transform: translateY(-50%);
   }
-  .center {
+  .main {
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
     box-shadow: 0 0 4px 0 #e0e0e0;
