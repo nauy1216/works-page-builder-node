@@ -24,13 +24,6 @@ import compList from "@/lib/index.ts";
 import { mapMutations } from "vuex";
 
 export default Vue.extend({
-  props: {
-    msg: {
-      type: Number,
-      default: 0,
-      label: "msg"
-    }
-  },
   data() {
     return {
       compList,
@@ -40,10 +33,10 @@ export default Vue.extend({
   methods: {
     ...mapMutations(["addComponent", "setActiveComp", "setDragComp"]),
     handleDragStart(event, comp) {
-      this.setDragComp(comp);
+      (this as any).setDragComp(comp);
     },
     handleDragEnd() {
-      this.setDragComp(null);
+      (this as any).setDragComp(null);
     }
   }
 });

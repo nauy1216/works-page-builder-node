@@ -1,17 +1,4 @@
-<template>
-  <div class="top-tool" :style="{ top: top + 'px' }">
-    <el-button-group>
-      <el-button @click="save">保存</el-button>
-      <el-button>预览</el-button>
-      <el-button @click="handleScale"
-        ><i class="el-icon-zoom-in"></i
-      ></el-button>
-      <el-button><i class="el-icon-zoom-out"></i></el-button>
-    </el-button-group>
-  </div>
-</template>
-
-<script lang="ts">
+<script lang="tsx">
 import Vue from "vue";
 import { mapState } from "vuex";
 export default Vue.extend({
@@ -22,12 +9,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapState(["pageConfig"])
-  },
-  mounted() {
-    // document.addEventListener("mousemove", this.handleMouseMove);
-  },
-  beforeDestroy() {
-    // document.removeEventListener("mousemove", this.handleMouseMove);
   },
   methods: {
     handleMouseMove(ev) {
@@ -43,6 +24,23 @@ export default Vue.extend({
     handleScale() {
       console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
     }
+  },
+  render() {
+    const { top, save, handleScale } = this;
+    return (
+      <div class="top-tool" style={{ top: top + "px" }}>
+        <el-button-group>
+          <el-button onClick={save}>保存</el-button>
+          <el-button>预览</el-button>
+          <el-button onClick={handleScale}>
+            <i class="el-icon-zoom-in"></i>
+          </el-button>
+          <el-button>
+            <i class="el-icon-zoom-out"></i>
+          </el-button>
+        </el-button-group>
+      </div>
+    );
   }
 });
 </script>

@@ -5,8 +5,22 @@
 <script>
 export default {
   name: "ChartRing",
+  props: {
+    msg: {
+      type: String,
+      inputComponent: "el-input",
+      default: "hello",
+      label: "消息"
+    },
+    color: {
+      type: String,
+      inputComponent: "el-color-picker",
+      default: "#ffffff",
+      label: "颜色"
+    }
+  },
   config: {
-    alias: "饼图",
+    alias: "环图",
     icon: "el-icon-star-on",
     x: 0,
     y: 0,

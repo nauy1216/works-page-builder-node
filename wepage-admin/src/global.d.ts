@@ -8,7 +8,8 @@ declare module "vue/types/vue" {
 }
 declare module "vue/types/options" {
   interface PropOptions {
-    label: string;
+    label: string; // 属性名称，用于展示
+    inputComponent: string; // 用于编辑该属性的组件
   }
   interface ComponentOptions<V extends Vue> {
     config?: {

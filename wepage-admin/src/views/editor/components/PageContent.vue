@@ -156,6 +156,7 @@ export default Vue.extend({
     handlePageDrop(event) {
       const comp = this.dragComp as any;
       if (comp && comp.extendOptions) {
+        // 设置组件所在位置
         const rect = event.target.getBoundingClientRect();
         let config = JSON.parse(JSON.stringify(comp.extendOptions.config));
         config.x = event.clientX - rect.left + event.target.scrollLeft;
@@ -166,13 +167,14 @@ export default Vue.extend({
         // 设置默认属性
         const data = {};
         const props = comp.extendOptions.props;
-        Object.keys(props).forEach(key => {
-          if (typeof props[key].default == "function") {
-            data[key] = props[key].default();
-          } else {
-            data[key] = props[key].default;
-          }
-        });
+        props &&
+          Object.keys(props).forEach(key => {
+            if (typeof props[key].default == "function") {
+              data[key] = props[key].default();
+            } else {
+              data[key] = props[key].default;
+            }
+          });
 
         this.addComponent({
           name: comp.extendOptions.name,

@@ -1,5 +1,5 @@
 <template>
-  <div class="test">
+  <div class="test" :style="{background: color}">
     <p>【msg】 {{ msg }}</p>
   </div>
 </template>
@@ -19,8 +19,15 @@ export default Vue.extend({
   props: {
     msg: {
       type: String,
+      inputComponent: "el-input",
       default: "hello",
       label: "消息"
+    },
+    color: {
+      type: String,
+      inputComponent: "el-color-picker",
+      default: "#ffffff",
+      label: "颜色"
     }
   }
 });

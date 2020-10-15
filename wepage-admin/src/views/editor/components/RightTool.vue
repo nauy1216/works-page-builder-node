@@ -53,7 +53,8 @@
               :key="key"
               :label="prop.label"
             >
-              <el-input v-model.number="activeComp.data[key]"></el-input>
+              <!-- <el-input v-model.number="activeComp.data[key]"></el-input> -->
+              <component :is="prop.inputComponent" v-model="activeComp.data[key]"></component>
             </el-form-item>
           </el-form>
         </div>
@@ -84,7 +85,7 @@
               :step="1"
             ></el-input-number>
           </el-form-item>
-          <el-form-item label="网格高度度(px)">
+          <el-form-item label="网格高度(px)">
             <el-input-number
               v-model.number="editorConfig.gridY"
               :precision="0"
