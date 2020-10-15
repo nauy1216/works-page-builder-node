@@ -1,39 +1,36 @@
 <template>
-  <div class="view-port"
+  <div
+    class="view-port"
     ref="viewport"
-    @mousedown="handlePageMouseDown"
-    @mouseup="handlePageMouseUp"
-    @mousemove="handlePageMouseMove"
     @dragover="handlePageDrageover"
-    @drop="handlePageDrop">
+    @drop="handlePageDrop"
+  >
     <div
       class="page-content"
       ref="pageContent"
       :style="{
-        transform: `translate(${scrollLeft+'px'}, ${scrollTop+'px'})`,
+        transform: `translate(${scrollLeft + 'px'}, ${scrollTop + 'px'})`,
         width: pageConfig.width + 'px',
         height: pageConfig.height + 'px',
-        background:
-          'linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / 20px 20px, linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / 20px 20px'
+        background: createBackground(editorConfig.gridX, editorConfig.gridY)
       }"
     >
       <vue-draggable-resizable
         v-for="(comp, index) in pageConfig.children"
-        :key="
-          comp.name + '-' + index + pageConfig.width + '-' + pageConfig.height
-        "
+        :key="createVdrKey(comp, index)"
+        :style="{
+          zIndex: comp.config.zIndex
+        }"
         :x="comp.config.x"
         :y="comp.config.y"
         :w="comp.config.width"
         :h="comp.config.height"
         :parent="true"
         :debug="false"
-        :z-index="comp.config.zIndex"
         :active.sync="comp.config.active"
         :isConflictCheck="false"
         :snap="true"
         :snapTolerance="10"
-        @refLineParams="getRefLineParams"
         @dragging="(left, right) => handleDrag(comp, left, right)"
         @resizing="
           (left, top, width, height) =>
@@ -55,32 +52,11 @@
         >
           <component
             :is="compList[comp.name]"
-            :key="comp.config.width + '-' + comp.config.height"
+            :key="createCompKey(comp)"
+            v-bind="comp.data"
           ></component>
         </div>
       </vue-draggable-resizable>
-      <!-- <span
-        class="ref-line v-line"
-        v-for="(item, index) in vLine"
-        v-show="item.display"
-        :key="index"
-        :style="{
-          left: item.position,
-          top: item.origin,
-          height: item.lineLength
-        }"
-      />
-      <span
-        class="ref-line h-line"
-        v-for="(item, index) in hLine"
-        v-show="item.display"
-        :key="index"
-        :style="{
-          top: item.position,
-          left: item.origin,
-          width: item.lineLength
-        }"
-      /> -->
     </div>
     <ContextMenu :options="componentMenu" ref="contextMenu"></ContextMenu>
   </div>
@@ -90,8 +66,17 @@
 import Vue from "vue";
 import compList from "@/lib/index.ts";
 import { mapState, mapMutations } from "vuex";
-import { EventType } from "@/types/const";
 import ContextMenu from "./ContextMenu.vue";
+import { PageComponentOptionsConfig } from "@/types/page";
+
+const defaultConfig: PageComponentOptionsConfig = {
+  x: 0,
+  y: 0,
+  width: 200,
+  height: 200,
+  zIndex: 0,
+  lockAspectRatio: true
+};
 
 export default Vue.extend({
   components: {
@@ -100,55 +85,42 @@ export default Vue.extend({
   data() {
     return {
       compList,
-      vLine: [],
-      hLine: [],
-      dragComponent: null,
       componentMenu: [] as any,
       isStartMove: false,
-      scrollLeft: 0,
+      scrollLeft: 0, // 页面横向滚动距离
       scrollTop: 0,
       startX: 0,
       startY: 0,
-      viewportWidth: 0,
-      viewportHeight: 0,
+      viewportWidth: 0, // 编辑器视口宽度
+      viewportHeight: 0 // 编辑器视口高度
     };
   },
   created() {
-    this.$eventBus.$on(EventType.componentdragStart, comp => {
-      this.dragComponent = comp;
-    });
-    this.componentMenu = [
-      {
-        command: "delete-component",
-        name: "删除",
-        handle: comp => {
-          this.removeComponent(comp);
-        }
-      },
-      {
-        command: "copy-component",
-        name: "复制",
-        handle: comp => {
-          const copy = JSON.parse(JSON.stringify(comp));
-          copy.component = (comp as any).component;
-          this.addComponent(copy);
-        }
-      }
-    ];
+    this.addMoveEvent();
+    this.setContextMenuList();
   },
   computed: {
-    ...mapState(["pageConfig"])
+    ...mapState(["pageConfig", "editorConfig", "dragComp"])
   },
   methods: {
     ...mapMutations(["setActiveComp", "addComponent", "removeComponent"]),
-    // 辅助线回调事件
-    getRefLineParams(params) {
-      const { vLine, hLine } = params;
-      this.vLine = vLine;
-      this.hLine = hLine;
+    createVdrKey(comp, index) {
+      return (
+        comp.name +
+        "-" +
+        index +
+        this.pageConfig.width +
+        "-" +
+        this.pageConfig.height
+      );
+    },
+    createCompKey(comp) {
+      return comp.config.width + "-" + comp.config.height;
+    },
+    createBackground(x, y) {
+      return `linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${x}px ${x}px, linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${y}px ${y}px`;
     },
     handleDrag(comp, left, top) {
-      console.log("onDrag", left, top);
       comp.config.x = left;
       comp.config.y = top;
     },
@@ -158,11 +130,11 @@ export default Vue.extend({
       comp.config.width = width;
       comp.config.height = height;
     },
-    handleDragStart(comp) {
-      console.log("handleDragStart", comp);
+    handleDragStart() {
+      //   console.log("handleDragStart", comp);
     },
-    handleResizeStart(comp) {
-      console.log("handleResizeStart", comp);
+    handleResizeStart() {
+      //   console.log("handleResizeStart", comp);
     },
     handleDeactivated() {
       //   this.setActiveComp(null);
@@ -170,35 +142,46 @@ export default Vue.extend({
     handleActivated(comp) {
       this.setActiveComp(comp);
     },
-    handleDragStop(index) {
-      console.log("handleDragStop", this.$refs.comp, index);
+    handleDragStop() {
+      //   console.log("handleDragStop", this.$refs.comp, index);
     },
-    handleResizeStop(index) {
-      //   this.$refs.comp[index].$forceUpdate()
-      console.log("handleResizeStop", this.$refs.comp, index);
+    handleResizeStop() {
+      //   console.log("handleResizeStop", this.$refs.comp, index);
     },
     handlePageDrageover(event) {
       event.preventDefault();
       event.stopPropagation();
     },
+    // 从组件列表拖拽组件释放
     handlePageDrop(event) {
-      const comp = this.dragComponent as any;
+      const comp = this.dragComp as any;
       if (comp && comp.extendOptions) {
         const rect = event.target.getBoundingClientRect();
-        const config = JSON.parse(JSON.stringify(comp.extendOptions.config));
+        let config = JSON.parse(JSON.stringify(comp.extendOptions.config));
         config.x = event.clientX - rect.left + event.target.scrollLeft;
         config.y = event.clientY - rect.top + event.target.scrollTop;
+        config = Object.assign({}, defaultConfig, config);
+        console.log("增加组件", ((window as any).comp = comp));
+
+        // 设置默认属性
+        const data = {};
+        const props = comp.extendOptions.props;
+        Object.keys(props).forEach(key => {
+          if (typeof props[key].default == "function") {
+            data[key] = props[key].default();
+          } else {
+            data[key] = props[key].default;
+          }
+        });
+
         this.addComponent({
           name: comp.extendOptions.name,
           alias: comp.extendOptions.config.alias,
           component: comp,
           config,
-          data: {}
+          data
         });
       }
-    },
-    setDragComponent(comp) {
-      this.dragComponent = comp;
     },
     // 右键菜单
     handleContextMenu(event, comp) {
@@ -206,32 +189,72 @@ export default Vue.extend({
       event.stopPropagation();
       (this.$refs.contextMenu as any).show(event.clientX, event.clientY, comp);
     },
-    handlePageMouseDown(ev) {
-        if (ev.target.className.indexOf("page-content")>-1 ) {
-            this.isStartMove = true
-            this.startX = ev.clientX
-            this.startY = ev.clientY
+    // 设置右键菜单列表
+    setContextMenuList() {
+      this.componentMenu = [
+        {
+          command: "delete-component",
+          name: "删除",
+          handle: comp => {
+            this.removeComponent(comp);
+          }
+        },
+        {
+          command: "copy-component",
+          name: "复制",
+          handle: comp => {
+            const copy = JSON.parse(JSON.stringify(comp));
+            copy.component = (comp as any).component;
+            this.addComponent(copy);
+          }
         }
-        console.log("handlePageMouseDown", ev, this.startX,this.startY )
+      ];
     },
-    handlePageMouseUp() {
-        console.log("handlePageMouseUp")
-        this.isStartMove = false
-    },
-    handlePageMouseMove(ev) {
+    // 视口增加拖动事件
+    addMoveEvent() {
+      const handlePageMouseDown = ev => {
+        if (ev.target.className.indexOf("page-content") > -1) {
+          this.isStartMove = true;
+          this.startX = ev.clientX;
+          this.startY = ev.clientY;
+        }
+      };
+
+      const handlePageMouseUp = () => {
+        this.isStartMove = false;
+      };
+
+      const handlePageMouseMove = ev => {
         if (this.isStartMove) {
-            const rect = (this.$refs.viewport as HTMLElement).getBoundingClientRect()
-            this.viewportWidth = rect.width
-            this.viewportHeight = rect.height
-            this.scrollLeft += ev.clientX - this.startX;
-            this.scrollTop += ev.clientY - this.startY;
-            this.scrollLeft = Math.min(0, this.scrollLeft)
-            this.scrollTop = Math.min(0, this.scrollTop)
-            this.scrollLeft = Math.max(-(this.pageConfig.width - this.viewportWidth), this.scrollLeft)
-            this.scrollTop = Math.max(-(this.pageConfig.height - this.viewportHeight), this.scrollTop)
-            this.startX = ev.clientX
-            this.startY = ev.clientY
+          const rect = (this.$refs
+            .viewport as HTMLElement).getBoundingClientRect();
+          this.viewportWidth = rect.width;
+          this.viewportHeight = rect.height;
+          this.scrollLeft += ev.clientX - this.startX;
+          this.scrollTop += ev.clientY - this.startY;
+          this.scrollLeft = Math.min(0, this.scrollLeft);
+          this.scrollTop = Math.min(0, this.scrollTop);
+          this.scrollLeft = Math.max(
+            -(this.pageConfig.width - this.viewportWidth),
+            this.scrollLeft
+          );
+          this.scrollTop = Math.max(
+            -(this.pageConfig.height - this.viewportHeight),
+            this.scrollTop
+          );
+          this.startX = ev.clientX;
+          this.startY = ev.clientY;
         }
+      };
+
+      document.body.addEventListener("mousedown", handlePageMouseDown);
+      document.body.addEventListener("mousemove", handlePageMouseMove);
+      document.body.addEventListener("mouseup", handlePageMouseUp);
+      this.$once("hook:beforeDestroy", () => {
+        document.body.removeEventListener("mousedown", handlePageMouseDown);
+        document.body.removeEventListener("mousemove", handlePageMouseMove);
+        document.body.removeEventListener("mouseup", handlePageMouseUp);
+      });
     }
   }
 });

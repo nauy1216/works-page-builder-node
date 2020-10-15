@@ -1,7 +1,6 @@
 <template>
   <div class="test">
-    llll
-    <p>msg {{ msg }}</p>
+    <p>【msg】 {{ msg }}</p>
   </div>
 </template>
 
@@ -19,9 +18,9 @@ export default Vue.extend({
   },
   props: {
     msg: {
-      type: Number,
-      default: 0,
-      label: "msg"
+      type: String,
+      default: "hello",
+      label: "消息"
     }
   }
 });

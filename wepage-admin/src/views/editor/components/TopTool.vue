@@ -3,8 +3,10 @@
     <el-button-group>
       <el-button @click="save">保存</el-button>
       <el-button>预览</el-button>
-      <el-button @click="handleScale">+</el-button>
-      <el-button>-</el-button>
+      <el-button @click="handleScale"
+        ><i class="el-icon-zoom-in"></i
+      ></el-button>
+      <el-button><i class="el-icon-zoom-out"></i></el-button>
     </el-button-group>
   </div>
 </template>

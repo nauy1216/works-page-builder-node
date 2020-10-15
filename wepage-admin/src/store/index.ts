@@ -1,22 +1,32 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { PageConfig } from "@/types/page";
+import { PageConfig, EditorConfig } from "@/types/page";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    dragComp: null, // 从组件列表中拖动的组件
     activeComp: null, // 当前激活的组件
+    // 页面配置， 用于生成页面
     pageConfig: {
       alias: "",
       width: 1920,
       height: 1080,
       children: []
-    } as PageConfig
+    } as PageConfig,
+    // 编辑器设置
+    editorConfig: {
+      gridX: 20,
+      gridY: 20
+    } as EditorConfig
   },
   mutations: {
     setActiveComp(state, comp) {
       state.activeComp = comp;
+    },
+    setDragComp(state, comp) {
+      state.dragComp = comp;
     },
     addComponent(state, comp) {
       state.pageConfig.children.push(comp);
@@ -33,6 +43,9 @@ export default new Vuex.Store({
     },
     clearAllComponent(state) {
       state.pageConfig.children = [];
+    },
+    setPageConfig(state, config) {
+      state.pageConfig = config;
     }
   },
   actions: {},

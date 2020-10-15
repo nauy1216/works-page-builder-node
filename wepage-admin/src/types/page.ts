@@ -29,3 +29,8 @@ export declare interface PageComponentOptionsConfig {
   lockAspectRatio?: boolean; // 用于在调整大小期间保持组件的宽高比
   isConflictCheck?: boolean; // 冲突检测
 }
+
+export declare interface EditorConfig {
+  gridX: number; // 网格横向间隔
+  gridY: number; // 网格纵向间隔
+}

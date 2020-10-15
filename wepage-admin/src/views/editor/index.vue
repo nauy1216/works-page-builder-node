@@ -30,7 +30,7 @@ export default Vue.extend({
   .right {
     position: fixed;
     z-index: 200;
-    width: 200px;
+    width: 250px;
     background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 4px 0px #e0e0e0;
   }

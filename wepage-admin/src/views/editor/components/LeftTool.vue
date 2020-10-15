@@ -10,27 +10,10 @@
           @dragstart="handleDragStart($event, comp)"
           @dragend="handleDragEnd($event, comp)"
         >
-          <!-- <div slot="reference"> -->
           <i :class="comp.extendOptions.config.icon" class="icon"></i>
           <span class="name">{{ comp.extendOptions.config.alias }}</span>
-          <!-- </div> -->
-          <!-- <el-popover placement="right" width="400" trigger="click">
-            <div
-              :style="{
-                width: comp.extendOptions.config.width + 'px',
-                height: comp.extendOptions.config.height + 'px'
-              }"
-            >
-              <component :is="comp"></component>
-            </div>
-            <div slot="reference">
-              <i :class="comp.extendOptions.config.icon"></i>
-              {{ comp.extendOptions.config.alias }}
-            </div>
-          </el-popover> -->
         </div>
       </el-tab-pane>
-      <el-tab-pane label="页面管理" name="2"> </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -39,7 +22,6 @@
 import Vue from "vue";
 import compList from "@/lib/index.ts";
 import { mapMutations } from "vuex";
-import { EventType } from "@/types/const";
 
 export default Vue.extend({
   props: {
@@ -56,12 +38,12 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapMutations(["addComponent", "setActiveComp"]),
+    ...mapMutations(["addComponent", "setActiveComp", "setDragComp"]),
     handleDragStart(event, comp) {
-      this.$eventBus.$emit(EventType.componentdragStart, comp);
+      this.setDragComp(comp);
     },
     handleDragEnd() {
-      this.$eventBus.$emit(EventType.componentdragEnd);
+      this.setDragComp(null);
     }
   }
 });
