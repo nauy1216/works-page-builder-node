@@ -313,6 +313,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .view-port {
   .page-content {
+    border: 1px solid red;
     position: relative;
     zoom: 1;
   }
@@ -320,8 +321,6 @@ export default Vue.extend({
 </style>
 <style lang="scss">
 .vdr {
-  // 消除边框占用的1px
-  margin: -1px !important;
   .handle {
     z-index: 100;
   }
