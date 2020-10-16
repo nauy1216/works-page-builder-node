@@ -37,7 +37,7 @@ export default Vue.extend({
       }
     },
     preview() {
-      this.$router.push('/pageShow')
+      this.$router.push("/pageShow");
     }
   },
   render() {

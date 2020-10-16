@@ -5,11 +5,7 @@
     :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden' }"
     @dragover="handlePageDrageover"
     @drop="handlePageDrop"
-    @contextmenu="
-      ev => {
-        ev.preventDefault();
-      }
-    "
+    @contextmenu="handleCanvasContextMenu"
   >
     <div
       class="page-content"
@@ -45,13 +41,9 @@
         "
         @deactivated="handleDeactivated(comp)"
         @activated="handleActivated(comp)"
-        @dragstop="handleDragStop"
-        @resizestop="handleResizeStop(index)"
-        :on-drag-start="handleDragStart(comp)"
-        :on-resize-start="handleResizeStart(comp)"
       >
         <div
-          @contextmenu="handleContextMenu($event, comp)"
+          @contextmenu="handleComponentContextMenu($event, comp)"
           :style="{
             width: comp.config.width + 'px',
             height: comp.config.height + 'px'
@@ -61,15 +53,17 @@
         </div>
       </vue-draggable-resizable>
     </div>
-    <ContextMenu :options="componentMenu" ref="contextMenu"></ContextMenu>
+    <ContextMenu :options="componentMenu" ref="componentContextMenu"></ContextMenu>
+    <ContextMenu :options="canvasMenu" ref="canvasContextMenu"></ContextMenu>
   </div>
 </template>
 
 <script lang="ts">
+// https://tingtas.com/vue-draggable-resizable-gorkys/
 import Vue from "vue";
 import compList from "@/lib/index.ts";
 import { mapState, mapMutations } from "vuex";
-import ContextMenu from "./ContextMenu.vue";
+import ContextMenu, {MenuCommand} from "./ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { EventType } from "@/types/const";
 
@@ -89,7 +83,8 @@ export default Vue.extend({
   data() {
     return {
       compList,
-      componentMenu: [] as any,
+      componentMenu: [] as MenuCommand[],
+      canvasMenu: [] as MenuCommand[],
       isStartMove: false,
       scrollLeft: 0, // 页面横向滚动距离
       scrollTop: 0,
@@ -106,7 +101,6 @@ export default Vue.extend({
     this.addMoveEvent();
     this.setContextMenuList();
     this.addRefreshEvent();
-    this.watchRefresh();
   },
   computed: {
     ...mapState(["pageConfig", "editorConfig", "dragComp"]),
@@ -114,20 +108,11 @@ export default Vue.extend({
       if (this.editorConfig.showScrollbar) {
         return `translate(0px, 0px})`;
       }
-
-      // if (this.scrollLeft === this.maxScrollLeft) {
-      //   return `translate(-100%, ${-this.scrollTop + "px"})`
-      // }
-
-      // if (this.scrollTop === this.maxScrollTop) {
-      //   return `translate(${-this.scrollLeft + "px"}, -100%)`
-      // }
-
       return `translate(${-this.scrollLeft + "px"}, ${-this.scrollTop + "px"})`;
     }
   },
   methods: {
-    ...mapMutations(["setActiveComp", "addComponent", "removeComponent"]),
+    ...mapMutations(["setActiveComp", "addComponent", "removeComponent", "clearAllComponent"]),
     createVdrKey(comp, index) {
       // TODO: 性能问题
       // return `${this.editorConfig.parent} ${index} ${this.pageConfig.width} ${this.pageConfig.height}`;
@@ -154,14 +139,6 @@ export default Vue.extend({
         this.$eventBus.$off(EventType.RefreshEditor, handle);
       });
     },
-    watchRefresh() {
-      // this.$watch(() => {
-      //   const {x} =
-      //   return ``
-      // }, () => {
-      //   this.$eventBus.$emit(EventType.RefreshEditor);
-      // })
-    },
     handleDrag(comp, left, top) {
       comp.config.x = left;
       comp.config.y = top;
@@ -173,23 +150,11 @@ export default Vue.extend({
       comp.config.height = height;
       this.$eventBus.$emit(EventType.RefreshEditor);
     },
-    handleDragStart() {
-      //   console.log("handleDragStart", comp);
-    },
-    handleResizeStart() {
-      //   console.log("handleResizeStart", comp);
-    },
     handleDeactivated() {
       //   this.setActiveComp(null);
     },
     handleActivated(comp) {
       this.setActiveComp(comp);
-    },
-    handleDragStop() {
-      //   console.log("handleDragStop", this.$refs.comp, index);
-    },
-    handleResizeStop() {
-      //   console.log("handleResizeStop", this.$refs.comp, index);
     },
     handlePageDrageover(event) {
       event.preventDefault();
@@ -205,7 +170,6 @@ export default Vue.extend({
         config.x = event.clientX - rect.left + event.target.scrollLeft;
         config.y = event.clientY - rect.top + event.target.scrollTop;
         config = Object.assign({}, defaultConfig, config);
-        console.log("增加组件", ((window as any).comp = comp));
 
         // 设置默认属性
         const data = {};
@@ -228,14 +192,27 @@ export default Vue.extend({
         });
       }
     },
-    // 右键菜单
-    handleContextMenu(event, comp) {
+    // 组件右键菜单
+    handleComponentContextMenu(event, comp) {
       event.preventDefault();
       event.stopPropagation();
-      (this.$refs.contextMenu as any).show(event.clientX, event.clientY, comp);
+      (this.$refs.componentContextMenu as any).show(event.clientX, event.clientY, comp);
+    },
+    // 画布右键菜单
+    handleCanvasContextMenu(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      (this.$refs.canvasContextMenu as any).show(event.clientX, event.clientY, this.$refs.viewport);
     },
     // 设置右键菜单列表
     setContextMenuList() {
+      this.canvasMenu = [{
+          command: "delete-all-component",
+          name: "删除所有组件",
+          handle: comp => {
+            this.clearAllComponent();
+          }
+      }]
       this.componentMenu = [
         {
           command: "delete-component",
