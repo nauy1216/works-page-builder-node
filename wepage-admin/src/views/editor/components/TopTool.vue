@@ -46,11 +46,11 @@ export default Vue.extend({
                 设置<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>
-                  显示组件列表<i class="el-icon-check"></i>
+                <el-dropdown-item nativeOnClick={() => {this.editorConfig.showLeftTool = !this.editorConfig.showLeftTool}}>
+                  显示左侧工具栏 {this.editorConfig.showLeftTool && <i class="el-icon-check"></i>}
                 </el-dropdown-item>
-                <el-dropdown-item>
-                  显示右侧工具栏<i class="el-icon-check"></i>
+                <el-dropdown-item nativeOnClick={() => {this.editorConfig.showRightTool = !this.editorConfig.showRightTool}}>
+                  显示右侧工具栏 {this.editorConfig.showRightTool && <i class="el-icon-check"></i>}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -72,5 +72,8 @@ export default Vue.extend({
   align-items: center;
   height: 60px;
   border-radius: 2px;
+  .el-dropdown {
+    line-height: 12px !important;
+  }
 }
 </style>

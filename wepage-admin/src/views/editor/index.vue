@@ -1,8 +1,8 @@
 <template>
   <div class="editor">
-    <TopTool class="top" v-show="showLeftTool"></TopTool>
-    <LeftTool class="left"></LeftTool>
-    <RightTool class="right"></RightTool>
+    <TopTool class="top"></TopTool>
+    <LeftTool class="left" v-show="showLeftTool"></LeftTool>
+    <RightTool class="right" v-show="showRightTool"></RightTool>
     <PageContent class="main"></PageContent>
   </div>
 </template>
@@ -15,7 +15,8 @@ import TopTool from "./components/TopTool.vue";
 import PageContent from "./components/PageContent.vue";
 
 interface Computed {
-  showLeftTool(): boolean;
+  showLeftTool: boolean;
+  showRightTool: boolean;
 }
 
 export default Vue.extend<{}, {}, Computed, {}>({
@@ -28,6 +29,9 @@ export default Vue.extend<{}, {}, Computed, {}>({
   computed: {
     showLeftTool() {
       return this.$store.state.editorConfig.showLeftTool;
+    },
+    showRightTool() {
+      return this.$store.state.editorConfig.showRightTool;
     }
   }
 });

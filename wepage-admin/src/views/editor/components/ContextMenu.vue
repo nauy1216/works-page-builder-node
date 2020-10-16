@@ -27,12 +27,16 @@ interface Data {
   y: number;
   component: Vue | null;
 }
-export default Vue.extend({
+interface Props {
+  options: MenuCommand[]
+}
+export default Vue.extend<Data, {}, {}, Props>({
   props: {
     options: {
       type: Array,
+      required: true,
       default: () => [] as MenuCommand[]
-    } as any
+    }
   },
   data(): Data {
     return {
@@ -64,9 +68,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .trigger {
   position: fixed;
-  // width: 10px;
-  // height: 10px;
-  // background-color: red;
   z-index: 1000;
 }
 </style>
