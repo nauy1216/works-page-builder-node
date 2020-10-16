@@ -28,7 +28,7 @@ interface Data {
   component: Vue | null;
 }
 interface Props {
-  options: MenuCommand[]
+  options: MenuCommand[];
 }
 export default Vue.extend<Data, {}, {}, Props>({
   props: {
