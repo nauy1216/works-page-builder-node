@@ -321,51 +321,49 @@ export default Vue.extend({
 </style>
 <style lang="scss">
 .vdr {
-  // border:1px solid rgb(64, 158, 255) !important;
-  border: 0 !important;
-  &:before {
-    content: "";
-    width: calc(100%);
-    height: calc(100%);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    box-sizing: border-box;
-    border: 1px solid red;
-  }
-  margin: -1px;
-  .handle {
-    z-index: 100;
-  }
-  .handle-tl {
-    top: -4px !important;
-    left: -4px !important;
-  }
-  .handle-tm {
-    top: -4px !important;
-  }
-  .handle-tr {
-    top: -4px !important;
-    right: -4px !important;
-  }
-  .handle-ml {
-    left: -4px !important;
-  }
-  .handle-ml {
-    right: -4px !important;
-  }
+  // border: 0 !important;
+  // &:before {
+  //   content: "";
+  //   width: calc(100%);
+  //   height: calc(100%);
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   z-index: -1;
+  //   box-sizing: border-box;
+  //   border: 1px solid red;
+  // }
+  // .handle {
+  //   z-index: 100;
+  // }
+  // .handle-tl {
+  //   top: -4px !important;
+  //   left: -4px !important;
+  // }
+  // .handle-tm {
+  //   top: -4px !important;
+  // }
+  // .handle-tr {
+  //   top: -4px !important;
+  //   right: -4px !important;
+  // }
+  // .handle-ml {
+  //   left: -4px !important;
+  // }
+  // .handle-ml {
+  //   right: -4px !important;
+  // }
 
-  .handle-bl {
-    bottom: -4px !important;
-    left: -4px !important;
-  }
-  .handle-bm {
-    bottom: -4px !important;
-  }
-  .handle-br {
-    bottom: -4px !important;
-    right: -4px !important;
-  }
+  // .handle-bl {
+  //   bottom: -4px !important;
+  //   left: -4px !important;
+  // }
+  // .handle-bm {
+  //   bottom: -4px !important;
+  // }
+  // .handle-br {
+  //   bottom: -4px !important;
+  //   right: -4px !important;
+  // }
 }
 </style>

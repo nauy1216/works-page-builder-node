@@ -3,7 +3,9 @@ import { PageConfig } from "@/types/page.ts";
 import _compList from "@/lib/index";
 import { mapState } from "vuex";
 export default {
-//   created() {},
+  created() {
+    console.log("pageConfig", this.pageConfig)
+  },
   computed: {
     ...mapState(["pageConfig"])
   },
@@ -11,7 +13,8 @@ export default {
     const pageConfig: PageConfig = this.pageConfig;
     const compList = _compList;
     return (
-      <div
+      <div class="view-port">
+              <div
         class="page-content"
         style={{
           width: pageConfig.width + "px",
@@ -28,11 +31,12 @@ export default {
                   left: comp.config.x + "px",
                   top: comp.config.y + "px",
                   width: comp.config.width + "px",
-                  height: comp.config.width + "px",
+                  height: comp.config.height + "px",
                   zIndex: comp.config.zIndex
                 }}
               >
                 {h(compList[comp.name], {
+                  key: comp.name + index,
                   props: {
                     ...comp.data
                   }
@@ -41,6 +45,7 @@ export default {
             );
           })}
       </div>
+      </div>
     );
   }
 };
@@ -48,8 +53,10 @@ export default {
 
 <style lang="scss" scoped>
 .view-port {
+  width:100vw;
+  height: 100vh;
+  overflow: auto;
   .page-content {
-    border: 1px solid rgb(64, 158, 255);
     position: relative;
     zoom: 1;
   }

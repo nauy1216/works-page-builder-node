@@ -34,8 +34,9 @@ export default Vue.extend({
 </script>
 <style scoped lang="scss">
 .test {
-  width: 1920px;
+  width: 200px;
+  height: 100px;
   box-sizing: border-box;
-  background: red !important;
+  border: 1px solid red;
 }
 </style>
