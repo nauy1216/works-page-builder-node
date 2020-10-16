@@ -1,64 +1,66 @@
 <template>
-  <div
-    class="view-port"
-    ref="viewport"
-    :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden' }"
-    @dragover="handlePageDrageover"
-    @drop="handlePageDrop"
-    @contextmenu="handleCanvasContextMenu"
-  >
+  <keep-alive>
     <div
-      class="page-content"
-      ref="pageContent"
-      :style="{
-        transform: transform,
-        width: pageConfig.width + 'px',
-        height: pageConfig.height + 'px',
-        background: createBackground(editorConfig.gridX, editorConfig.gridY),
-        zoom: editorConfig.zoom
-      }"
+      class="view-port"
+      ref="viewport"
+      :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden' }"
+      @dragover="handlePageDrageover"
+      @drop="handlePageDrop"
+      @contextmenu="handleCanvasContextMenu"
     >
-      <vue-draggable-resizable
-        v-for="(comp, index) in pageConfig.children"
-        :key="createVdrKey(comp, index)"
+      <div
+        class="page-content"
+        ref="pageContent"
         :style="{
-          zIndex: comp.config.zIndex
+          transform: transform,
+          width: pageConfig.width + 'px',
+          height: pageConfig.height + 'px',
+          background: createBackground(editorConfig.gridX, editorConfig.gridY),
+          zoom: editorConfig.zoom
         }"
-        :x="comp.config.x"
-        :y="comp.config.y"
-        :w="comp.config.width"
-        :h="comp.config.height"
-        :parent="editorConfig.parent"
-        :debug="false"
-        :active.sync="comp.config.active"
-        :isConflictCheck="false"
-        :snap="true"
-        :snapTolerance="10"
-        @dragging="(left, right) => handleDrag(comp, left, right)"
-        @resizing="
-          (left, top, width, height) =>
-            handleResize(comp, left, top, width, height)
-        "
-        @deactivated="handleDeactivated(comp)"
-        @activated="handleActivated(comp)"
       >
-        <div
-          @contextmenu="handleComponentContextMenu($event, comp)"
+        <vue-draggable-resizable
+          v-for="(comp, index) in pageConfig.children"
+          :key="createVdrKey(comp, index)"
           :style="{
-            width: comp.config.width + 'px',
-            height: comp.config.height + 'px'
+            zIndex: comp.config.zIndex
           }"
+          :x="comp.config.x"
+          :y="comp.config.y"
+          :w="comp.config.width"
+          :h="comp.config.height"
+          :parent="editorConfig.parent"
+          :debug="false"
+          :active.sync="comp.config.active"
+          :isConflictCheck="false"
+          :snap="true"
+          :snapTolerance="10"
+          @dragging="(left, right) => handleDrag(comp, left, right)"
+          @resizing="
+            (left, top, width, height) =>
+              handleResize(comp, left, top, width, height)
+          "
+          @deactivated="handleDeactivated(comp)"
+          @activated="handleActivated(comp)"
         >
-          <component :is="compList[comp.name]" v-bind="comp.data"></component>
-        </div>
-      </vue-draggable-resizable>
+          <div
+            @contextmenu="handleComponentContextMenu($event, comp)"
+            :style="{
+              width: comp.config.width + 'px',
+              height: comp.config.height + 'px'
+            }"
+          >
+            <component :is="compList[comp.name]" v-bind="comp.data"></component>
+          </div>
+        </vue-draggable-resizable>
+      </div>
+      <ContextMenu
+        :options="componentMenu"
+        ref="componentContextMenu"
+      ></ContextMenu>
+      <ContextMenu :options="canvasMenu" ref="canvasContextMenu"></ContextMenu>
     </div>
-    <ContextMenu
-      :options="componentMenu"
-      ref="componentContextMenu"
-    ></ContextMenu>
-    <ContextMenu :options="canvasMenu" ref="canvasContextMenu"></ContextMenu>
-  </div>
+  </keep-alive>
 </template>
 
 <script lang="ts">
@@ -330,35 +332,37 @@ export default Vue.extend({
   }
   .handle {
     z-index: 100;
+    border: 0;
+    background: red;
   }
   .handle-tl {
-    top: -4px !important;
-    left: -4px !important;
+    top: 0px !important;
+    left: 0px !important;
   }
   .handle-tm {
-    top: -4px !important;
+    top: 0px !important;
   }
   .handle-tr {
-    top: -4px !important;
-    right: -4px !important;
+    top: 0px !important;
+    right: 0px !important;
   }
   .handle-ml {
-    left: -4px !important;
+    left: 0px !important;
   }
-  .handle-ml {
-    right: -4px !important;
+  .handle-mr {
+    right: 0px !important;
   }
 
   .handle-bl {
-    bottom: -4px !important;
-    left: -4px !important;
+    bottom: 0px !important;
+    left: 0px !important;
   }
   .handle-bm {
-    bottom: -4px !important;
+    bottom: 0px !important;
   }
   .handle-br {
-    bottom: -4px !important;
-    right: -4px !important;
+    bottom: 0px !important;
+    right: 0px !important;
   }
 }
 </style>

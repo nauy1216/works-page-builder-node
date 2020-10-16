@@ -1,6 +1,9 @@
 <template>
   <el-tree :data="treeData" @node-click="handleNodeClick">
-    <div style="flex: 1 1 100%; display: flex; justify-content: space-between; align-items: center;" slot-scope="{ node, data }">
+    <div
+      style="flex: 1 1 100%; display: flex; justify-content: space-between; align-items: center;"
+      slot-scope="{ node, data }"
+    >
       <span>{{ node.label }}</span>
       <span style="float: right;">
         <el-button type="text" size="mini" @click="() => active(data)">

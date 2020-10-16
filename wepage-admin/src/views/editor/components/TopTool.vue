@@ -50,10 +50,10 @@ export default Vue.extend({
           <el-button onClick={requestFullScreen}>
             {this.isFullScreen ? "退出全屏" : "全屏"}
           </el-button>
-          <el-button onClick={() => handleScale(1)}>
+          <el-button onClick={() => handleScale(0.1)}>
             <i class="el-icon-zoom-in"></i>
           </el-button>
-          <el-button onClick={() => handleScale(-1)}>
+          <el-button onClick={() => handleScale(-0.1)}>
             <i class="el-icon-zoom-out"></i>
           </el-button>
           <el-button>
