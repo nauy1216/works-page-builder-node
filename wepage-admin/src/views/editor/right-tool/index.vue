@@ -56,7 +56,7 @@ export default Vue.extend<Data, Methods, any, {}>({
   data() {
     return {
       activeName: "1",
-      width: 200,
+      width: 250,
       startX: 0,
       startY: 0,
       isDrag: false

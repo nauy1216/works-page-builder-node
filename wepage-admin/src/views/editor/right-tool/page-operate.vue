@@ -34,10 +34,10 @@
     <el-form-item label="缩放">
       <el-input-number
         v-model.number="editorConfig.zoom"
-        :min="1"
+        :min="0.1"
         :max="10"
-        :precision="0"
-        :step="1"
+        :precision="1"
+        :step="0.1"
       ></el-input-number>
     </el-form-item>
     <!-- <el-form-item label="显示滚动条">

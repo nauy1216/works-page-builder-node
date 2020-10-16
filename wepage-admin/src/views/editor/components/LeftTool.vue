@@ -71,6 +71,7 @@ export default Vue.extend<Data, Methods, {}, {}>({
   .icon {
     margin-bottom: 10px;
     font-size: 30px;
+    color: #666666;
   }
 }
 </style>
