@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from "vue";
 import LeftTool from "./components/LeftTool.vue";
-import RightTool from "./components/RightTool.vue";
+import RightTool from "./right-tool/index.vue";
 import TopTool from "./components/TopTool.vue";
 import PageContent from "./components/PageContent.vue";
 

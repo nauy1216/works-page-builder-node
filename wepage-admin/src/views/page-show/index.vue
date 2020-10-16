@@ -1,8 +1,9 @@
 <script lang="tsx">
+import Vue from "vue";
 import { PageConfig } from "@/types/page.ts";
 import _compList from "@/lib/index";
 import { mapState } from "vuex";
-export default {
+export default Vue.extend({
   created() {
     console.log("pageConfig", this.pageConfig);
   },
@@ -48,7 +49,7 @@ export default {
       </div>
     );
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

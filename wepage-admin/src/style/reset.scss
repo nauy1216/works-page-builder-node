@@ -23,7 +23,7 @@ cite,
 code,
 del,
 dfn,
-// em,
+em,
 img,
 ins,
 kbd,
@@ -32,7 +32,7 @@ s,
 samp,
 small,
 strike,
-// strong,
+strong,
 sub,
 sup,
 tt,
@@ -84,16 +84,6 @@ video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  font-family: PingFangSC-Regular, PingFang SC;
-  vertical-align: baseline;
-}
-
-strong,
-em {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
   font-family: PingFangSC-Regular, PingFang SC;
   vertical-align: baseline;
 }

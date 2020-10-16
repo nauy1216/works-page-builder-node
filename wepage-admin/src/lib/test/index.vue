@@ -13,7 +13,7 @@ export default Vue.extend({
     icon: "el-icon-star-on",
     x: 0,
     y: 0,
-    width: 200,
+    width: 100,
     height: 100
   },
   props: {
@@ -34,7 +34,7 @@ export default Vue.extend({
 </script>
 <style scoped lang="scss">
 .test {
-  width: 200px;
+  width: 100px;
   height: 100px;
   box-sizing: border-box;
   border: 1px solid red;

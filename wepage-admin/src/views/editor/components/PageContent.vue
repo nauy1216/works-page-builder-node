@@ -53,7 +53,10 @@
         </div>
       </vue-draggable-resizable>
     </div>
-    <ContextMenu :options="componentMenu" ref="componentContextMenu"></ContextMenu>
+    <ContextMenu
+      :options="componentMenu"
+      ref="componentContextMenu"
+    ></ContextMenu>
     <ContextMenu :options="canvasMenu" ref="canvasContextMenu"></ContextMenu>
   </div>
 </template>
@@ -63,7 +66,7 @@
 import Vue from "vue";
 import compList from "@/lib/index.ts";
 import { mapState, mapMutations } from "vuex";
-import ContextMenu, {MenuCommand} from "./ContextMenu.vue";
+import ContextMenu, { MenuCommand } from "./ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { EventType } from "@/types/const";
 
@@ -112,7 +115,12 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutations(["setActiveComp", "addComponent", "removeComponent", "clearAllComponent"]),
+    ...mapMutations([
+      "setActiveComp",
+      "addComponent",
+      "removeComponent",
+      "clearAllComponent"
+    ]),
     createVdrKey(comp, index) {
       // TODO: 性能问题
       // return `${this.editorConfig.parent} ${index} ${this.pageConfig.width} ${this.pageConfig.height}`;
@@ -196,23 +204,33 @@ export default Vue.extend({
     handleComponentContextMenu(event, comp) {
       event.preventDefault();
       event.stopPropagation();
-      (this.$refs.componentContextMenu as any).show(event.clientX, event.clientY, comp);
+      (this.$refs.componentContextMenu as any).show(
+        event.clientX,
+        event.clientY,
+        comp
+      );
     },
     // 画布右键菜单
     handleCanvasContextMenu(event) {
       event.preventDefault();
       event.stopPropagation();
-      (this.$refs.canvasContextMenu as any).show(event.clientX, event.clientY, this.$refs.viewport);
+      (this.$refs.canvasContextMenu as any).show(
+        event.clientX,
+        event.clientY,
+        this.$refs.viewport
+      );
     },
     // 设置右键菜单列表
     setContextMenuList() {
-      this.canvasMenu = [{
+      this.canvasMenu = [
+        {
           command: "delete-all-component",
           name: "删除所有组件",
-          handle: comp => {
+          handle: () => {
             this.clearAllComponent();
           }
-      }]
+        }
+      ];
       this.componentMenu = [
         {
           command: "delete-component",
@@ -290,7 +308,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .view-port {
   .page-content {
-    border: 1px solid rgb(64, 158, 255);
+    box-shadow: inset 0 0 0px 1px rgb(64, 158, 255);
     position: relative;
     zoom: 1;
   }
@@ -298,49 +316,49 @@ export default Vue.extend({
 </style>
 <style lang="scss">
 .vdr {
-  // border: 0 !important;
-  // &:before {
-  //   content: "";
-  //   width: calc(100%);
-  //   height: calc(100%);
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   z-index: -1;
-  //   box-sizing: border-box;
-  //   border: 1px solid red;
-  // }
-  // .handle {
-  //   z-index: 100;
-  // }
-  // .handle-tl {
-  //   top: -4px !important;
-  //   left: -4px !important;
-  // }
-  // .handle-tm {
-  //   top: -4px !important;
-  // }
-  // .handle-tr {
-  //   top: -4px !important;
-  //   right: -4px !important;
-  // }
-  // .handle-ml {
-  //   left: -4px !important;
-  // }
-  // .handle-ml {
-  //   right: -4px !important;
-  // }
+  border: 0 !important;
+  &:before {
+    content: "";
+    width: calc(100%);
+    height: calc(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    box-sizing: border-box;
+    border: 1px solid red;
+  }
+  .handle {
+    z-index: 100;
+  }
+  .handle-tl {
+    top: -4px !important;
+    left: -4px !important;
+  }
+  .handle-tm {
+    top: -4px !important;
+  }
+  .handle-tr {
+    top: -4px !important;
+    right: -4px !important;
+  }
+  .handle-ml {
+    left: -4px !important;
+  }
+  .handle-ml {
+    right: -4px !important;
+  }
 
-  // .handle-bl {
-  //   bottom: -4px !important;
-  //   left: -4px !important;
-  // }
-  // .handle-bm {
-  //   bottom: -4px !important;
-  // }
-  // .handle-br {
-  //   bottom: -4px !important;
-  //   right: -4px !important;
-  // }
+  .handle-bl {
+    bottom: -4px !important;
+    left: -4px !important;
+  }
+  .handle-bm {
+    bottom: -4px !important;
+  }
+  .handle-br {
+    bottom: -4px !important;
+    right: -4px !important;
+  }
 }
 </style>

@@ -28,17 +28,13 @@ interface Data {
   activeName: string;
 }
 
-interface Computed {
-  showLeftTool(): boolean;
-}
-
 interface Methods {
   handleDragStart: (event: Event, comp: VueConstructor) => void;
   handleDragEnd: () => void;
   setDragComp: (comp: VueConstructor | null) => void;
 }
 
-export default Vue.extend<Data, Methods, Computed, {}>({
+export default Vue.extend<Data, Methods, {}, {}>({
   data() {
     return {
       compList,
