@@ -12,6 +12,9 @@
       <el-tab-pane label="页面" name="3">
         <PageOperate></PageOperate>
       </el-tab-pane>
+      <el-tab-pane label="页面结构" name="6">
+        <CompTree></CompTree>
+      </el-tab-pane>
       <el-tab-pane label="代码" name="4">
         <CodeOperate></CodeOperate>
       </el-tab-pane>
@@ -31,6 +34,7 @@ import PropOperate from "./prop-operate.vue";
 import PageOperate from "./page-operate.vue";
 import CodeOperate from "./code-operate.vue";
 import EditorOperate from "./editor-operate.vue";
+import CompTree from "./comp-tree.vue";
 
 interface Data {
   activeName: string;
@@ -41,11 +45,11 @@ interface Data {
 }
 
 interface Computed {
-  activeCompProps: {[key: string]: any}
+  activeCompProps: { [key: string]: any };
 }
 
 interface Methods {
-  addEvent(): void
+  addEvent(): void;
 }
 
 export default Vue.extend<Data, Methods, any, {}>({
@@ -63,7 +67,8 @@ export default Vue.extend<Data, Methods, any, {}>({
     PropOperate,
     PageOperate,
     CodeOperate,
-    EditorOperate
+    EditorOperate,
+    CompTree
   },
   computed: {
     ...mapState(["pageConfig", "editorConfig", "activeComp"]),
@@ -78,11 +83,12 @@ export default Vue.extend<Data, Methods, any, {}>({
   methods: {
     addEvent() {
       const handleMousemove = (ev: MouseEvent) => {
-        console.log(this.startX, ev.clientX);
-        this.width += this.startX - ev.clientX;
-        this.width = Math.max(200, this.width);
-        this.width = Math.min(500, this.width);
-        this.startX = ev.clientX;
+        if (this.isDrag) {
+          this.width += this.startX - ev.clientX;
+          this.width = Math.max(200, this.width);
+          this.width = Math.min(500, this.width);
+          this.startX = ev.clientX;
+        }
       };
 
       const handleMousedown = (ev: MouseEvent) => {
