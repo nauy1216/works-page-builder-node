@@ -9,10 +9,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import LeftTool from "./components/LeftTool.vue";
+import LeftTool from "./left-tool/index.vue";
 import RightTool from "./right-tool/index.vue";
-import TopTool from "./components/TopTool.vue";
-import PageContent from "./components/PageContent.vue";
+import TopTool from "./top-tool/index.vue";
+import PageContent from "./page-content/inex.vue";
 
 interface Computed {
   showLeftTool: boolean;
