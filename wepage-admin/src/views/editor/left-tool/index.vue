@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="组件列表" name="1">
         <div
-          v-for="(comp, index) in compList"
+          v-for="(comp, index) in $compList"
           :key="comp.name + index"
           class="left-tool-item"
           draggable="true"
@@ -23,11 +23,9 @@
 
 <script lang="ts">
 import Vue, { VueConstructor } from "vue";
-import compList from "@/lib/index.ts";
 import { mapMutations } from "vuex";
 
 interface Data {
-  compList: { [key: string]: any };
   activeName: string;
 }
 
@@ -40,7 +38,6 @@ interface Methods {
 export default Vue.extend<Data, Methods, {}, {}>({
   data() {
     return {
-      compList,
       activeName: "1"
     };
   },

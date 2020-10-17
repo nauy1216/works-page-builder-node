@@ -1,7 +1,6 @@
 <script lang="tsx">
 import Vue from "vue";
 import { PageConfig } from "@/types/page.ts";
-import _compList from "@/lib/index";
 import { mapState } from "vuex";
 
 export default Vue.extend<any, any, any, any>({
@@ -43,7 +42,7 @@ export default Vue.extend<any, any, any, any>({
       });
     }
 
-    const compList = _compList;
+    const compList = this.$compList;
     return (
       <div class="view-port">
         <div

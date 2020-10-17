@@ -8,7 +8,9 @@ import VueDraggableResizable from "vue-draggable-resizable-gorkys";
 import "vue-draggable-resizable-gorkys/dist/VueDraggableResizable.css";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+import compList from "@/lib/index.ts";
 
+Vue.prototype.$compList = compList
 Vue.component("vue-draggable-resizable", VueDraggableResizable);
 
 Vue.use(ElementUI, {

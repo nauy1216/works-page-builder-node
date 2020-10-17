@@ -50,7 +50,7 @@
               height: comp.config.height + 'px'
             }"
           >
-            <component :is="compList[comp.name]" v-bind="comp.data"></component>
+            <component :is="$compList[comp.name]" v-bind="comp.data"></component>
           </div>
         </vue-draggable-resizable>
       </div>
@@ -65,12 +65,12 @@
 
 <script lang="ts">
 // https://tingtas.com/vue-draggable-resizable-gorkys/
-import Vue from "vue";
-import compList from "@/lib/index.ts";
+// import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { EventType } from "@/types/const";
+import defineComponent from "@/types/defineComponent";
 
 const defaultConfig: PageComponentOptionsConfig = {
   x: 0,
@@ -81,13 +81,12 @@ const defaultConfig: PageComponentOptionsConfig = {
   lockAspectRatio: true
 };
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     ContextMenu
   },
   data() {
     return {
-      compList,
       componentMenu: [] as MenuCommand[],
       canvasMenu: [] as MenuCommand[],
       isStartMove: false,
