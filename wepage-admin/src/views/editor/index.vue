@@ -23,7 +23,7 @@ export default Vue.extend({
     PageContent
   },
   created() {
-    this.pageConfig.children
+    console.log(this.$api.testApi1, "this.$api")
   },
   computed: {
     // ...mapStateTyped({
@@ -69,8 +69,8 @@ export default Vue.extend({
     transform: translateY(-50%);
   }
   .main {
-    max-width: calc(100vw - 40px);
-    max-height: calc(100vh - 40px);
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
     box-shadow: 0 0 4px 0 #e0e0e0;
   }
 }

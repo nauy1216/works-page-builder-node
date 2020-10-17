@@ -2,6 +2,7 @@
 import Vue, { VueConstructor } from "vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import {CustomVueConstructor} from "@/types/store"
+import {apis} from "@/types/api"
 
 declare module "vue/types/vue" {
   interface Vue {
