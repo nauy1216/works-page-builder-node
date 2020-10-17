@@ -13,13 +13,9 @@ import LeftTool from "./left-tool/index.vue";
 import RightTool from "./right-tool/index.vue";
 import TopTool from "./top-tool/index.vue";
 import PageContent from "./page-content/inex.vue";
+import { mapStateTyped } from "@/types/store";
 
-interface Computed {
-  showLeftTool: boolean;
-  showRightTool: boolean;
-}
-
-export default Vue.extend<{}, {}, Computed, {}>({
+export default Vue.extend({
   components: {
     TopTool,
     LeftTool,
@@ -27,12 +23,18 @@ export default Vue.extend<{}, {}, Computed, {}>({
     PageContent
   },
   computed: {
-    showLeftTool() {
-      return this.$store.state.editorConfig.showLeftTool;
-    },
-    showRightTool() {
-      return this.$store.state.editorConfig.showRightTool;
-    }
+    // ...mapStateTyped({
+    //   myPageConfig: "pageConfig"
+    // }),
+    // ...mapStateTyped(["pageConfig"]),
+    ...mapStateTyped({
+      showLeftTool(state): boolean {
+        return state.editorConfig.showLeftTool;
+      },
+      showRightTool(state): boolean {
+        return state.editorConfig.showRightTool;
+      }
+    })
   }
 });
 </script>

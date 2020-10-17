@@ -14,9 +14,7 @@
           <span class="name">{{ comp.extendOptions.config.alias }}</span>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="图层" name="2">
-
-      </el-tab-pane>
+      <el-tab-pane label="图层" name="2"> </el-tab-pane>
     </el-tabs>
   </div>
 </template>

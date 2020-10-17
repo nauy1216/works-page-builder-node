@@ -4,7 +4,7 @@ import { PageComponentOptionsConfig } from "@/types/page";
 declare module "vue/types/vue" {
   interface Vue {
     $eventBus: Vue;
-    $compList: {[key: string]: VueConstructor}
+    $compList: { [key: string]: VueConstructor };
   }
 }
 declare module "vue/types/options" {

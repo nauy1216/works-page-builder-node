@@ -50,7 +50,10 @@
               height: comp.config.height + 'px'
             }"
           >
-            <component :is="$compList[comp.name]" v-bind="comp.data"></component>
+            <component
+              :is="$compList[comp.name]"
+              v-bind="comp.data"
+            ></component>
           </div>
         </vue-draggable-resizable>
       </div>
@@ -80,6 +83,27 @@ const defaultConfig: PageComponentOptionsConfig = {
   zIndex: 0,
   lockAspectRatio: true
 };
+
+// interface CompThisType {
+//   data: {
+//     refreshKey: number;
+//   };
+
+//   methods: {
+//     addMoveEvent(): void;
+//     setContextMenuList(): void;
+//     addRefreshEvent(): void;
+//     createVdrKey(comp, index): string;
+//     createCompKey(comp): string;
+//     createBackground(x: number, y: number): string;
+//     handleDrag(comp, left, top): void;
+//     handleResize(comp, left, top, width, height): void;
+//     handleDeactivated(): void;
+//     handleActivated(comp): void;
+//     setActiveComp(comp): void;
+//     handleDeactivated(): void;
+//   };
+// }
 
 export default defineComponent({
   components: {

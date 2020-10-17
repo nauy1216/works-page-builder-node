@@ -1,34 +1,67 @@
 import Vue from "vue";
-import { ThisTypedComponentOptionsWithRecordProps } from "vue/types/options";
+import { ComponentOptions, PropValidator } from "vue/types/options";
+// import { State } from "./store";
 
-type DefaultData<V> =  object | ((this: V) => object);
-type DefaultProps = Record<string, any>;
-type DefaultMethods<V> =  { [key: string]: (this: V, ...args: any[]) => any };
-type DefaultComputed = { [key: string]: any };
-
-type ThisTypedWithVuex<
+type DataDef<Data, Props, V> = Data | ((this: Readonly<Props> & V) => Data);
+export type RecordPropsDefinition<T> = {
+  [K in keyof T]: PropValidator<T[K]>;
+};
+type CombinedVueInstance<
+  Instance extends Vue,
   Data,
   Methods,
   Computed,
   Props,
-  VuexState,
-  V extends Vue = Vue
-> = ThisTypedComponentOptionsWithRecordProps<
-  V,
+  CompThisType
+> = Data & Methods & Computed & Props & Instance & CompThisType;
+type ThisTypedWithInterface<
+  CompThisType,
   Data,
   Methods,
   Computed,
-  Props
-> &
-  ThisType<VuexState> | undefined;
+  Props,
+  V extends Vue = Vue
+> = object &
+  ComponentOptions<
+    V,
+    DataDef<Data, Props, V>,
+    Methods,
+    Computed,
+    RecordPropsDefinition<Props>,
+    Props
+  > &
+  ThisType<
+    CombinedVueInstance<
+      V,
+      Data,
+      Methods,
+      Computed,
+      Readonly<Props>,
+      CompThisType
+    >
+  >;
+
+interface BaseCompThisType {
+  data?: { [key: string]: any };
+  props?: { [key: string]: any };
+  methods?: { [key: string]: Function };
+  computed?: { [key: string]: any };
+}
+
+// type PickState<T extends string> = Pick<State, T>;
 
 export default function defineComponent<
-  VuexState,
-  Data = DefaultData<Vue>,
-  Methods = DefaultMethods<Vue>,
-  Computed = DefaultComputed,
-  Props = DefaultProps,
+  CompThisType extends BaseCompThisType,
   V extends Vue = Vue
->(options?: ThisTypedWithVuex<VuexState, Data, Methods, Computed, Props, V>) {
-  return Vue.extend<Data, Methods, Computed, Props>(options as any);
+>(
+  options?: ThisTypedWithInterface<
+    CompThisType,
+    CompThisType["data"],
+    CompThisType["methods"],
+    CompThisType["computed"],
+    CompThisType["props"],
+    V
+  >
+) {
+  return Vue.extend(options as any);
 }
