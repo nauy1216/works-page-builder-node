@@ -68,12 +68,12 @@
 
 <script lang="ts">
 // https://tingtas.com/vue-draggable-resizable-gorkys/
-// import Vue from "vue";
+import Vue from "vue";
 import { mapMutations } from "vuex";
 import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { EventType } from "@/types/const";
-import defineComponent from "@/types/defineComponent";
+// import defineComponent from "@/types/defineComponent";
 import { mapStateTyped } from "@/types/store";
 
 const defaultConfig: PageComponentOptionsConfig = {
@@ -106,7 +106,7 @@ const defaultConfig: PageComponentOptionsConfig = {
 //   };
 // }
 
-export default defineComponent({
+export default Vue.extend({
   components: {
     ContextMenu
   },
@@ -133,7 +133,7 @@ export default defineComponent({
   },
   computed: {
     ...mapStateTyped(["pageConfig", "editorConfig", "dragComp"]),
-    transform(this: any) {
+    transform(): string {
       if (this.editorConfig.showScrollbar) {
         return `translate(0px, 0px})`;
       }
@@ -196,7 +196,7 @@ export default defineComponent({
     },
     // 从组件列表拖拽组件释放
     handlePageDrop(event) {
-      const comp = this.dragComp as any;
+      const comp = this.dragComp;
       if (comp && comp.extendOptions) {
         // 设置组件所在位置
         const rect = event.target.getBoundingClientRect();
@@ -283,10 +283,16 @@ export default defineComponent({
           const dom = this.$refs.viewport as HTMLElement;
           this.viewportWidth = dom.clientWidth;
           this.viewportHeight = dom.clientHeight;
-          this.maxScrollLeft = dom.scrollWidth - this.viewportWidth;
-          this.maxScrollTop = dom.scrollHeight - this.viewportHeight;
 
-          // console.log("rect", this.maxScrollLeft, dom.scrollWidth, this.viewportWidth);
+          if (this.editorConfig.showScrollbar) {
+            this.maxScrollLeft = dom.scrollWidth - this.viewportWidth;
+            this.maxScrollTop = dom.scrollHeight - this.viewportHeight;
+          } else {
+            this.maxScrollLeft = this.pageConfig.width - this.viewportWidth;
+            this.maxScrollTop = this.pageConfig.height - this.viewportHeight;
+          }
+
+          console.log("rect", this.maxScrollLeft, dom.scrollWidth, this.viewportWidth);
           this.scrollLeft += this.startX - ev.clientX;
           this.scrollTop += this.startY - ev.clientY;
 
@@ -294,7 +300,7 @@ export default defineComponent({
           this.scrollTop = Math.max(0, this.scrollTop);
           this.scrollLeft = Math.min(this.maxScrollLeft, this.scrollLeft);
           this.scrollTop = Math.min(this.maxScrollTop, this.scrollTop);
-
+          console.log("this.maxScrollTop", this.scrollLeft, this.maxScrollLeft)
           if (this.editorConfig.showScrollbar) {
             dom.scrollTo(this.scrollLeft, this.scrollTop);
           }

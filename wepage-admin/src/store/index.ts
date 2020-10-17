@@ -18,7 +18,7 @@ export default new Vuex.Store<State>({
     editorConfig: {
       gridX: 20,
       gridY: 20,
-      showScrollbar: true,
+      showScrollbar: false,
       parent: true,
       zoom: 1,
       showLeftTool: true,
