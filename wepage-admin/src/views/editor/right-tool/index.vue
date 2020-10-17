@@ -28,31 +28,15 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState } from "vuex";
 import LayoutOperate from "./layout-operate.vue";
 import PropOperate from "./prop-operate.vue";
 import PageOperate from "./page-operate.vue";
 import CodeOperate from "./code-operate.vue";
 import EditorOperate from "./editor-operate.vue";
 import CompTree from "./comp-tree.vue";
+import {mapStateTyped} from "@/types/store"
 
-interface Data {
-  activeName: string;
-  width: number;
-  startX: number;
-  startY: number;
-  isDrag: boolean;
-}
-
-interface Computed {
-  activeCompProps: { [key: string]: any };
-}
-
-interface Methods {
-  addEvent(): void;
-}
-
-export default Vue.extend<Data, Methods, any, {}>({
+export default Vue.extend({
   data() {
     return {
       activeName: "1",
@@ -71,10 +55,10 @@ export default Vue.extend<Data, Methods, any, {}>({
     CompTree
   },
   computed: {
-    ...mapState(["pageConfig", "editorConfig", "activeComp"]),
+    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
     // 当前活动组件的属性
-    activeCompProps() {
-      return this.activeComp && this.activeComp.component.extendOptions.props;
+    activeCompProps(): any {
+      return this.activeComp && this.$compList[this.activeComp.name]
     }
   },
   created() {

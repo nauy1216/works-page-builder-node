@@ -1,12 +1,13 @@
-import { PageConfig, EditorConfig } from "./page";
+import { PageConfig, EditorConfig, PageComponentOptions } from "./page";
 import { mapState } from "vuex";
-import Vue from "vue";
+import Vue, {VueConstructor} from "vue";
 export interface State {
-  dragComp: Vue | null;
-  activeComp: Vue | null;
+  dragComp: CustomVueConstructor | null;
+  activeComp: PageComponentOptions | null;
   pageConfig: PageConfig;
   editorConfig: EditorConfig;
 }
+export type CustomVueConstructor = VueConstructor & Record<string, any>
 
 type CustomVue = Vue & Record<string, any>;
 type InlineComputed<T extends Function> = T extends (...args: any[]) => infer R
@@ -39,9 +40,8 @@ interface MapperForState {
 
 type PickState<T extends keyof State> = Pick<State, T>[T];
 type ComputedFunc<T extends keyof State> = () => PickState<T>;
-// type test = PickState<"dragComp">
 interface Mapper {
-  <Key extends keyof State>(map: Key[]): { [K in Key]: ComputedFunc<Key> };
+  <Key extends keyof State>(map: Key[]): { [K in Key]: ComputedFunc<K> };
   <Map extends Record<string, keyof State>>(map: Map): { [K in keyof Map]: ComputedFunc<Map[K]> };
 }
 

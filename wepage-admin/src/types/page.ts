@@ -8,7 +8,6 @@ export declare interface PageConfig {
 export declare interface PageComponentOptions {
   name: string; // 组件名称
   alias: string; // 组件别名， 用于展示
-  component?: Vue; // 组件构造函数，可选
   config: PageComponentOptionsConfig; // 组件配置对象用于组件布局
   data: Record<string, any>; // 组件内部定义的属性
 }

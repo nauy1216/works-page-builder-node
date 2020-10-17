@@ -40,10 +40,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState } from "vuex";
+import { mapStateTyped } from "@/types/store";
 export default Vue.extend({
   computed: {
-    ...mapState(["pageConfig", "editorConfig", "activeComp"])
+    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
   }
 });
 </script>

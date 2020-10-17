@@ -1,10 +1,12 @@
 // 必须引入vue, 如果没有引入相当于重新定义了一个interface Vue
 import Vue, { VueConstructor } from "vue";
 import { PageComponentOptionsConfig } from "@/types/page";
+import {CustomVueConstructor} from "@/types/store"
+
 declare module "vue/types/vue" {
   interface Vue {
     $eventBus: Vue;
-    $compList: { [key: string]: VueConstructor };
+    $compList: { [key: string]: CustomVueConstructor };
   }
 }
 declare module "vue/types/options" {

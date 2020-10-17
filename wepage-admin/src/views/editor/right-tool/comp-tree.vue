@@ -17,18 +17,19 @@
   </el-tree>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
-import { mapState } from "vuex";
+import { mapStateTyped } from "@/types/store";
+
+type TreeNode = {
+  label: string;
+  children: TreeNode[];
+}
 export default Vue.extend({
-  data() {
-    return {};
-  },
   computed: {
-    ...mapState(["pageConfig"]),
+    ...mapStateTyped(["pageConfig"]),
     treeData() {
-      console.log("===========", this.pageConfig.children);
-      const treeData = [];
+      const treeData = [] as TreeNode[];
       for (const child of this.pageConfig.children) {
         treeData.push({
           label: child.alias,

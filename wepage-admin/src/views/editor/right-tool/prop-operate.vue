@@ -15,13 +15,13 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState } from "vuex";
+import { mapStateTyped } from "@/types/store";
 export default Vue.extend({
   computed: {
-    ...mapState(["pageConfig", "editorConfig", "activeComp"]),
+    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
     // 当前活动组件的属性
     activeCompProps() {
-      return this.activeComp && this.activeComp.component.extendOptions.props;
+      return this.activeComp && this.$compList[this.activeComp.name].extendOptions.props;
     }
   }
 });

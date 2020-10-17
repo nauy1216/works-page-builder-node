@@ -20,20 +20,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from "vue";
+import Vue from "vue";
 import { mapMutations } from "vuex";
 
-interface Data {
-  activeName: string;
-}
-
-interface Methods {
-  handleDragStart: (event: Event, comp: VueConstructor) => void;
-  handleDragEnd: () => void;
-  setDragComp: (comp: VueConstructor | null) => void;
-}
-
-export default Vue.extend<Data, Methods, {}, {}>({
+export default Vue.extend({
   data() {
     return {
       activeName: "1"

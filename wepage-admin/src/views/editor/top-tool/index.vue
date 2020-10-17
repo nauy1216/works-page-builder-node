@@ -1,7 +1,6 @@
 <script lang="tsx">
 import Vue from "vue";
-import { mapState } from "vuex";
-
+import { mapStateTyped } from "@/types/store";
 export default Vue.extend({
   data() {
     return {
@@ -10,7 +9,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState(["pageConfig", "editorConfig"])
+    ...mapStateTyped(["pageConfig", "editorConfig"])
   },
   methods: {
     handleMouseMove(ev) {

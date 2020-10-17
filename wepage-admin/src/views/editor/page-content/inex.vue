@@ -69,11 +69,12 @@
 <script lang="ts">
 // https://tingtas.com/vue-draggable-resizable-gorkys/
 // import Vue from "vue";
-import { mapState, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { EventType } from "@/types/const";
 import defineComponent from "@/types/defineComponent";
+import { mapStateTyped } from "@/types/store";
 
 const defaultConfig: PageComponentOptionsConfig = {
   x: 0,
@@ -131,7 +132,7 @@ export default defineComponent({
     this.addRefreshEvent();
   },
   computed: {
-    ...mapState(["pageConfig", "editorConfig", "dragComp"]),
+    ...mapStateTyped(["pageConfig", "editorConfig", "dragComp"]),
     transform(this: any) {
       if (this.editorConfig.showScrollbar) {
         return `translate(0px, 0px})`;
@@ -219,7 +220,7 @@ export default defineComponent({
         this.addComponent({
           name: comp.extendOptions.name,
           alias: comp.extendOptions.config.alias,
-          component: comp,
+          // component: comp,
           config,
           data
         });

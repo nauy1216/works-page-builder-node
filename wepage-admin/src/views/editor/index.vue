@@ -22,11 +22,14 @@ export default Vue.extend({
     RightTool,
     PageContent
   },
+  created() {
+    this.pageConfig.children
+  },
   computed: {
     // ...mapStateTyped({
     //   myPageConfig: "pageConfig"
     // }),
-    // ...mapStateTyped(["pageConfig"]),
+    ...mapStateTyped(["pageConfig"]),
     ...mapStateTyped({
       showLeftTool(state): boolean {
         return state.editorConfig.showLeftTool;

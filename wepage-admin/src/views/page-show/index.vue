@@ -1,9 +1,9 @@
 <script lang="tsx">
 import Vue from "vue";
 import { PageConfig } from "@/types/page.ts";
-import { mapState } from "vuex";
+import { mapStateTyped } from "@/types/store";
 
-export default Vue.extend<any, any, any, any>({
+export default Vue.extend({
   data() {
     return {
       unit: "rem"
@@ -21,8 +21,8 @@ export default Vue.extend<any, any, any, any>({
     }
   },
   computed: {
-    ...mapState(["pageConfig"]),
-    isRem() {
+    ...mapStateTyped(["pageConfig"]),
+    isRem(): boolean {
       return this.unit === "rem";
     }
   },
