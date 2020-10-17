@@ -1,8 +1,7 @@
 // 必须引入vue, 如果没有引入相当于重新定义了一个interface Vue
-import Vue, { VueConstructor } from "vue";
+import Vue from "vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import {CustomVueConstructor} from "@/types/store"
-import {apis} from "@/types/api"
 
 declare module "vue/types/vue" {
   interface Vue {

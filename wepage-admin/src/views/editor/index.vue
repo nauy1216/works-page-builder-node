@@ -13,7 +13,7 @@ import LeftTool from "./left-tool/index.vue";
 import RightTool from "./right-tool/index.vue";
 import TopTool from "./top-tool/index.vue";
 import PageContent from "./page-content/inex.vue";
-import { mapStateTyped } from "@/types/store";
+import { mapStateTyped, mapMutationsTyped } from "@/types/store";
 
 export default Vue.extend({
   components: {
@@ -24,6 +24,7 @@ export default Vue.extend({
   },
   created() {
     console.log(this.$api.testApi1, "this.$api")
+    // this.setEditorConfig(1)
   },
   computed: {
     // ...mapStateTyped({
@@ -38,6 +39,9 @@ export default Vue.extend({
         return state.editorConfig.showRightTool;
       }
     })
+  },
+  methods: {
+    ...mapMutationsTyped(["addComponent", "setEditorConfig"])
   }
 });
 </script>
