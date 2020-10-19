@@ -19,6 +19,8 @@ const state: State = {
     activeComp: null, // 当前激活的组件
     // 页面配置， 用于生成页面
     pageConfig: {
+      id: uuid(),
+      key: uuid(),
       alias: "",
       width: 1920,
       height: 1080,

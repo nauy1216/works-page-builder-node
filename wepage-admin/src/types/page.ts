@@ -1,5 +1,7 @@
 import {VueConstructor} from "vue"
 export declare interface PageConfig {
+  id: string;
+  key: string;
   alias: string; // 页面别名
   width: number; // 页面设计稿宽度
   height: number; // 页面设计稿高度

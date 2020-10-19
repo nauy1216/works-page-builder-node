@@ -1,17 +1,29 @@
 <template>
-  <div class="left-tool">
+  <div class="left-tool" :style="{width: width + 'px'}">
+    <vue-draggable-resizable           
+      :x="0"
+      :y="0"
+      :w="width"
+      :draggable="false"
+      :handles="['mr']"
+      :active="true"
+      :prevent-deactivation="true"
+      class="left-tool-vdr"
+      @resizing="handleResize">
     <el-tabs v-model="activeName">
       <el-tab-pane label="组件列表" name="1">
-        <div
-          v-for="(comp, index) in $compList"
-          :key="comp.name + index"
-          class="left-tool-item"
-          draggable="true"
-          @dragstart="handleDragStart($event, comp)"
-          @dragend="handleDragEnd($event, comp)"
-        >
-          <i :class="comp.extendOptions.config.icon" class="icon"></i>
-          <span class="name">{{ comp.extendOptions.config.alias }}</span>
+        <div calss="left-tool-list">
+          <div
+            v-for="(comp, index) in $compList"
+            :key="comp.name + index"
+            class="left-tool-item"
+            draggable="true"
+            @dragstart.stop="handleDragStart($event, comp)"
+            @dragend.stop="handleDragEnd($event, comp)"
+          >
+            <i :class="comp.extendOptions.config.icon" class="icon"></i>
+            <span class="name">{{ comp.extendOptions.config.alias }}</span>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="页面结构" name="2">
@@ -27,6 +39,7 @@
         <EditorOperate></EditorOperate>
       </el-tab-pane>
     </el-tabs>
+    </vue-draggable-resizable>
   </div>
 </template>
 
@@ -47,7 +60,9 @@ export default Vue.extend({
   },
   data() {
     return {
-      activeName: "1"
+      activeName: "1",
+      width: 250,
+      height: 400
     };
   },
   methods: {
@@ -57,16 +72,33 @@ export default Vue.extend({
     },
     handleDragEnd() {
       this.setDragComp(null);
+    },
+    handleResize(left, top, width) {
+      this.width = width
     }
   }
 });
 </script>
 <style scoped lang="scss">
-.left-tool {
+.left-tool-vdr {
+  box-sizing: border-box;
   padding: 20px;
+  height: 100% !important;
+  &::before {
+    display: none;
+  }
+}
+/deep/.handle-mr {
+  width: 4px !important;
+  height: 40px !important;
+  background: rgb(64, 158, 255) !important;
+}
+.left-tool-list {
+  display: flex;
+  flex-wrap:wrap;
 }
 .left-tool-item {
-  width: 50%;
+  width: 100px;
   box-sizing: border-box;
   display: inline-flex;
   justify-content: center;
