@@ -11,6 +11,7 @@
       <div
         class="page-content"
         ref="pageContent"
+        :key="pageConfig.key"
         :style="{
           transform: transform,
           width: pageConfig.width + 'px',

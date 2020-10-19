@@ -72,15 +72,18 @@ const _mutations= {
       }
       state.activeComp = getComp;
     },
+
     setDragComp(state: State, comp: PureComp) {
       state.dragComp = comp;
     },
+
     addComponent(this: Store<State>, state: State, comp: PageComponentOptions) {
       if (comp) {
         state.pageConfig.children.push(comp);
         this.commit("setActiveComp", comp)
       }
     },
+
     removeComponent(state: State, comp: PageComponentOptions | CompId) {
       if (!comp) return 
       const index = getCompIndex(comp)
@@ -97,15 +100,23 @@ const _mutations= {
         state.pageConfig.children.splice(index, 1);
       }
     },
+
     refreshComponent: debounce(300, function(state: State, comp: PageComponentOptions) {
       comp.key = uuid()
     }) as (state: State, comp: PageComponentOptions) => void,
+
     clearAllComponent(state: State) {
       state.pageConfig.children = [];
     },
+
+    refreshPage: debounce(300, function(state: State) {
+      state.pageConfig.key = uuid()
+    }) as (state: State) => void,
+
     setPageConfig(state: State, config: PageConfig) {
       state.pageConfig = config;
     },
+
     setEditorConfig(state: State, config: EditorConfig) {
       state.editorConfig = config;
     }

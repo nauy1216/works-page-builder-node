@@ -51,10 +51,20 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapStateTyped } from "@/types/store";
+import { mapMutationsTyped, mapStateTyped } from "@/types/store";
 export default Vue.extend({
   computed: {
     ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
+  },
+  created() {
+    this.$watch(() => {
+      return this.pageConfig.width + " " + this.pageConfig.height
+    }, () => {
+      this.refreshPage()
+    })
+  },
+  methods: {
+    ...mapMutationsTyped(["refreshPage"])
   }
 });
 </script>
