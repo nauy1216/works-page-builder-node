@@ -9,18 +9,15 @@
           <PropOperate></PropOperate>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="页面" name="3">
+      <!-- <el-tab-pane label="页面" name="3">
         <PageOperate></PageOperate>
-      </el-tab-pane>
-      <el-tab-pane label="页面结构" name="6">
-        <CompTree></CompTree>
       </el-tab-pane>
       <el-tab-pane label="代码" name="4">
         <CodeOperate></CodeOperate>
       </el-tab-pane>
       <el-tab-pane label="编辑器" name="5">
         <EditorOperate></EditorOperate>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
     <div class="right-tool-trigger" ref="trigger"></div>
   </div>
@@ -30,10 +27,10 @@
 import Vue from "vue";
 import LayoutOperate from "./layout-operate.vue";
 import PropOperate from "./prop-operate.vue";
-import PageOperate from "./page-operate.vue";
-import CodeOperate from "./code-operate.vue";
-import EditorOperate from "./editor-operate.vue";
-import CompTree from "./comp-tree.vue";
+// import PageOperate from "./page-operate.vue";
+// import CodeOperate from "./code-operate.vue";
+// import EditorOperate from "./editor-operate.vue";
+// import CompTree from "./comp-tree.vue";
 import {mapStateTyped} from "@/types/store"
 
 export default Vue.extend({
@@ -49,10 +46,9 @@ export default Vue.extend({
   components: {
     LayoutOperate,
     PropOperate,
-    PageOperate,
-    CodeOperate,
-    EditorOperate,
-    CompTree
+    // PageOperate,
+    // CodeOperate,
+    // EditorOperate
   },
   computed: {
     ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
@@ -109,11 +105,6 @@ export default Vue.extend({
     &:hover {
       cursor: ew-resize;
     }
-  }
-}
-/deep/.code {
-  textarea {
-    min-height: 50vh !important;
   }
 }
 </style>

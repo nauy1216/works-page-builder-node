@@ -14,7 +14,18 @@
           <span class="name">{{ comp.extendOptions.config.alias }}</span>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="图层" name="2"> </el-tab-pane>
+      <el-tab-pane label="页面结构" name="2">
+        <CompTree></CompTree>
+      </el-tab-pane>
+      <el-tab-pane label="页面" name="3">
+        <PageOperate></PageOperate>
+      </el-tab-pane>
+      <el-tab-pane label="代码" name="4">
+        <CodeOperate></CodeOperate>
+      </el-tab-pane>
+      <el-tab-pane label="编辑器" name="5">
+        <EditorOperate></EditorOperate>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -22,8 +33,18 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapMutations } from "vuex";
+import CompTree from "../components/comp-tree.vue";
+import PageOperate from "../components/page-operate.vue";
+import CodeOperate from "../components/code-operate.vue";
+import EditorOperate from "../components/editor-operate.vue";
 
 export default Vue.extend({
+  components: {
+    CompTree,
+    PageOperate,
+    CodeOperate,
+    EditorOperate
+  },
   data() {
     return {
       activeName: "1"
@@ -60,6 +81,11 @@ export default Vue.extend({
     margin-bottom: 10px;
     font-size: 30px;
     color: #666666;
+  }
+}
+/deep/.code {
+  textarea {
+    min-height: 50vh !important;
   }
 }
 </style>

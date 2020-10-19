@@ -24,12 +24,8 @@ export default Vue.extend({
   },
   created() {
     console.log(this.$api.testApi1, "this.$api")
-    // this.setEditorConfig(1)
   },
   computed: {
-    // ...mapStateTyped({
-    //   myPageConfig: "pageConfig"
-    // }),
     ...mapStateTyped(["pageConfig"]),
     ...mapStateTyped({
       showLeftTool(state): boolean {

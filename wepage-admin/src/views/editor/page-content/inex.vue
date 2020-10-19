@@ -20,8 +20,8 @@
         }"
       >
         <vue-draggable-resizable
-          v-for="(comp, index) in pageConfig.children"
-          :key="createVdrKey(comp, index)"
+          v-for="(comp) in pageConfig.children"
+          :key="comp.key"
           :style="{
             zIndex: comp.config.zIndex
           }"
@@ -32,6 +32,7 @@
           :parent="editorConfig.parent"
           :debug="false"
           :active.sync="comp.config.active"
+          :prevent-deactivation="true"
           :isConflictCheck="false"
           :snap="true"
           :snapTolerance="10"
@@ -69,12 +70,10 @@
 <script lang="ts">
 // https://tingtas.com/vue-draggable-resizable-gorkys/
 import Vue from "vue";
-import { mapMutations } from "vuex";
 import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
-import { EventType } from "@/types/const";
-// import defineComponent from "@/types/defineComponent";
-import { mapStateTyped } from "@/types/store";
+import { mapStateTyped, mapMutationsTyped } from "@/types/store";
+import {uuid} from "@/utils"
 
 const defaultConfig: PageComponentOptionsConfig = {
   x: 0,
@@ -82,29 +81,9 @@ const defaultConfig: PageComponentOptionsConfig = {
   width: 200,
   height: 200,
   zIndex: 0,
-  lockAspectRatio: true
+  lockAspectRatio: true,
+  active: true
 };
-
-// interface CompThisType {
-//   data: {
-//     refreshKey: number;
-//   };
-
-//   methods: {
-//     addMoveEvent(): void;
-//     setContextMenuList(): void;
-//     addRefreshEvent(): void;
-//     createVdrKey(comp, index): string;
-//     createCompKey(comp): string;
-//     createBackground(x: number, y: number): string;
-//     handleDrag(comp, left, top): void;
-//     handleResize(comp, left, top, width, height): void;
-//     handleDeactivated(): void;
-//     handleActivated(comp): void;
-//     setActiveComp(comp): void;
-//     handleDeactivated(): void;
-//   };
-// }
 
 export default Vue.extend({
   components: {
@@ -129,7 +108,6 @@ export default Vue.extend({
   created() {
     this.addMoveEvent();
     this.setContextMenuList();
-    this.addRefreshEvent();
   },
   computed: {
     ...mapStateTyped(["pageConfig", "editorConfig", "dragComp"]),
@@ -141,11 +119,12 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutations([
+    ...mapMutationsTyped([
       "setActiveComp",
       "addComponent",
       "removeComponent",
-      "clearAllComponent"
+      "clearAllComponent",
+      "refreshComponent"
     ]),
     createVdrKey(comp, index) {
       // TODO: 性能问题
@@ -158,21 +137,6 @@ export default Vue.extend({
     createBackground(x, y) {
       return `linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${x}px ${x}px, linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${y}px ${y}px`;
     },
-    addRefreshEvent() {
-      let timer;
-      const handle = () => {
-        if (timer) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          this.refreshKey++;
-        }, 100);
-      };
-      this.$eventBus.$on(EventType.RefreshEditor, handle);
-      this.$once("hook:beforeDestroy", () => {
-        this.$eventBus.$off(EventType.RefreshEditor, handle);
-      });
-    },
     handleDrag(comp, left, top) {
       comp.config.x = left;
       comp.config.y = top;
@@ -182,7 +146,7 @@ export default Vue.extend({
       comp.config.y = top;
       comp.config.width = width;
       comp.config.height = height;
-      this.$eventBus.$emit(EventType.RefreshEditor);
+      this.refreshComponent(comp)
     },
     handleDeactivated() {
       //   this.setActiveComp(null);
@@ -218,9 +182,10 @@ export default Vue.extend({
           });
 
         this.addComponent({
+          id: uuid(),
+          key: uuid(),
           name: comp.extendOptions.name,
           alias: comp.extendOptions.config.alias,
-          // component: comp,
           config,
           data
         });

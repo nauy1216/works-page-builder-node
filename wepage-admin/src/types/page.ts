@@ -1,3 +1,4 @@
+import {VueConstructor} from "vue"
 export declare interface PageConfig {
   alias: string; // 页面别名
   width: number; // 页面设计稿宽度
@@ -6,11 +7,17 @@ export declare interface PageConfig {
 }
 
 export declare interface PageComponentOptions {
+  id: string;   
+  key: string;
   name: string; // 组件名称
   alias: string; // 组件别名， 用于展示
   config: PageComponentOptionsConfig; // 组件配置对象用于组件布局
   data: Record<string, any>; // 组件内部定义的属性
 }
+
+export type CustomVueConstructor = VueConstructor & Record<string, any>
+export type PureComp = CustomVueConstructor | null
+export type PageComp = PageComponentOptions | null
 
 export declare interface PageComponentOptionsConfig {
   x: number; // 组件左上角在页面的x坐标
