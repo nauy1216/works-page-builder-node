@@ -44,7 +44,8 @@ import { mapMutationsTyped, mapStateTyped } from "@/types/store";
 export default Vue.extend({
   data() {
     return {
-      preActiveComp: null
+      preActiveComp: null,
+      isChangeActiveComp: false
     }
   },
   computed: {
@@ -54,19 +55,20 @@ export default Vue.extend({
     activeComp: {
       handler(newVal, oldVal) {
         this.preActiveComp = oldVal
+        this.isChangeActiveComp = true
       }
     }
   },
   created() {
-    // TODO： 刷新两次的问题
     this.$watch(() => {
       if (this.activeComp) {
         return this.activeComp.config.width + " " + this.activeComp.config.height
       }
       return null
     }, (newVal, oldVal) => {
-      if (this.activeComp && oldVal && this.activeComp ) {
+      if (this.activeComp && oldVal && this.activeComp && !this.isChangeActiveComp) {
         this.refreshComponent(this.activeComp)
+        this.isChangeActiveComp = false
       }
     })
   },

@@ -257,7 +257,6 @@ export default Vue.extend({
             this.maxScrollTop = this.pageConfig.height - this.viewportHeight;
           }
 
-          console.log("rect", this.maxScrollLeft, dom.scrollWidth, this.viewportWidth);
           this.scrollLeft += this.startX - ev.clientX;
           this.scrollTop += this.startY - ev.clientY;
 
@@ -265,7 +264,7 @@ export default Vue.extend({
           this.scrollTop = Math.max(0, this.scrollTop);
           this.scrollLeft = Math.min(this.maxScrollLeft, this.scrollLeft);
           this.scrollTop = Math.min(this.maxScrollTop, this.scrollTop);
-          console.log("this.maxScrollTop", this.scrollLeft, this.maxScrollLeft)
+
           if (this.editorConfig.showScrollbar) {
             dom.scrollTo(this.scrollLeft, this.scrollTop);
           }
@@ -276,7 +275,6 @@ export default Vue.extend({
       };
 
       const handlePageMouseDown = ev => {
-        console.log("handlePageMouseDown");
         if (ev.target.className.indexOf("page-content") > -1) {
           this.isStartMove = true;
           this.startX = ev.clientX;
@@ -286,7 +284,6 @@ export default Vue.extend({
       };
 
       const handlePageMouseUp = () => {
-        console.log("handlePageMouseUp");
         this.isStartMove = false;
         document.body.removeEventListener("mousemove", handlePageMouseMove);
       };

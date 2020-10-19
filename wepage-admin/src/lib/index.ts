@@ -15,7 +15,6 @@ const compList = {
 
 Object.keys(compList).forEach(comp => {
   if (typeof compList[comp] != "function") {
-    console.log("comp", comp);
     compList[comp] = Vue.extend(compList[comp]);
   }
 });

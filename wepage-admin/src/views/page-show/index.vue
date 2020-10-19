@@ -10,7 +10,6 @@ export default Vue.extend({
     };
   },
   created() {
-    console.log("pageConfig", this.pageConfig);
     if (this.isRem) {
       document.documentElement.style.fontSize = "100px";
     }

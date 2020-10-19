@@ -22,9 +22,6 @@ export default Vue.extend({
     RightTool,
     PageContent
   },
-  created() {
-    console.log(this.$api.testApi1, "this.$api")
-  },
   computed: {
     ...mapStateTyped(["pageConfig"]),
     ...mapStateTyped({

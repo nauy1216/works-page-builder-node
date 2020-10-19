@@ -1,5 +1,5 @@
 <template>
-  <el-tree :data="treeData" node-key="id" @node-click="handleNodeClick">
+  <el-tree :data="treeData" node-key="id">
     <div
       style="flex: 1 1 100%; display: flex; justify-content: space-between; align-items: center;"
       slot-scope="{ node, data }"
@@ -32,8 +32,8 @@ type TreeNode = {
 export default Vue.extend({
   computed: {
     ...mapStateTyped(["pageConfig", "activeComp"]),
-    treeData() {
-      const treeData = [] as TreeNode[];
+    treeData(): TreeNode[] {
+      const treeData: TreeNode[] = [];
       for (const child of this.pageConfig.children) {
         treeData.push({
           id: child.id,
@@ -46,16 +46,11 @@ export default Vue.extend({
   },
   methods: {
     ...mapMutationsTyped(["removeComponent", "setActiveComp"]),
-    handleNodeClick(data) {
-      console.log("handleNodeClick", data);
-    },
     remove(data: TreeNode) {
-      console.log("remove", data);
       this.removeComponent(data.id)
     },
     active(data: TreeNode) {
       this.setActiveComp(data.id)
-      console.log("active");
     },
     deactive() {
       this.setActiveComp(null)
