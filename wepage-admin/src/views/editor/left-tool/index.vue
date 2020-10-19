@@ -4,6 +4,8 @@
       :x="0"
       :y="0"
       :w="width"
+      :maxWidth="500"
+      :minWidth="250"
       :draggable="false"
       :handles="['mr']"
       :active="true"
