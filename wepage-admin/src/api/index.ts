@@ -1,4 +1,4 @@
-export enum apis {
-    testApi =  "testApi",
-    testApi1 =  "testApi"
+export default {
+    testApi:  "testApi",
+    testApi1:  "testApi"
 }
