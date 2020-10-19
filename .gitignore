@@ -1,5 +1,6 @@
 .DS_Store
 wepage-admin/node_modules/
+wepage-service/node_modules/
 wepage-mp/node_modules/
 unpackage/
 dist/
