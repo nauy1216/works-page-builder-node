@@ -7,7 +7,7 @@ const env = isProd ? production : development
 
 // Preference of environmental variables.
 Object.keys(env).forEach(key => {
-  env[key] = process.env[key] || env[key]
+  env[key] = env[key]
 })
 
 Object.keys(parsedEnvs || {}).forEach(key => {
@@ -15,5 +15,5 @@ Object.keys(parsedEnvs || {}).forEach(key => {
 })
 
 const Environment = env
-
+console.log("Environment ===> ", Environment)
 export default Environment
