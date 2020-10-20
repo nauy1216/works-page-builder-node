@@ -20,7 +20,7 @@ export default <Reqtype = any, ResType = any>(
     isresponse: boolean
 ) => {
   // 拼凑出erp 需要的四个header内容
-  var timestamp = Math.round(new Date().getTime() / 1000);
+  const timestamp = Math.round(new Date().getTime() / 1000);
   axios.defaults.timeout = 30 * 60 * 1000; // 不设置请求超时
   axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
   axios.defaults.headers.common['timestamp'] = timestamp;

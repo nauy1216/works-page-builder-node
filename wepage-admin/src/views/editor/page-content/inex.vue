@@ -3,13 +3,14 @@
     <div
       class="view-port"
       ref="viewport"
-      :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden' }"
+      :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden', cursor: isStartMove? 'pointer': '' }"
       @dragover="handlePageDrageover"
       @drop="handlePageDrop"
       @contextmenu="handleCanvasContextMenu"
     >
       <div
         class="page-content"
+        :class="{'drag-mode': pageConfig.dragMode}"
         ref="pageContent"
         :key="pageConfig.key"
         :style="{
@@ -19,45 +20,11 @@
           background: createBackground(editorConfig.gridX, editorConfig.gridY),
           zoom: editorConfig.zoom
         }"
-      >
-        <vue-draggable-resizable
-          v-for="(comp) in pageConfig.children"
-          :key="comp.key"
-          :style="{
-            zIndex: comp.config.zIndex
-          }"
-          :x="comp.config.x"
-          :y="comp.config.y"
-          :w="comp.config.width"
-          :h="comp.config.height"
-          :parent="editorConfig.parent"
-          :debug="false"
-          :active.sync="comp.config.active"
-          :prevent-deactivation="true"
-          :isConflictCheck="false"
-          :snap="true"
-          :snapTolerance="10"
-          @dragging="(left, right) => handleDrag(comp, left, right)"
-          @resizing="
-            (left, top, width, height) =>
-              handleResize(comp, left, top, width, height)
-          "
-          @deactivated="handleDeactivated(comp)"
-          @activated="handleActivated(comp)"
-        >
-          <div
-            @contextmenu="handleComponentContextMenu($event, comp)"
-            :style="{
-              width: comp.config.width + 'px',
-              height: comp.config.height + 'px'
-            }"
-          >
-            <component
-              :is="$compList[comp.name]"
-              v-bind="comp.data"
-            ></component>
-          </div>
-        </vue-draggable-resizable>
+      > 
+        <LayoutPosition 
+          :width="pageConfig.width" 
+          :height="pageConfig.height"
+          @contextmenu="handleComponentContextMenu"></LayoutPosition>
       </div>
       <ContextMenu
         :options="componentMenu"
@@ -75,6 +42,7 @@ import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { mapStateTyped, mapMutationsTyped } from "@/types/store";
 import {uuid} from "@/utils"
+import LayoutPosition from "./layout-position.vue"
 
 const defaultConfig: PageComponentOptionsConfig = {
   x: 0,
@@ -88,7 +56,8 @@ const defaultConfig: PageComponentOptionsConfig = {
 
 export default Vue.extend({
   components: {
-    ContextMenu
+    ContextMenu,
+    LayoutPosition
   },
   data() {
     return {
@@ -111,7 +80,7 @@ export default Vue.extend({
     this.setContextMenuList();
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "dragComp"]),
+    ...mapStateTyped(["pageConfig", "editorConfig", "dragComp", "activeLayout"]),
     transform(): string {
       if (this.editorConfig.showScrollbar) {
         return `translate(0px, 0px})`;
@@ -128,8 +97,6 @@ export default Vue.extend({
       "refreshComponent"
     ]),
     createVdrKey(comp, index) {
-      // TODO: 性能问题
-      // return `${this.editorConfig.parent} ${index} ${this.pageConfig.width} ${this.pageConfig.height}`;
       return `${comp.name} ${index} ${this.refreshKey}`;
     },
     createCompKey(comp) {
@@ -138,36 +105,26 @@ export default Vue.extend({
     createBackground(x, y) {
       return `linear-gradient(-90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${x}px ${x}px, linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px) 0% 0% / ${y}px ${y}px`;
     },
-    handleDrag(comp, left, top) {
-      comp.config.x = left;
-      comp.config.y = top;
-    },
-    handleResize(comp, left, top, width, height) {
-      comp.config.x = left;
-      comp.config.y = top;
-      comp.config.width = width;
-      comp.config.height = height;
-      this.refreshComponent(comp)
-    },
-    handleDeactivated() {
-      //   this.setActiveComp(null);
-    },
-    handleActivated(comp) {
-      this.setActiveComp(comp);
-    },
     handlePageDrageover(event) {
       event.preventDefault();
       event.stopPropagation();
     },
+    scalePosition(n: number) {
+      return parseInt(String(n / this.editorConfig.zoom))
+    },
     // 从组件列表拖拽组件释放
     handlePageDrop(event) {
+      if (!this.activeLayout) {
+        this.$message.error("请先在图层管理中选择图层")
+        return 
+      }
       const comp = this.dragComp;
       if (comp && comp.extendOptions) {
         // 设置组件所在位置
         const rect = event.target.getBoundingClientRect();
         let config = JSON.parse(JSON.stringify(comp.extendOptions.config));
-        config.x = event.clientX - rect.left + event.target.scrollLeft;
-        config.y = event.clientY - rect.top + event.target.scrollTop;
+        config.x = this.scalePosition(event.clientX - rect.left) + event.target.scrollLeft;
+        config.y = this.scalePosition(event.clientY - rect.top) + event.target.scrollTop;
         config = Object.assign({}, defaultConfig, config);
 
         // 设置默认属性
@@ -183,6 +140,7 @@ export default Vue.extend({
           });
 
         this.addComponent({
+          layoutId: this.activeLayout.id,
           id: uuid(),
           key: uuid(),
           name: comp.extendOptions.name,
@@ -357,5 +315,8 @@ export default Vue.extend({
     bottom: 0px !important;
     right: 0px !important;
   }
+}
+.drag-mode *{
+  pointer-events: none !important;
 }
 </style>

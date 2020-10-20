@@ -50,7 +50,7 @@ export default Vue.extend({
     position: fixed;
     z-index: 200;
     width: 250px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 0 4px 0px #e0e0e0;
   }
   .left {

@@ -6,12 +6,13 @@ import { mapStateTyped } from "@/types/store";
 export default Vue.extend({
   data() {
     return {
-      unit: "rem"
+      unit: "rem",
+      fontSize: 100
     };
   },
   created() {
     if (this.isRem) {
-      document.documentElement.style.fontSize = "100px";
+      document.documentElement.style.fontSize = this.fontSize + "px";
     }
   },
   beforeDestroy() {
@@ -28,7 +29,7 @@ export default Vue.extend({
   render(h) {
     const pageConfig: PageConfig = JSON.parse(JSON.stringify(this.pageConfig));
     const { unit, isRem } = this;
-    const px2rem = px => px / 100;
+    const px2rem = px => px / this.fontSize;
 
     if (isRem) {
       pageConfig.width = px2rem(pageConfig.width);
@@ -42,6 +43,7 @@ export default Vue.extend({
     }
 
     const compList = this.$compList;
+    // TODO: 这里采用的是定位， 后期可考虑改成transform，或做成可配置的
     return (
       <div class="view-port">
         <div

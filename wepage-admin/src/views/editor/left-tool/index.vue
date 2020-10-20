@@ -28,9 +28,12 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="页面结构" name="2">
+      <el-tab-pane label="图层管理" name="2">
         <CompTree></CompTree>
       </el-tab-pane>
+      <!-- <el-tab-pane label="图层管理" name="6">
+        <LayoutOperate></LayoutOperate>
+      </el-tab-pane> -->
       <el-tab-pane label="页面" name="3">
         <PageOperate></PageOperate>
       </el-tab-pane>
@@ -52,13 +55,15 @@ import CompTree from "../components/comp-tree.vue";
 import PageOperate from "../components/page-operate.vue";
 import CodeOperate from "../components/code-operate.vue";
 import EditorOperate from "../components/editor-operate.vue";
+// import LayoutOperate from "../components/layout-operate.vue";
 
 export default Vue.extend({
   components: {
     CompTree,
     PageOperate,
     CodeOperate,
-    EditorOperate
+    EditorOperate,
+    // LayoutOperate
   },
   data() {
     return {
@@ -115,11 +120,6 @@ export default Vue.extend({
     margin-bottom: 10px;
     font-size: 30px;
     color: #666666;
-  }
-}
-/deep/.code {
-  textarea {
-    min-height: 50vh !important;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="code-operate">
     <el-button @click="handleCodeChange" style="margin-bottom: 10px;"
       >提交</el-button
     >
@@ -47,4 +47,13 @@ export default Vue.extend({
 });
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.code-operate {
+  height: 100%; 
+}
+/deep/.code {
+  textarea {
+    min-height: calc(60vh - 150px) !important;
+  }
+}
+</style>

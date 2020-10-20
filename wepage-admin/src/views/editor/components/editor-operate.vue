@@ -48,4 +48,10 @@ export default Vue.extend({
 });
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+/deep/.code {
+  textarea {
+    min-height: calc(60vh - 150px) !important;
+  }
+}
+</style>

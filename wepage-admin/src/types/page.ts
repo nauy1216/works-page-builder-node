@@ -1,18 +1,32 @@
 import {VueConstructor} from "vue"
+
+type LayoutMode = "position" | "response" | "h5"
 export declare interface PageConfig {
   id: string;
   key: string;
   alias: string; // 页面别名
   width: number; // 页面设计稿宽度
   height: number; // 页面设计稿高度
+  dragMode: boolean; // 是否处于拖拽模式
+  layouts: PageLyout[]; // 页面图层
   children: PageComponentOptions[]; // 页面组件
+}
+
+export declare interface PageLyout {
+  id: string;
+  key?: string; 
+  name: string; // 图层名称
+  zIndex: number; // 图层层级
+  show: boolean; // 是否显示
+  mode: LayoutMode; // 图层模式 
 }
 
 export declare interface PageComponentOptions {
   id: string;   
   key: string;
-  name: string; // 组件名称
-  alias: string; // 组件别名， 用于展示
+  layoutId: string; // 所属图层
+  name: string;     // 组件名称
+  alias: string;    // 组件别名， 用于展示
   config: PageComponentOptionsConfig; // 组件配置对象用于组件布局
   data: Record<string, any>; // 组件内部定义的属性
 }
@@ -32,8 +46,6 @@ export declare interface PageComponentOptionsConfig {
   maxHeight?: number; // 组件的最大高度
   active?: boolean; // 当前组件是否处于激活状态
   zIndex?: number; // 层级
-  grid?: [number, number]; // 网格
-  // parent?: boolean; // 设置为true后将无法在其父元素之外拖动或调整大小的组件
   lockAspectRatio?: boolean; // 用于在调整大小期间保持组件的宽高比
   isConflictCheck?: boolean; // 冲突检测
 }

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex, { MutationTree, Store } from "vuex";
-import { PageConfig, EditorConfig, PureComp, PageComp, PageComponentOptions } from "@/types/page";
+import { PageConfig, EditorConfig, PureComp, PageComp, PageComponentOptions, PageLyout } from "@/types/page";
 import {uuid} from "@/utils"
 import { debounce } from "throttle-debounce"
 Vue.use(Vuex);
@@ -8,29 +8,41 @@ Vue.use(Vuex);
 export interface State {
     dragComp: PureComp;
     activeComp: PageComp;
+    activeLayout: PageLyout | null;
     pageConfig: PageConfig;
     editorConfig: EditorConfig;
 }
 
 type CompId = string
 
+const defaultLayout: PageLyout = {
+    id: uuid(),
+    name: "默认",
+    zIndex: 0,
+    show: true,
+    mode: "position"
+}
 const state: State = {
-    dragComp: null, // 从组件列表中拖动的组件
+    dragComp: null,  // 从组件列表中拖动的组件
     activeComp: null, // 当前激活的组件
+    activeLayout: defaultLayout, // 当前激活的图层
     // 页面配置， 用于生成页面
     pageConfig: {
       id: uuid(),
       key: uuid(),
-      alias: "",
+      alias: "测试",
       width: 1920,
       height: 1080,
+      dragMode: false,
+      // 图层
+      layouts: [defaultLayout],
       children: []
     },
     // 编辑器设置
     editorConfig: {
       gridX: 20,
       gridY: 20,
-      showScrollbar: false,
+      showScrollbar: true,
       parent: true,
       zoom: 1,
       showLeftTool: true,
@@ -49,16 +61,29 @@ function getCompIndex(comp: PageComponentOptions | CompId) {
   return index
 }
 
-function getCompById(state: State, id: CompId): PageComp | undefined {
+function getCompById(state: State, id: CompId): PageComp {
   if (!id) {
     return null
   }
-  return state.pageConfig.children.find(child => child.id === id)
+  return state.pageConfig.children.find(child => child.id === id) as PageComp
+}
+
+
+function getLayoutById(state: State, layoutId: string): PageLyout | null {
+  if (!layoutId) {
+    return null
+  }
+  return state.pageConfig.layouts.find(child => child.id === layoutId) as PageLyout
+}
+
+function getLayoutIndex(layoutId: string) {
+  if (!layoutId) return -1
+  return state.pageConfig.layouts.findIndex((child) => child.id === layoutId)
 }
 
 const _mutations= {
     setActiveComp(state: State, comp: PageComp | CompId) {
-      let getComp
+      let getComp: PageComp
       if (typeof comp === "string") {
         getComp = getCompById(state, comp)
       } else {
@@ -119,6 +144,32 @@ const _mutations= {
 
     setEditorConfig(state: State, config: EditorConfig) {
       state.editorConfig = config;
+    },
+
+    setActiveLayout(this: Store<State>, state: State, layout: PageLyout | string | null) {
+      if (layout == null) {
+        state.activeLayout = null
+      } else if (typeof layout === "string") {
+        state.activeLayout = getLayoutById(state, layout)
+      } else {
+        state.activeLayout = layout
+      }
+      this.commit("setActiveComp", null)
+    },
+
+    addLayout(this: Store<State>, state: State, layout: PageLyout) {
+      if (layout) {
+        state.pageConfig.layouts.push(layout)
+        this.commit("setActiveLayout", layout)
+      }
+    },
+
+    removeLayout(state: State, layoutId: string) {
+      const index = getLayoutIndex(layoutId)
+      if (index > -1) {
+        state.pageConfig.layouts.splice(index, 1);
+        state.pageConfig.children = state.pageConfig.children.filter(child => child.layoutId != layoutId)
+      }
     }
 }
 export type Mutations = typeof _mutations
