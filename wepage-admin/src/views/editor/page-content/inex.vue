@@ -125,6 +125,12 @@ export default Vue.extend({
         let config = JSON.parse(JSON.stringify(comp.extendOptions.config));
         config.x = this.scalePosition(event.clientX - rect.left) + event.target.scrollLeft;
         config.y = this.scalePosition(event.clientY - rect.top) + event.target.scrollTop;
+        
+        config.x = Math.max(0, config.x)
+        config.y = Math.max(0, config.y)
+        config.x = Math.min(event.target.scrollWidth - config.width, config.x)
+        config.y = Math.min(event.target.scrollHeight - config.height, config.y)
+
         config = Object.assign({}, defaultConfig, config);
 
         // 设置默认属性
