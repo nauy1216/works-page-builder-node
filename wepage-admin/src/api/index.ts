@@ -1,13 +1,12 @@
 const apis = {
-    testApi:  "testApi",
-    testApi1:  "testApi"
-}
+  testApi: "testApi",
+  testApi1: "testApi"
+};
 
 declare module "vue/types/vue" {
-    interface Vue {
-      $api: typeof apis;
-    }
+  interface Vue {
+    $api: typeof apis;
+  }
 }
 
-export default apis
-
+export default apis;

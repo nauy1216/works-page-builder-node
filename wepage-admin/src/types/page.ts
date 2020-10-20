@@ -1,6 +1,6 @@
-import {VueConstructor} from "vue"
+import { VueConstructor } from "vue";
 
-type LayoutMode = "position" | "response" | "h5"
+type LayoutMode = "position" | "response" | "h5";
 export declare interface PageConfig {
   id: string;
   key: string;
@@ -14,26 +14,26 @@ export declare interface PageConfig {
 
 export declare interface PageLyout {
   id: string;
-  key?: string; 
+  key?: string;
   name: string; // 图层名称
   zIndex: number; // 图层层级
   show: boolean; // 是否显示
-  mode: LayoutMode; // 图层模式 
+  mode: LayoutMode; // 图层模式
 }
 
 export declare interface PageComponentOptions {
-  id: string;   
+  id: string;
   key: string;
   layoutId: string; // 所属图层
-  name: string;     // 组件名称
-  alias: string;    // 组件别名， 用于展示
+  name: string; // 组件名称
+  alias: string; // 组件别名， 用于展示
   config: PageComponentOptionsConfig; // 组件配置对象用于组件布局
   data: Record<string, any>; // 组件内部定义的属性
 }
 
-export type CustomVueConstructor = VueConstructor & Record<string, any>
-export type PureComp = CustomVueConstructor | null
-export type PageComp = PageComponentOptions | null
+export type CustomVueConstructor = VueConstructor & Record<string, any>;
+export type PureComp = CustomVueConstructor | null;
+export type PageComp = PageComponentOptions | null;
 
 export declare interface PageComponentOptionsConfig {
   x: number; // 组件左上角在页面的x坐标

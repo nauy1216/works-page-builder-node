@@ -40,11 +40,19 @@ export default Vue.extend({
       this.$router.push("/pageShow");
     },
     changeDragMode() {
-      this.pageConfig.dragMode = !this.pageConfig.dragMode
+      this.pageConfig.dragMode = !this.pageConfig.dragMode;
     }
   },
   render() {
-    const { top, save, handleScale, requestFullScreen, preview, pageConfig, changeDragMode } = this;
+    const {
+      top,
+      save,
+      handleScale,
+      requestFullScreen,
+      preview,
+      pageConfig,
+      changeDragMode
+    } = this;
     return (
       <div class="top-tool" style={{ top: top + "px" }}>
         <el-button-group>
@@ -54,7 +62,7 @@ export default Vue.extend({
             {this.isFullScreen ? "退出全屏" : "全屏"}
           </el-button>
           <el-button onClick={changeDragMode}>
-            拖拽模式{pageConfig.dragMode ? <i class="el-icon-check"></i>: null}
+            拖拽模式{pageConfig.dragMode ? <i class="el-icon-check"></i> : null}
           </el-button>
           <el-button onClick={() => handleScale(0.1)}>
             <i class="el-icon-zoom-in"></i>

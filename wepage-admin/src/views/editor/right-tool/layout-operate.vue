@@ -46,7 +46,7 @@ export default Vue.extend({
     return {
       preActiveComp: null,
       isChangeActiveComp: false
-    }
+    };
   },
   computed: {
     ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
@@ -54,23 +54,33 @@ export default Vue.extend({
   watch: {
     activeComp: {
       handler(newVal, oldVal) {
-        this.preActiveComp = oldVal
-        this.isChangeActiveComp = true
+        this.preActiveComp = oldVal;
+        this.isChangeActiveComp = true;
       }
     }
   },
   created() {
-    this.$watch(() => {
-      if (this.activeComp) {
-        return this.activeComp.config.width + " " + this.activeComp.config.height
+    this.$watch(
+      () => {
+        if (this.activeComp) {
+          return (
+            this.activeComp.config.width + " " + this.activeComp.config.height
+          );
+        }
+        return null;
+      },
+      (newVal, oldVal) => {
+        if (
+          this.activeComp &&
+          oldVal &&
+          this.activeComp &&
+          !this.isChangeActiveComp
+        ) {
+          this.refreshComponent(this.activeComp);
+          this.isChangeActiveComp = false;
+        }
       }
-      return null
-    }, (newVal, oldVal) => {
-      if (this.activeComp && oldVal && this.activeComp && !this.isChangeActiveComp) {
-        this.refreshComponent(this.activeComp)
-        this.isChangeActiveComp = false
-      }
-    })
+    );
   },
   methods: {
     ...mapMutationsTyped(["refreshComponent"])

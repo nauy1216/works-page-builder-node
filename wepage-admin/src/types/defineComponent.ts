@@ -1,6 +1,5 @@
 import Vue from "vue";
 import { ComponentOptions, PropValidator } from "vue/types/options";
-// import { State } from "./store";
 
 type DataDef<Data, Props, V> = Data | ((this: Readonly<Props> & V) => Data);
 export type RecordPropsDefinition<T> = {
@@ -47,8 +46,6 @@ interface BaseCompThisType {
   methods?: { [key: string]: Function };
   computed?: { [key: string]: any };
 }
-
-// type PickState<T extends string> = Pick<State, T>;
 
 export default function defineComponent<
   CompThisType extends BaseCompThisType,

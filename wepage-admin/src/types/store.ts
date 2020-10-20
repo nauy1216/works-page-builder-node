@@ -1,5 +1,5 @@
 import { mapMutations, mapState } from "vuex";
-import {State, Mutations} from "../store"
+import { State, Mutations } from "../store";
 
 type PickState<U, T extends keyof U> = () => Pick<U, T>[T];
 
@@ -28,7 +28,12 @@ type InlineComputed<T extends Function> = T extends (...args: any[]) => infer R
   : never;
 
 interface MapperForState {
-  <Map extends Record<string, (this: CustomVue, state: State, getters: any) => any> = {}>(
+  <
+    Map extends Record<
+      string,
+      (this: CustomVue, state: State, getters: any) => any
+    > = {}
+  >(
     map: Map
   ): { [K in keyof Map]: InlineComputed<Map[K]> };
 }
@@ -36,22 +41,24 @@ interface MapperForState {
 type ComputedFunc<T extends keyof State> = PickState<State, T>;
 interface StateMapper {
   <Key extends keyof State>(map: Key[]): { [K in Key]: ComputedFunc<K> };
-  <Map extends Record<string, keyof State>>(map: Map): { [K in keyof Map]: ComputedFunc<Map[K]> };
+  <Map extends Record<string, keyof State>>(map: Map): {
+    [K in keyof Map]: ComputedFunc<Map[K]>;
+  };
 }
 
-let _mapStateTyped: MapperForState & StateMapper
+let _mapStateTyped: MapperForState & StateMapper;
 
 if (process.env.NODE_ENV === "production") {
-    _mapStateTyped = mapState
+  _mapStateTyped = mapState;
 } else {
-    _mapStateTyped = function(...args: any[]) {
-        // @ts-ignore
-        const res = mapState(...args) as any;
-        return res
-    };
+  _mapStateTyped = function(...args: any[]) {
+    // @ts-ignore
+    const res = mapState(...args) as any;
+    return res;
+  };
 }
 
-export const mapStateTyped = _mapStateTyped
+export const mapStateTyped = _mapStateTyped;
 
 // ==================== mapMutationsTyped ===================
 /**
@@ -59,26 +66,28 @@ export const mapStateTyped = _mapStateTyped
  ...mapMutationsTyped(["addComponent", "setEditorConfig"])
  */
 type PickMutation<U, T extends keyof U> = Pick<U, T>[T];
-type ParamsType<T> = T extends (p1, ...p2: infer V) => void? V: any[]
-type MutationFunc<T extends keyof Mutations> = (...p: ParamsType<PickMutation<Mutations, T>>) => void;
+type ParamsType<T> = T extends (p1, ...p2: infer V) => void ? V : any[];
+type MutationFunc<T extends keyof Mutations> = (
+  ...p: ParamsType<PickMutation<Mutations, T>>
+) => void;
 
 interface MutationMapper {
-    <Key extends keyof Mutations>(map: Key[]): { [K in Key]: MutationFunc<K> };
-    <Map extends Record<string, keyof Mutations>>(map: Map): { [K in keyof Map]: MutationFunc<Map[K]> };
+  <Key extends keyof Mutations>(map: Key[]): { [K in Key]: MutationFunc<K> };
+  <Map extends Record<string, keyof Mutations>>(map: Map): {
+    [K in keyof Map]: MutationFunc<Map[K]>;
+  };
 }
 
-  
-let _mapMutationsTyped: MutationMapper
+let _mapMutationsTyped: MutationMapper;
 
 if (process.env.NODE_ENV === "production") {
-    _mapStateTyped = mapMutations
+  _mapStateTyped = mapMutations;
 } else {
-    _mapMutationsTyped = function(...args: any[]) {
-        // @ts-ignore
-        const res = mapMutations(...args) as any;
-        return res
-    };
+  _mapMutationsTyped = function(...args: any[]) {
+    // @ts-ignore
+    const res = mapMutations(...args) as any;
+    return res;
+  };
 }
 // @ts-ignore
-export const mapMutationsTyped = _mapMutationsTyped
-
+export const mapMutationsTyped = _mapMutationsTyped;

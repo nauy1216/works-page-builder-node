@@ -21,7 +21,7 @@ export default Vue.extend({
     ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
     // 当前活动组件的属性
     activeCompProps() {
-      return this.activeComp && this.$compList[this.activeComp.name]
+      return this.activeComp && this.$compList[this.activeComp.name];
     }
   },
   watch: {
@@ -49,7 +49,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .code-operate {
-  height: 100%; 
+  height: 100%;
 }
 /deep/.code {
   textarea {

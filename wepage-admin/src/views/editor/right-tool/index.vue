@@ -31,7 +31,7 @@ import PropOperate from "./prop-operate.vue";
 // import CodeOperate from "./code-operate.vue";
 // import EditorOperate from "./editor-operate.vue";
 // import CompTree from "./comp-tree.vue";
-import {mapStateTyped} from "@/types/store"
+import { mapStateTyped } from "@/types/store";
 
 export default Vue.extend({
   data() {
@@ -45,7 +45,7 @@ export default Vue.extend({
   },
   components: {
     LayoutOperate,
-    PropOperate,
+    PropOperate
     // PageOperate,
     // CodeOperate,
     // EditorOperate
@@ -54,7 +54,7 @@ export default Vue.extend({
     ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
     // 当前活动组件的属性
     activeCompProps(): any {
-      return this.activeComp && this.$compList[this.activeComp.name]
+      return this.activeComp && this.$compList[this.activeComp.name];
     }
   },
   created() {

@@ -10,7 +10,7 @@ import "vue-draggable-resizable-gorkys/dist/VueDraggableResizable.css";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import compList from "@/lib/index.ts";
-import apis from "@/api"
+import apis from "@/api";
 
 Vue.prototype.$compList = compList;
 Vue.prototype.$api = apis;

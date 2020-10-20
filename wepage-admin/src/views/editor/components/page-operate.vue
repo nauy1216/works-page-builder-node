@@ -57,11 +57,14 @@ export default Vue.extend({
     ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
   },
   created() {
-    this.$watch(() => {
-      return this.pageConfig.width + " " + this.pageConfig.height
-    }, () => {
-      this.refreshPage()
-    })
+    this.$watch(
+      () => {
+        return this.pageConfig.width + " " + this.pageConfig.height;
+      },
+      () => {
+        this.refreshPage();
+      }
+    );
   },
   methods: {
     ...mapMutationsTyped(["refreshPage"])

@@ -1,6 +1,6 @@
 <template>
-  <div class="left-tool" :style="{width: width + 'px'}">
-    <vue-draggable-resizable           
+  <div class="left-tool" :style="{ width: width + 'px' }">
+    <vue-draggable-resizable
       :x="0"
       :y="0"
       :w="width"
@@ -11,39 +11,40 @@
       :active="true"
       :prevent-deactivation="true"
       class="left-tool-vdr"
-      @resizing="handleResize">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="组件列表" name="1">
-        <div calss="left-tool-list">
-          <div
-            v-for="(comp, index) in $compList"
-            :key="comp.name + index"
-            class="left-tool-item"
-            draggable="true"
-            @dragstart.stop="handleDragStart($event, comp)"
-            @dragend.stop="handleDragEnd($event, comp)"
-          >
-            <i :class="comp.extendOptions.config.icon" class="icon"></i>
-            <span class="name">{{ comp.extendOptions.config.alias }}</span>
+      @resizing="handleResize"
+    >
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="组件列表" name="1">
+          <div calss="left-tool-list">
+            <div
+              v-for="(comp, index) in $compList"
+              :key="comp.name + index"
+              class="left-tool-item"
+              draggable="true"
+              @dragstart.stop="handleDragStart($event, comp)"
+              @dragend.stop="handleDragEnd($event, comp)"
+            >
+              <i :class="comp.extendOptions.config.icon" class="icon"></i>
+              <span class="name">{{ comp.extendOptions.config.alias }}</span>
+            </div>
           </div>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="图层管理" name="2">
-        <CompTree></CompTree>
-      </el-tab-pane>
-      <!-- <el-tab-pane label="图层管理" name="6">
+        </el-tab-pane>
+        <el-tab-pane label="图层管理" name="2">
+          <CompTree></CompTree>
+        </el-tab-pane>
+        <!-- <el-tab-pane label="图层管理" name="6">
         <LayoutOperate></LayoutOperate>
       </el-tab-pane> -->
-      <el-tab-pane label="页面" name="3">
-        <PageOperate></PageOperate>
-      </el-tab-pane>
-      <el-tab-pane label="代码" name="4">
-        <CodeOperate></CodeOperate>
-      </el-tab-pane>
-      <el-tab-pane label="编辑器" name="5">
-        <EditorOperate></EditorOperate>
-      </el-tab-pane>
-    </el-tabs>
+        <el-tab-pane label="页面" name="3">
+          <PageOperate></PageOperate>
+        </el-tab-pane>
+        <el-tab-pane label="代码" name="4">
+          <CodeOperate></CodeOperate>
+        </el-tab-pane>
+        <el-tab-pane label="编辑器" name="5">
+          <EditorOperate></EditorOperate>
+        </el-tab-pane>
+      </el-tabs>
     </vue-draggable-resizable>
   </div>
 </template>
@@ -62,7 +63,7 @@ export default Vue.extend({
     CompTree,
     PageOperate,
     CodeOperate,
-    EditorOperate,
+    EditorOperate
     // LayoutOperate
   },
   data() {
@@ -81,7 +82,7 @@ export default Vue.extend({
       this.setDragComp(null);
     },
     handleResize(left, top, width) {
-      this.width = width
+      this.width = width;
     }
   }
 });
@@ -102,7 +103,7 @@ export default Vue.extend({
 }
 .left-tool-list {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 }
 .left-tool-item {
   width: 100px;

@@ -3,14 +3,17 @@
     <div
       class="view-port"
       ref="viewport"
-      :style="{ overflow: editorConfig.showScrollbar ? 'auto' : 'hidden', cursor: isStartMove? 'pointer': '' }"
+      :style="{
+        overflow: editorConfig.showScrollbar ? 'auto' : 'hidden',
+        cursor: isStartMove ? 'pointer' : ''
+      }"
       @dragover="handlePageDrageover"
       @drop="handlePageDrop"
       @contextmenu="handleCanvasContextMenu"
     >
       <div
         class="page-content"
-        :class="{'drag-mode': pageConfig.dragMode}"
+        :class="{ 'drag-mode': pageConfig.dragMode }"
         ref="pageContent"
         :key="pageConfig.key"
         :style="{
@@ -20,11 +23,12 @@
           background: createBackground(editorConfig.gridX, editorConfig.gridY),
           zoom: editorConfig.zoom
         }"
-      > 
-        <LayoutPosition 
-          :width="pageConfig.width" 
+      >
+        <LayoutPosition
+          :width="pageConfig.width"
           :height="pageConfig.height"
-          @contextmenu="handleComponentContextMenu"></LayoutPosition>
+          @contextmenu="handleComponentContextMenu"
+        ></LayoutPosition>
       </div>
       <ContextMenu
         :options="componentMenu"
@@ -41,8 +45,8 @@ import Vue from "vue";
 import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
 import { PageComponentOptionsConfig } from "@/types/page";
 import { mapStateTyped, mapMutationsTyped } from "@/types/store";
-import {uuid} from "@/utils"
-import LayoutPosition from "./layout-position.vue"
+import { uuid } from "@/utils";
+import LayoutPosition from "./layout-position.vue";
 
 const defaultConfig: PageComponentOptionsConfig = {
   x: 0,
@@ -80,7 +84,12 @@ export default Vue.extend({
     this.setContextMenuList();
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "dragComp", "activeLayout"]),
+    ...mapStateTyped([
+      "pageConfig",
+      "editorConfig",
+      "dragComp",
+      "activeLayout"
+    ]),
     transform(): string {
       if (this.editorConfig.showScrollbar) {
         return `translate(0px, 0px})`;
@@ -110,26 +119,32 @@ export default Vue.extend({
       event.stopPropagation();
     },
     scalePosition(n: number) {
-      return parseInt(String(n / this.editorConfig.zoom))
+      return parseInt(String(n / this.editorConfig.zoom));
     },
     // 从组件列表拖拽组件释放
     handlePageDrop(event) {
       if (!this.activeLayout) {
-        this.$message.error("请先在图层管理中选择图层")
-        return 
+        this.$message.error("请先在图层管理中选择图层");
+        return;
       }
       const comp = this.dragComp;
       if (comp && comp.extendOptions) {
         // 设置组件所在位置
         const rect = event.target.getBoundingClientRect();
         let config = JSON.parse(JSON.stringify(comp.extendOptions.config));
-        config.x = this.scalePosition(event.clientX - rect.left) + event.target.scrollLeft;
-        config.y = this.scalePosition(event.clientY - rect.top) + event.target.scrollTop;
-        
-        config.x = Math.max(0, config.x)
-        config.y = Math.max(0, config.y)
-        config.x = Math.min(event.target.scrollWidth - config.width, config.x)
-        config.y = Math.min(event.target.scrollHeight - config.height, config.y)
+        config.x =
+          this.scalePosition(event.clientX - rect.left) +
+          event.target.scrollLeft;
+        config.y =
+          this.scalePosition(event.clientY - rect.top) + event.target.scrollTop;
+
+        config.x = Math.max(0, config.x);
+        config.y = Math.max(0, config.y);
+        config.x = Math.min(event.target.scrollWidth - config.width, config.x);
+        config.y = Math.min(
+          event.target.scrollHeight - config.height,
+          config.y
+        );
 
         config = Object.assign({}, defaultConfig, config);
 
@@ -322,7 +337,7 @@ export default Vue.extend({
     right: 0px !important;
   }
 }
-.drag-mode *{
+.drag-mode * {
   pointer-events: none !important;
 }
 </style>
