@@ -1,4 +1,5 @@
 {
-    "key": "ctrl+s",
-    "command": "npm run lint"
-  }
+    "key": "ctrl+shift+j",
+    "command": "workbench.action.tasks.runTask",
+    "args": "code"
+}
