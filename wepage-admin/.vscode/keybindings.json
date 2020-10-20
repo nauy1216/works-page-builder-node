@@ -1,0 +1,4 @@
+{
+    "key": "ctrl+s",
+    "command": "npm run lint"
+  }
