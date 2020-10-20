@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
     _mapStateTyped = mapState
 } else {
     _mapStateTyped = function(...args: any[]) {
-        // @ts-ignore 这里调用vuex提供的接口，ts报错不用理会
+        // @ts-ignore
         const res = mapState(...args) as any;
         return res
     };
