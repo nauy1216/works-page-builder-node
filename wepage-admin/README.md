@@ -25,5 +25,14 @@ npm run test:unit
 npm run lint
 ```
 
-### Customize configuration
+#### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+## vscode插件
+
+1. ESLint
+2. Prettier
+3. Vetur
+

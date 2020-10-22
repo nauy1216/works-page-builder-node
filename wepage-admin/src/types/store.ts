@@ -6,7 +6,9 @@ import { EditorStoreType } from "../store/editor";
 
 export const mapStateTyped: MapStateTyped<State> & StateWidthNamespace<"page", PageStoreType["state"]> & StateWidthNamespace<"editor", EditorStoreType["state"]> = mapState as any;
 
-export const mapMutationsTyped: MapMutationsTyped<Mutations> & MutatonsWidthNamespace<"page", PageStoreType["mutations"]> & MutatonsWidthNamespace<"editor", EditorStoreType["mutations"]> = mapMutations as any;
+export const mapMutationsTyped: MapMutationsTyped<Mutations> &
+  MutatonsWidthNamespace<"page", PageStoreType["mutations"]> &
+  MutatonsWidthNamespace<"editor", EditorStoreType["mutations"]> = mapMutations as any;
 
 export const mapGettersTyped: MapGettersTyped<Getters> = mapGetters as any;
 
