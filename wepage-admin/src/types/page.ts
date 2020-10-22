@@ -1,7 +1,7 @@
 import { VueConstructor } from "vue";
 
 type LayoutMode = "position" | "response" | "h5";
-export declare interface PageConfig {
+export interface PageConfig {
   id: string;
   key: string;
   alias: string; // 页面别名
@@ -12,7 +12,7 @@ export declare interface PageConfig {
   children: PageComponentOptions[]; // 页面组件
 }
 
-export declare interface PageLyout {
+export interface PageLyout {
   id: string;
   key?: string;
   name: string; // 图层名称
@@ -21,7 +21,7 @@ export declare interface PageLyout {
   mode: LayoutMode; // 图层模式
 }
 
-export declare interface PageComponentOptions {
+export interface PageComponentOptions {
   id: string;
   key: string;
   layoutId: string; // 所属图层
@@ -35,7 +35,7 @@ export type CustomVueConstructor = VueConstructor & Record<string, any>;
 export type PureComp = CustomVueConstructor | null;
 export type PageComp = PageComponentOptions | null;
 
-export declare interface PageComponentOptionsConfig {
+export interface PageComponentOptionsConfig {
   x: number; // 组件左上角在页面的x坐标
   y: number; // 组件左上角在页面的x坐标
   width: number; // 组件的宽度
