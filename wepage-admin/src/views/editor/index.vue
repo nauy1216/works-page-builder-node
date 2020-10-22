@@ -14,7 +14,6 @@ import RightTool from "./right-tool/index.vue";
 import TopTool from "./top-tool/index.vue";
 import PageContent from "./page-content/inex.vue";
 import { mapStateTyped, mapMutationsTyped } from "@/types/store";
-import { mapState } from "vuex";
 export default Vue.extend({
   components: {
     TopTool,
@@ -22,10 +21,16 @@ export default Vue.extend({
     RightTool,
     PageContent
   },
+  created() {
+    // this.showLeftTool
+  },
   computed: {
     ...mapStateTyped("page", ["pageConfig"]),
-    ...mapState("editor", {
-      showLeftTool(state: any): boolean {
+    ...mapStateTyped("editor", {
+      kk: "editorConfig"
+    }),
+    ...mapStateTyped("editor", {
+      showLeftTool(state): boolean {
         return state.editorConfig.showLeftTool;
       },
       showRightTool(state): boolean {
@@ -34,8 +39,7 @@ export default Vue.extend({
     })
   },
   methods: {
-    ...mapMutationsTyped("page", ["addComponent"]),
-    ...mapMutationsTyped("editor", ["setEditorConfig"])
+    ...mapMutationsTyped("page", ["addComponent"])
   }
 });
 </script>
