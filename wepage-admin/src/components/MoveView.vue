@@ -4,7 +4,8 @@
       :style="{
         width: contentWidth + 'px',
         height: contentHeight + 'px',
-        transform: `translate(${scrollLeft + 'px'}, ${scrollTop + 'px'})`
+        transform: `translate(${scrollLeft + 'px'}, 
+        ${scrollTop + 'px'})`
       }"
     >
       <slot></slot>
