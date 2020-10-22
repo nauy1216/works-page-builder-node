@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapMutations } from "vuex";
+import { mapMutationsTyped } from "@/types/store";
 export interface MenuCommand {
   command: string;
   name: string;
@@ -46,7 +46,7 @@ export default Vue.extend<Data, {}, {}, Props>({
     };
   },
   methods: {
-    ...mapMutations(["removeComponent", "addComponent"]),
+    ...mapMutationsTyped("page", ["removeComponent", "addComponent"]),
     show(x: number, y: number, component: Vue) {
       this.x = x;
       this.y = y;

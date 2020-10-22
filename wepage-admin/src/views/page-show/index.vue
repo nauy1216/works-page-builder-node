@@ -21,7 +21,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStateTyped(["pageConfig"]),
+    ...mapStateTyped("page", ["pageConfig"]),
     isRem(): boolean {
       return this.unit === "rem";
     }

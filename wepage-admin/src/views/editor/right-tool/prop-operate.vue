@@ -18,7 +18,8 @@ import Vue from "vue";
 import { mapStateTyped } from "@/types/store";
 export default Vue.extend({
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
+    ...mapStateTyped("page", ["pageConfig", "activeComp"]),
+    ...mapStateTyped("editor", ["editorConfig"]),
     // 当前活动组件的属性
     activeCompProps() {
       return (

@@ -17,7 +17,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"]),
+    ...mapStateTyped("page", ["pageConfig", "activeComp"]),
+    ...mapStateTyped("editor", ["editorConfig"]),
     // 当前活动组件的属性
     activeCompProps(): any {
       return this.activeComp && this.$compList[this.activeComp.name];
@@ -33,7 +34,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped(["addComponent", "setPageConfig", "setEditorConfig"]),
+    ...mapMutationsTyped("page", ["addComponent", "setPageConfig"]),
+    ...mapMutationsTyped("editor", ["setEditorConfig"]),
     handleCodeChange() {
       try {
         const config = JSON.parse(this.code);

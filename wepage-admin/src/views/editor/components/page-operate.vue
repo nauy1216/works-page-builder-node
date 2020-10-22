@@ -54,7 +54,8 @@ import Vue from "vue";
 import { mapMutationsTyped, mapStateTyped } from "@/types/store";
 export default Vue.extend({
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
+    ...mapStateTyped("page", ["pageConfig", "activeComp"]),
+    ...mapStateTyped("editor", ["editorConfig"])
   },
   created() {
     this.$watch(
@@ -67,7 +68,7 @@ export default Vue.extend({
     );
   },
   methods: {
-    ...mapMutationsTyped(["refreshPage"])
+    ...mapMutationsTyped("page", ["refreshPage"])
   }
 });
 </script>

@@ -84,12 +84,8 @@ export default Vue.extend({
     this.setContextMenuList();
   },
   computed: {
-    ...mapStateTyped([
-      "pageConfig",
-      "editorConfig",
-      "dragComp",
-      "activeLayout"
-    ]),
+    ...mapStateTyped("page", ["pageConfig", "dragComp", "activeLayout"]),
+    ...mapStateTyped("editor", ["editorConfig"]),
     transform(): string {
       if (this.editorConfig.showScrollbar) {
         return `translate(0px, 0px})`;
@@ -98,7 +94,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped([
+    ...mapMutationsTyped("page", [
       "setActiveComp",
       "addComponent",
       "removeComponent",
@@ -215,6 +211,8 @@ export default Vue.extend({
           name: "复制",
           handle: comp => {
             const copy = JSON.parse(JSON.stringify(comp));
+            copy.id = uuid();
+            copy.key = uuid();
             copy.component = (comp as any).component;
             this.addComponent(copy);
           }

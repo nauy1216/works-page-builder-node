@@ -9,7 +9,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig"])
+    ...mapStateTyped("page", ["pageConfig"]),
+    ...mapStateTyped("editor", ["editorConfig"])
   },
   methods: {
     handleMouseMove(ev) {

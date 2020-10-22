@@ -49,7 +49,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
+    ...mapStateTyped("page", ["pageConfig", "activeComp"]),
+    ...mapStateTyped("editor", ["editorConfig"])
   },
   watch: {
     activeComp: {
@@ -83,7 +84,7 @@ export default Vue.extend({
     );
   },
   methods: {
-    ...mapMutationsTyped(["refreshComponent"])
+    ...mapMutationsTyped("page", ["refreshComponent"])
   }
 });
 </script>

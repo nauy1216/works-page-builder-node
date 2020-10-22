@@ -1,8 +1,6 @@
-import Vue from "vue";
-import Vuex, { Store } from "vuex";
+import { Store } from "vuex";
 import {
   PageConfig,
-  EditorConfig,
   PureComp,
   PageComp,
   PageComponentOptions,
@@ -10,14 +8,12 @@ import {
 } from "@/types/page";
 import { uuid } from "@/utils";
 import { debounce } from "throttle-debounce";
-Vue.use(Vuex);
 
 export interface State {
   dragComp: PureComp;
   activeComp: PageComp;
   activeLayout: PageLyout | null;
   pageConfig: PageConfig;
-  editorConfig: EditorConfig;
 }
 
 type CompId = string;
@@ -63,6 +59,7 @@ function getLayoutIndex(state: State, layoutId: string) {
 }
 
 const pageModule = {
+  namespaced: true,
   state: {
     dragComp: null, // 从组件列表中拖动的组件
     activeComp: null, // 当前激活的组件
@@ -78,16 +75,6 @@ const pageModule = {
       // 图层
       layouts: [defaultLayout],
       children: []
-    },
-    // 编辑器设置
-    editorConfig: {
-      gridX: 20,
-      gridY: 20,
-      showScrollbar: true,
-      parent: true,
-      zoom: 1,
-      showLeftTool: true,
-      showRightTool: true
     }
   } as State,
   mutations: {
@@ -114,7 +101,7 @@ const pageModule = {
     addComponent(this: Store<State>, state: State, comp: PageComponentOptions) {
       if (comp) {
         state.pageConfig.children.push(comp);
-        this.commit("setActiveComp", comp);
+        this.commit("page/setActiveComp", comp);
       }
     },
 
@@ -154,10 +141,6 @@ const pageModule = {
       state.pageConfig = config;
     },
 
-    setEditorConfig(state: State, config: EditorConfig) {
-      state.editorConfig = config;
-    },
-
     setActiveLayout(
       this: Store<State>,
       state: State,
@@ -170,13 +153,13 @@ const pageModule = {
       } else {
         state.activeLayout = layout;
       }
-      this.commit("setActiveComp", null);
+      this.commit("page/setActiveComp", null);
     },
 
     addLayout(this: Store<State>, state: State, layout: PageLyout) {
       if (layout) {
         state.pageConfig.layouts.push(layout);
-        this.commit("setActiveLayout", layout);
+        this.commit("page/setActiveLayout", layout);
       }
     },
 

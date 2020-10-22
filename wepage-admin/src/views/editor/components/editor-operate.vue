@@ -17,7 +17,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig", "activeComp"])
+    ...mapStateTyped("page", ["pageConfig", "activeComp"]),
+    ...mapStateTyped("editor", ["editorConfig"])
   },
   watch: {
     editorConfig: {
@@ -29,7 +30,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped(["addComponent", "setPageConfig", "setEditorConfig"]),
+    ...mapMutationsTyped("page", ["addComponent", "setPageConfig"]),
+    ...mapMutationsTyped("editor", ["setEditorConfig"]),
 
     handleEditorCodeChange() {
       try {

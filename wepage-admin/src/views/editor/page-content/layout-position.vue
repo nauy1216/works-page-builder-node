@@ -52,7 +52,8 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "editorConfig"]),
+    ...mapStateTyped("page", ["pageConfig"]),
+    ...mapStateTyped("editor", ["editorConfig"]),
     components(): PageComponentOptions[] {
       const showLayouts = this.pageConfig.layouts
         .filter(lay => lay.show)
@@ -63,7 +64,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped(["refreshComponent", "setActiveComp"]),
+    ...mapMutationsTyped("page", ["refreshComponent", "setActiveComp"]),
     handleDrag(comp, left, top) {
       comp.config.x = left;
       comp.config.y = top;

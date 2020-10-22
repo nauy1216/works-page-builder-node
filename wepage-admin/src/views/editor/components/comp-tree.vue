@@ -74,7 +74,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStateTyped(["pageConfig", "activeComp", "activeLayout"]),
+    ...mapStateTyped("page", ["pageConfig", "activeComp", "activeLayout"]),
     treeData(): TreeNode[] {
       const treeData: TreeNode[] = [];
 
@@ -103,7 +103,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped([
+    ...mapMutationsTyped("page", [
       "removeComponent",
       "setActiveComp",
       "addLayout",

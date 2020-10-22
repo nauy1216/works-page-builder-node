@@ -51,12 +51,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapMutations } from "vuex";
 import CompTree from "../components/comp-tree.vue";
 import PageOperate from "../components/page-operate.vue";
 import CodeOperate from "../components/code-operate.vue";
 import EditorOperate from "../components/editor-operate.vue";
-// import LayoutOperate from "../components/layout-operate.vue";
+import { mapMutationsTyped } from "@/types/store";
 
 export default Vue.extend({
   components: {
@@ -74,7 +73,11 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapMutations(["addComponent", "setActiveComp", "setDragComp"]),
+    ...mapMutationsTyped("page", [
+      "addComponent",
+      "setActiveComp",
+      "setDragComp"
+    ]),
     handleDragStart(event, comp) {
       this.setDragComp(comp);
     },
