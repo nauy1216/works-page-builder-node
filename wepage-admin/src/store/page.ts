@@ -26,6 +26,18 @@ const defaultLayout: PageLyout = {
   mode: "position"
 };
 
+const defaultConfig: PageConfig= {
+  id: uuid(),
+  key: uuid(),
+  alias: "测试",
+  width: 1920,
+  height: 1080,
+  dragMode: false,
+  // 图层
+  layouts: [defaultLayout],
+  children: []
+}
+
 function getCompIndex(state: State, comp: PageComponentOptions | CompId) {
   if (!comp) return -1;
   let index = -1;
@@ -65,17 +77,7 @@ const pageModule = {
     activeComp: null, // 当前激活的组件
     activeLayout: defaultLayout, // 当前激活的图层
     // 页面配置， 用于生成页面
-    pageConfig: {
-      id: uuid(),
-      key: uuid(),
-      alias: "测试",
-      width: 1920,
-      height: 1080,
-      dragMode: false,
-      // 图层
-      layouts: [defaultLayout],
-      children: []
-    }
+    pageConfig: defaultConfig
   } as State,
   mutations: {
     setActiveComp(state: State, comp: PageComp | CompId) {
