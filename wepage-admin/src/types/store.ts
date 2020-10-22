@@ -1,11 +1,13 @@
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState, mapGetters, mapActions } from "vuex";
 import {
   MapStateTyped,
   StateWidthNamespace,
   MapMutationsTyped,
-  MutatonsWidthNamespace
+  MutatonsWidthNamespace,
+  MapGettersTyped,
+  MapActionsTyped
 } from "./vuex";
-import { State, Mutations } from "../store";
+import { State, Mutations, Getters, Actions } from "../store";
 import { PageStoreType } from "../store/page";
 import { EditorStoreType } from "../store/editor";
 
@@ -19,3 +21,9 @@ export const mapMutationsTyped: MapMutationsTyped<Mutations> &
     "editor",
     EditorStoreType["mutations"]
   > = mapMutations as any;
+
+export const mapGettersTyped: MapGettersTyped<Getters>  = mapGetters as any
+
+export const mapActionsTyped: MapActionsTyped<Actions> = mapActions as any
+
+

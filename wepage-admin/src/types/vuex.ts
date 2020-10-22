@@ -18,7 +18,7 @@
     })
   }
 */
-import {Commit} from "vuex/types/index"
+import {Commit, Dispatch} from "vuex/types/index"
 
 type CustomVue = Vue & Record<string, any>;
 type InlineComputed<T extends Function> = T extends (...args: any[]) => infer R
@@ -88,6 +88,32 @@ export interface MutatonsWidthNamespace<ModuleName, ModuleType> {
 }
 
 // ==================== mapGetters ===================
-// TODO： 后期有时间添加
+type GettersType = {[key: string]: (...args: any[]) => any}
+export interface MapGettersTyped<Getters extends GettersType> {
+  <Key extends keyof Getters>(map: Key[]): { [K in Key]: () => ReturnType<Getters[Key]> };
+  <Map extends Record<string, keyof Getters>>(map: Map): { [K in keyof Map]: () => ReturnType<Getters[Map[K]]> };
+}
+export interface GettersWithNamespace<ModuleName, ModuleType extends GettersType> {
+  <Key extends keyof ModuleType>(namespace: ModuleName, map: Key[]): { [K in Key]: () => ReturnType<ModuleType[K]> };
+  <Map extends Record<string, keyof ModuleType>>(namespace: ModuleName, map: Map): { [K in keyof Map]: () => ReturnType<ModuleType[Map[K]]> };
+}
+
 // ==================== mapActions ===================
-// TODO： 后期有时间添加
+// TODO： 这里使用了any, 后续完善
+type ActionMethod = (...args: any[]) => Promise<any>;
+export interface MapActionsTyped<Actions> {
+  <Key extends keyof Actions>(map: Key[]): { [K in Key]: ActionMethod };
+  <Map extends Record<string, keyof Actions>>(map: Map): { [K in keyof Map]: ActionMethod };
+  <Map extends Record<string, (this: CustomVue, dispatch: Dispatch, ...args: any[]) => any>>(
+    map: Map
+  ): { [K in keyof Map]: InlineMethod<Map[K]> };
+}
+
+export interface MapActionsWithNamespace<ModuleName, ModuleType> {
+  <Key extends keyof ModuleType>(namespace: ModuleName, map: Key[]): { [K in Key]: ActionMethod };
+  <Map extends Record<string, keyof ModuleType>>(namespace: string, map: Map): { [K in keyof Map]: ActionMethod };
+  <Map extends Record<string, (this: CustomVue, dispatch: Dispatch, ...args: any[]) => any>>(
+    namespace: string,
+    map: Map
+  ): { [K in keyof Map]: InlineMethod<Map[K]> };
+}

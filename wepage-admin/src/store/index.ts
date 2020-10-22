@@ -5,16 +5,19 @@ import editor from "./editor";
 Vue.use(Vuex);
 
 const state = {};
-
-const _mutations = {};
+const mutations = {};
+const getters = {};
+const actions = {};
 export type State = typeof state;
-export type Mutations = typeof _mutations;
-const mutations: MutationTree<{}> = _mutations;
+export type Mutations = typeof mutations;
+export type Getters = typeof getters;
+export type Actions = typeof actions;
 
 const store = new Vuex.Store<{}>({
   state,
   mutations,
-  actions: {},
+  getters,
+  actions,
   modules: {
     page,
     editor
