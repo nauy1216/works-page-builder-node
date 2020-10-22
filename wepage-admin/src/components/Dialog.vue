@@ -13,12 +13,7 @@ const comp = Vue.extend({
     };
   },
   methods: {
-    show(props: {
-      renderContent?: () => VNode;
-      cancel?: (close: Function) => void;
-      confirm?: (close: Function) => void;
-      title?: string;
-    }) {
+    show(props: { renderContent?: () => VNode; cancel?: (close: Function) => void; confirm?: (close: Function) => void; title?: string }) {
       this.dialogVisible = true;
       this.renderContent = props.renderContent as any;
       this.cancel = props.cancel as any;
@@ -54,14 +49,7 @@ const comp = Vue.extend({
       }
     };
     return (
-      <el-dialog
-        title={this.title}
-        append-to-body={true}
-        close-on-click-modal={false}
-        width="30%"
-        visible={this.dialogVisible}
-        {...props}
-      >
+      <el-dialog title={this.title} append-to-body={true} close-on-click-modal={false} width="30%" visible={this.dialogVisible} {...props}>
         {this.renderContent()}
         <span slot="footer" class="dialog-footer">
           <el-button onClick={this.handleCancel}>取 消</el-button>

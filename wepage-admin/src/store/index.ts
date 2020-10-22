@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Vuex, { MutationTree } from "vuex";
+import Vuex from "vuex";
 import page from "./page";
 import editor from "./editor";
 Vue.use(Vuex);

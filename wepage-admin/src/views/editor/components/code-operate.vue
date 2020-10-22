@@ -1,8 +1,6 @@
 <template>
   <div class="code-operate">
-    <el-button @click="handleCodeChange" style="margin-bottom: 10px;"
-      >提交</el-button
-    >
+    <el-button @click="handleCodeChange" style="margin-bottom: 10px;">提交</el-button>
     <el-input type="textarea" v-model="code" class="code"></el-input>
   </div>
 </template>

@@ -1,8 +1,5 @@
 <template>
-  <div
-    :style="{ width: width + 'px', height: height + 'px' }"
-    class="layout-position"
-  >
+  <div :style="{ width: width + 'px', height: height + 'px' }" class="layout-position">
     <vue-draggable-resizable
       v-for="comp in components"
       :key="comp.key"
@@ -18,10 +15,7 @@
       :snap="true"
       :snapTolerance="10"
       @dragging="(left, right) => handleDrag(comp, left, right)"
-      @resizing="
-        (left, top, width, height) =>
-          handleResize(comp, left, top, width, height)
-      "
+      @resizing="(left, top, width, height) => handleResize(comp, left, top, width, height)"
       @deactivated="handleDeactivated(comp)"
       @activated="handleActivated(comp)"
     >
@@ -55,12 +49,8 @@ export default Vue.extend({
     ...mapStateTyped("page", ["pageConfig"]),
     ...mapStateTyped("editor", ["editorConfig"]),
     components(): PageComponentOptions[] {
-      const showLayouts = this.pageConfig.layouts
-        .filter(lay => lay.show)
-        .map(lay => lay.id);
-      return this.pageConfig.children.filter(
-        comp => showLayouts.indexOf(comp.layoutId) > -1
-      );
+      const showLayouts = this.pageConfig.layouts.filter(lay => lay.show).map(lay => lay.id);
+      return this.pageConfig.children.filter(comp => showLayouts.indexOf(comp.layoutId) > -1);
     }
   },
   methods: {

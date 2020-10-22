@@ -45,26 +45,14 @@ export default Vue.extend({
     }
   },
   render() {
-    const {
-      top,
-      save,
-      handleScale,
-      requestFullScreen,
-      preview,
-      pageConfig,
-      changeDragMode
-    } = this;
+    const { top, save, handleScale, requestFullScreen, preview, pageConfig, changeDragMode } = this;
     return (
       <div class="top-tool" style={{ top: top + "px" }}>
         <el-button-group>
           <el-button onClick={save}>保存</el-button>
           <el-button onClick={preview}>预览</el-button>
-          <el-button onClick={requestFullScreen}>
-            {this.isFullScreen ? "退出全屏" : "全屏"}
-          </el-button>
-          <el-button onClick={changeDragMode}>
-            拖拽模式{pageConfig.dragMode ? <i class="el-icon-check"></i> : null}
-          </el-button>
+          <el-button onClick={requestFullScreen}>{this.isFullScreen ? "退出全屏" : "全屏"}</el-button>
+          <el-button onClick={changeDragMode}>拖拽模式{pageConfig.dragMode ? <i class="el-icon-check"></i> : null}</el-button>
           <el-button onClick={() => handleScale(0.1)}>
             <i class="el-icon-zoom-in"></i>
           </el-button>
@@ -79,25 +67,19 @@ export default Vue.extend({
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   nativeOnClick={() => {
-                    this.editorConfig.showLeftTool = !this.editorConfig
-                      .showLeftTool;
+                    this.editorConfig.showLeftTool = !this.editorConfig.showLeftTool;
                   }}
                 >
                   显示左侧工具栏
-                  {this.editorConfig.showLeftTool && (
-                    <i class="el-icon-check"></i>
-                  )}
+                  {this.editorConfig.showLeftTool && <i class="el-icon-check"></i>}
                 </el-dropdown-item>
                 <el-dropdown-item
                   nativeOnClick={() => {
-                    this.editorConfig.showRightTool = !this.editorConfig
-                      .showRightTool;
+                    this.editorConfig.showRightTool = !this.editorConfig.showRightTool;
                   }}
                 >
                   显示右侧工具栏
-                  {this.editorConfig.showRightTool && (
-                    <i class="el-icon-check"></i>
-                  )}
+                  {this.editorConfig.showRightTool && <i class="el-icon-check"></i>}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

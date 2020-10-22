@@ -4,9 +4,7 @@ import { guid, serialize } from "./index";
 
 function showError(err) {
   if (err.response) {
-    Message.error(
-      err.response.data.message || err.response.config.url + "请求错误"
-    );
+    Message.error(err.response.data.message || err.response.config.url + "请求错误");
   } else {
     console.log("Error---ajax-", err);
     Message.error(err.data.message || err.data);
@@ -15,17 +13,11 @@ function showError(err) {
 
 type RequestType = "post" | "postJson" | "get";
 
-export default <Reqtype = any, ResType = any>(
-  type: RequestType,
-  url: string,
-  params: Reqtype,
-  isresponse: boolean
-) => {
+export default <Reqtype = any, ResType = any>(type: RequestType, url: string, params: Reqtype, isresponse: boolean) => {
   // 拼凑出erp 需要的四个header内容
   const timestamp = Math.round(new Date().getTime() / 1000);
   axios.defaults.timeout = 30 * 60 * 1000; // 不设置请求超时
-  axios.defaults.headers.post["Content-Type"] =
-    "application/x-www-form-urlencoded";
+  axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
   axios.defaults.headers.common["timestamp"] = timestamp;
   axios.defaults.headers.common["ua"] = "5"; //客户端来源 发胜说先随便填一个 cookieGet("ua")
   axios.defaults.headers.common["source"] = "8";

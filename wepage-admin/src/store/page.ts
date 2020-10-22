@@ -1,11 +1,5 @@
 import { Store } from "vuex";
-import {
-  PageConfig,
-  PureComp,
-  PageComp,
-  PageComponentOptions,
-  PageLyout
-} from "@/types/page";
+import { PageConfig, PureComp, PageComp, PageComponentOptions, PageLyout } from "@/types/page";
 import { uuid } from "@/utils";
 import { debounce } from "throttle-debounce";
 
@@ -26,7 +20,7 @@ const defaultLayout: PageLyout = {
   mode: "position"
 };
 
-const defaultConfig: PageConfig= {
+const defaultConfig: PageConfig = {
   id: uuid(),
   key: uuid(),
   alias: "测试",
@@ -36,7 +30,7 @@ const defaultConfig: PageConfig= {
   // 图层
   layouts: [defaultLayout],
   children: []
-}
+};
 
 function getCompIndex(state: State, comp: PageComponentOptions | CompId) {
   if (!comp) return -1;
@@ -60,9 +54,7 @@ function getLayoutById(state: State, layoutId: string): PageLyout | null {
   if (!layoutId) {
     return null;
   }
-  return state.pageConfig.layouts.find(
-    child => child.id === layoutId
-  ) as PageLyout;
+  return state.pageConfig.layouts.find(child => child.id === layoutId) as PageLyout;
 }
 
 function getLayoutIndex(state: State, layoutId: string) {
@@ -124,10 +116,7 @@ const pageModule = {
       }
     },
 
-    refreshComponent: debounce(300, function(
-      state: State,
-      comp: PageComponentOptions
-    ) {
+    refreshComponent: debounce(300, function(state: State, comp: PageComponentOptions) {
       comp.key = uuid();
     }) as (state: State, comp: PageComponentOptions) => void,
 
@@ -143,11 +132,7 @@ const pageModule = {
       state.pageConfig = config;
     },
 
-    setActiveLayout(
-      this: Store<State>,
-      state: State,
-      layout: PageLyout | string | null
-    ) {
+    setActiveLayout(this: Store<State>, state: State, layout: PageLyout | string | null) {
       if (layout == null) {
         state.activeLayout = null;
       } else if (typeof layout === "string") {
@@ -169,9 +154,7 @@ const pageModule = {
       const index = getLayoutIndex(state, layoutId);
       if (index > -1) {
         state.pageConfig.layouts.splice(index, 1);
-        state.pageConfig.children = state.pageConfig.children.filter(
-          child => child.layoutId != layoutId
-        );
+        state.pageConfig.children = state.pageConfig.children.filter(child => child.layoutId != layoutId);
       }
     }
   }

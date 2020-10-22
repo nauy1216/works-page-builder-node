@@ -24,16 +24,9 @@
           zoom: editorConfig.zoom
         }"
       >
-        <LayoutPosition
-          :width="pageConfig.width"
-          :height="pageConfig.height"
-          @contextmenu="handleComponentContextMenu"
-        ></LayoutPosition>
+        <LayoutPosition :width="pageConfig.width" :height="pageConfig.height" @contextmenu="handleComponentContextMenu"></LayoutPosition>
       </div>
-      <ContextMenu
-        :options="componentMenu"
-        ref="componentContextMenu"
-      ></ContextMenu>
+      <ContextMenu :options="componentMenu" ref="componentContextMenu"></ContextMenu>
       <ContextMenu :options="canvasMenu" ref="canvasContextMenu"></ContextMenu>
     </div>
   </keep-alive>
@@ -94,13 +87,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped("page", [
-      "setActiveComp",
-      "addComponent",
-      "removeComponent",
-      "clearAllComponent",
-      "refreshComponent"
-    ]),
+    ...mapMutationsTyped("page", ["setActiveComp", "addComponent", "removeComponent", "clearAllComponent", "refreshComponent"]),
     createVdrKey(comp, index) {
       return `${comp.name} ${index} ${this.refreshKey}`;
     },
@@ -128,19 +115,13 @@ export default Vue.extend({
         // 设置组件所在位置
         const rect = event.target.getBoundingClientRect();
         let config = JSON.parse(JSON.stringify(comp.extendOptions.config));
-        config.x =
-          this.scalePosition(event.clientX - rect.left) +
-          event.target.scrollLeft;
-        config.y =
-          this.scalePosition(event.clientY - rect.top) + event.target.scrollTop;
+        config.x = this.scalePosition(event.clientX - rect.left) + event.target.scrollLeft;
+        config.y = this.scalePosition(event.clientY - rect.top) + event.target.scrollTop;
 
         config.x = Math.max(0, config.x);
         config.y = Math.max(0, config.y);
         config.x = Math.min(event.target.scrollWidth - config.width, config.x);
-        config.y = Math.min(
-          event.target.scrollHeight - config.height,
-          config.y
-        );
+        config.y = Math.min(event.target.scrollHeight - config.height, config.y);
 
         config = Object.assign({}, defaultConfig, config);
 
@@ -171,21 +152,13 @@ export default Vue.extend({
     handleComponentContextMenu(event, comp) {
       event.preventDefault();
       event.stopPropagation();
-      (this.$refs.componentContextMenu as any).show(
-        event.clientX,
-        event.clientY,
-        comp
-      );
+      (this.$refs.componentContextMenu as any).show(event.clientX, event.clientY, comp);
     },
     // 画布右键菜单
     handleCanvasContextMenu(event) {
       event.preventDefault();
       event.stopPropagation();
-      (this.$refs.canvasContextMenu as any).show(
-        event.clientX,
-        event.clientY,
-        this.$refs.viewport
-      );
+      (this.$refs.canvasContextMenu as any).show(event.clientX, event.clientY, this.$refs.viewport);
     },
     // 设置右键菜单列表
     setContextMenuList() {

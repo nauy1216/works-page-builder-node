@@ -12,7 +12,7 @@ const defaultConfig: EditorConfig = {
   zoom: 1,
   showLeftTool: true,
   showRightTool: true
-}
+};
 
 const editorModule = {
   namespaced: true,

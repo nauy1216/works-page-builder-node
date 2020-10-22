@@ -3,12 +3,7 @@
     <el-dropdown trigger="click" @command="handleCommand">
       <span ref="trigger" class="trigger"></span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
-          v-for="command in options"
-          :key="command.command"
-          :command="command.command"
-          >{{ command.name }}</el-dropdown-item
-        >
+        <el-dropdown-item v-for="command in options" :key="command.command" :command="command.command">{{ command.name }}</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>

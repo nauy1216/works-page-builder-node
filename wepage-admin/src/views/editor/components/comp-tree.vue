@@ -4,34 +4,16 @@
       <el-button @click="showAddDialog">新增图层</el-button>
     </div>
     <el-tree :data="treeData" node-key="id" :expand-on-click-node="false">
-      <div
-        style="flex: 1 1 100%; display: flex; justify-content: space-between; align-items: center;"
-        slot-scope="{ node, data }"
-      >
+      <div style="flex: 1 1 100%; display: flex; justify-content: space-between; align-items: center;" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span style="float: right;">
-          <el-button
-            v-if="isDeactive(node, data)"
-            type="text"
-            size="mini"
-            @click="() => active(data, node)"
-          >
+          <el-button v-if="isDeactive(node, data)" type="text" size="mini" @click="() => active(data, node)">
             激活
           </el-button>
-          <el-button
-            v-else-if="isActive(node, data)"
-            type="text"
-            size="mini"
-            @click="() => deactive(node)"
-          >
+          <el-button v-else-if="isActive(node, data)" type="text" size="mini" @click="() => deactive(node)">
             取消激活
           </el-button>
-          <el-button
-            v-if="node.level === 1"
-            type="text"
-            size="mini"
-            @click="() => (data.data.show = !data.data.show)"
-          >
+          <el-button v-if="node.level === 1" type="text" size="mini" @click="() => (data.data.show = !data.data.show)">
             {{ data.data.show ? "隐藏" : "显示" }}
           </el-button>
           <el-button type="text" size="mini" @click="() => remove(data, node)">
@@ -103,13 +85,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped("page", [
-      "removeComponent",
-      "setActiveComp",
-      "addLayout",
-      "removeLayout",
-      "setActiveLayout"
-    ]),
+    ...mapMutationsTyped("page", ["removeComponent", "setActiveComp", "addLayout", "removeLayout", "setActiveLayout"]),
     isActive(node, data) {
       if (node.level === 1) {
         return this.activeLayout && data.id == this.activeLayout.id;
@@ -150,12 +126,7 @@ export default Vue.extend({
         title: "新增图层",
         renderContent: () => (
           <div>
-            <el-form
-              ref="form"
-              {...{ props: { model: this.formData } }}
-              rules={this.rules}
-              label-width="80px"
-            >
+            <el-form ref="form" {...{ props: { model: this.formData } }} rules={this.rules} label-width="80px">
               <el-form-item label="名称" prop="name">
                 <el-input vModel={this.formData.name}></el-input>
               </el-form-item>

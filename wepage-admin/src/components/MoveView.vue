@@ -82,14 +82,8 @@ export default Vue.extend({
           this.scrollTop += ev.clientY - this.startY;
           this.scrollLeft = Math.min(0, this.scrollLeft);
           this.scrollTop = Math.min(0, this.scrollTop);
-          this.scrollLeft = Math.max(
-            -(this.contentWidth - this.width),
-            this.scrollLeft
-          );
-          this.scrollTop = Math.max(
-            -(this.contentHeight - this.height),
-            this.scrollTop
-          );
+          this.scrollLeft = Math.max(-(this.contentWidth - this.width), this.scrollLeft);
+          this.scrollTop = Math.max(-(this.contentHeight - this.height), this.scrollTop);
           this.startX = ev.clientX;
           this.startY = ev.clientY;
         }

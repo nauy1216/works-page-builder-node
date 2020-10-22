@@ -1,29 +1,10 @@
 <template>
   <div class="left-tool" :style="{ width: width + 'px' }">
-    <vue-draggable-resizable
-      :x="0"
-      :y="0"
-      :w="width"
-      :maxWidth="500"
-      :minWidth="250"
-      :draggable="false"
-      :handles="['mr']"
-      :active="true"
-      :prevent-deactivation="true"
-      class="left-tool-vdr"
-      @resizing="handleResize"
-    >
+    <vue-draggable-resizable :x="0" :y="0" :w="width" :maxWidth="500" :minWidth="250" :draggable="false" :handles="['mr']" :active="true" :prevent-deactivation="true" class="left-tool-vdr" @resizing="handleResize">
       <el-tabs v-model="activeName">
         <el-tab-pane label="组件列表" name="1">
           <div calss="left-tool-list">
-            <div
-              v-for="(comp, index) in $compList"
-              :key="comp.name + index"
-              class="left-tool-item"
-              draggable="true"
-              @dragstart.stop="handleDragStart($event, comp)"
-              @dragend.stop="handleDragEnd($event, comp)"
-            >
+            <div v-for="(comp, index) in $compList" :key="comp.name + index" class="left-tool-item" draggable="true" @dragstart.stop="handleDragStart($event, comp)" @dragend.stop="handleDragEnd($event, comp)">
               <i :class="comp.extendOptions.config.icon" class="icon"></i>
               <span class="name">{{ comp.extendOptions.config.alias }}</span>
             </div>
@@ -73,11 +54,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapMutationsTyped("page", [
-      "addComponent",
-      "setActiveComp",
-      "setDragComp"
-    ]),
+    ...mapMutationsTyped("page", ["addComponent", "setActiveComp", "setDragComp"]),
     handleDragStart(event, comp) {
       this.setDragComp(comp);
     },

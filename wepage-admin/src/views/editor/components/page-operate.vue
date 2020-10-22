@@ -4,41 +4,19 @@
       <el-input v-model.number="pageConfig.alias"></el-input>
     </el-form-item>
     <el-form-item label="页面宽度(px)">
-      <el-input-number
-        v-model.number="pageConfig.width"
-        :precision="2"
-        :step="1"
-      ></el-input-number>
+      <el-input-number v-model.number="pageConfig.width" :precision="2" :step="1"></el-input-number>
     </el-form-item>
     <el-form-item label="页面高度(px)">
-      <el-input-number
-        v-model.number="pageConfig.height"
-        :precision="2"
-        :step="1"
-      ></el-input-number>
+      <el-input-number v-model.number="pageConfig.height" :precision="2" :step="1"></el-input-number>
     </el-form-item>
     <el-form-item label="网格宽度(px)">
-      <el-input-number
-        v-model.number="editorConfig.gridX"
-        :precision="0"
-        :step="1"
-      ></el-input-number>
+      <el-input-number v-model.number="editorConfig.gridX" :precision="0" :step="1"></el-input-number>
     </el-form-item>
     <el-form-item label="网格高度(px)">
-      <el-input-number
-        v-model.number="editorConfig.gridY"
-        :precision="0"
-        :step="1"
-      ></el-input-number>
+      <el-input-number v-model.number="editorConfig.gridY" :precision="0" :step="1"></el-input-number>
     </el-form-item>
     <el-form-item label="缩放">
-      <el-input-number
-        v-model.number="editorConfig.zoom"
-        :min="0.1"
-        :max="10"
-        :precision="1"
-        :step="0.1"
-      ></el-input-number>
+      <el-input-number v-model.number="editorConfig.zoom" :min="0.1" :max="10" :precision="1" :step="0.1"></el-input-number>
     </el-form-item>
     <!-- <el-form-item label="显示滚动条">
             <el-switch v-model="editorConfig.showScrollbar"> </el-switch>
