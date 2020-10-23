@@ -1,7 +1,6 @@
 <script lang="tsx">
 import Vue from "vue";
 import { mapStateTyped } from "@/types/store";
-import { AppConfig } from "@/types/appConfig";
 export default Vue.extend({
   data() {
     return {
