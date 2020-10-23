@@ -1,17 +1,20 @@
 <script lang="tsx">
 import Vue from "vue";
+// import page1 from "@/mock/page1";
 
 export default Vue.extend({
   data() {
     return {
-      unit: "rem",
-      fontSize: 100
+      unit: "px",
+      fontSize: 100,
+      pageConfig: null
     };
   },
   created() {
     if (this.isRem) {
       document.documentElement.style.fontSize = this.fontSize + "px";
     }
+    this.getPageConfig();
   },
   beforeDestroy() {
     if (this.isRem) {
@@ -23,8 +26,29 @@ export default Vue.extend({
       return this.unit === "rem";
     }
   },
+  watch: {
+    "$route.params.pageId"() {
+      this.getPageConfig();
+    }
+  },
+  methods: {
+    getPageConfig(): any {
+      if (this.$route.params.pageId == "1") {
+        import("@/mock/page1").then(res => {
+          console.log("res", res);
+          this.pageConfig = res.default as any;
+        });
+      } else if (this.$route.params.pageId == "2") {
+        import("@/mock/page2").then(res => {
+          console.log("res", res);
+          this.pageConfig = res.default as any;
+        });
+      }
+    }
+  },
   render(h) {
-    const pageConfig: any = JSON.parse(JSON.stringify({}));
+    if (!this.pageConfig) return <div></div>;
+    const pageConfig = this.pageConfig as any;
     const { unit, isRem } = this;
     const px2rem = px => px / this.fontSize;
 
@@ -42,7 +66,7 @@ export default Vue.extend({
     const compList = this.$compList;
     // TODO: 这里采用的是定位， 后期可考虑改成transform，或做成可配置的
     return (
-      <div class="view-port">
+      <div class="view-port" key={this.$route.params.pageId}>
         <div
           class="page-content"
           style={{

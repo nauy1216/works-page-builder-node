@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/pageShow",
+    path: "/page/:pageId",
     name: "PageShow",
     component: PageShow
   },

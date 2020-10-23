@@ -1,5 +1,7 @@
+const path = require("path");
 module.exports = {
   devServer: {
+    port: "8002",
     proxy: {
       "/api": {
         target: "",
@@ -7,8 +9,8 @@ module.exports = {
         changeOrigin: true
       }
     }
+  },
+  configureWebpack(config) {
+    config.resolve.alias["wepage-components"] = path.resolve(process.cwd(), "../wepage-components");
   }
-  // configureWebpack(config) {
-  //     console.log("config", config)
-  // }
 };
