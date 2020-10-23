@@ -22,6 +22,14 @@ export default Vue.extend({
     },
     save() {
       console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
+      this.$ajax("postJson", this.$api.pageEdit, {
+        appId: this.$route.query.appId,
+        pageId: this.$route.query.pageId,
+        config: JSON.parse(JSON.stringify(this.pageConfig))
+      }).then(res => {
+        console.log(res);
+        this.$message.success("操作成功");
+      });
     },
     handleScale(num) {
       this.editorConfig.zoom += num;

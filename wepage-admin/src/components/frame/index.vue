@@ -52,6 +52,8 @@ export default Vue.extend({
     box-sizing: border-box;
     transition: left 0.3s ease-in-out;
     background: #f0f0f0;
+    height: calc(100vh - 70px);
+    overflow: auto;
     .content {
       width: auto;
       overflow: auto;

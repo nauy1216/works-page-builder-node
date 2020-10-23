@@ -5,11 +5,11 @@
     </div>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="id" label="Id" width="180"></el-table-column>
-      <el-table-column prop="appName" label="名称" width="180"> </el-table-column>
-      <el-table-column prop="appType" label="类型" width="180"> </el-table-column>
+      <el-table-column prop="pageName" label="名称" width="180"> </el-table-column>
+      <el-table-column prop="pageType" label="类型" width="180"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="createPage(scope.row.id)">编辑页面</el-button>
+          <el-button @click="editPage(scope.row.id)">编辑页面</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -22,50 +22,53 @@ import Vue from "vue";
 export default Vue.extend({
   data() {
     return {
-      tableData: [
-        {
-          id: 0,
-          appName: "测试",
-          appType: "web",
-          width: 1920,
-          height: 1080
-        }
-      ],
+      tableData: [],
       formData: {
-        id: 0,
-        appName: "",
-        appType: "web"
+        appId: "",
+        pageName: "",
+        pageType: "web"
       },
       rules: {}
     };
   },
+  created() {
+    this.getPageList();
+  },
   methods: {
+    getPageList() {
+      this.$ajax("get", this.$api.pageList, {
+        appId: this.$route.query.appId
+      }).then(res => {
+        this.tableData = res.data;
+      });
+    },
     createApp() {
       getDialog()
         .show({
-          title: "创建应用",
+          title: "创建页面",
           renderContent: () => {
             return (
               <el-form ref="form" {...{ props: { model: this.formData } }} rules={this.rules} label-width="80px">
-                <el-form-item label="应用名称" prop="name">
-                  <el-input vModel={this.formData.appName}></el-input>
+                <el-form-item label="页面名称" prop="pageName">
+                  <el-input vModel={this.formData.pageName}></el-input>
                 </el-form-item>
-                <el-form-item label="应用类型" prop="name">
-                  <el-input vModel={this.formData.appName}></el-input>
-                </el-form-item>
-                <el-form-item label="应用类型" prop="name">
-                  <el-input vModel={this.formData.appName}></el-input>
+                <el-form-item label="页面类型" prop="pageType">
+                  <el-input vModel={this.formData.pageType}></el-input>
                 </el-form-item>
               </el-form>
             );
           }
         })
         .then(() => {
-          console.log("创建应用");
+          this.formData.appId = this.$route.query.appId as any;
+          this.$ajax("postJson", this.$api.pageAdd, this.formData).then(() => {
+            this.$message.success("操作成功");
+            this.getPageList();
+          });
         });
     },
-    createPage(appId) {
-      this.$router.push("/editor?appId=" + appId);
+    editPage(pageId) {
+      this.$router.push(`/editor?appId=${this.$route.query.appId}&pageId=` + pageId);
     }
   }
 });

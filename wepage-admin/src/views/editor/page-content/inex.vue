@@ -75,6 +75,7 @@ export default Vue.extend({
   created() {
     this.addMoveEvent();
     this.setContextMenuList();
+    this.getPageConfig();
   },
   computed: {
     ...mapStateTyped("page", ["pageConfig", "dragComp", "activeLayout"]),
@@ -87,7 +88,20 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped("page", ["setActiveComp", "addComponent", "removeComponent", "clearAllComponent", "refreshComponent"]),
+    ...mapMutationsTyped("page", ["setPageConfig", "setActiveComp", "addComponent", "removeComponent", "clearAllComponent", "refreshComponent"]),
+
+    getPageConfig() {
+      //   this.setPageConfig();
+      this.$ajax("get", this.$api.getPageConfig, {
+        appId: this.$route.query.appId,
+        pageId: this.$route.query.pageId
+      }).then(res => {
+        if (res.data) {
+          this.setPageConfig(res.data);
+        }
+      });
+    },
+
     createVdrKey(comp, index) {
       return `${comp.name} ${index} ${this.refreshKey}`;
     },

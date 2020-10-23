@@ -1,19 +1,20 @@
 import axios from "axios";
-import { Message } from "element-ui";
+// import { Message } from "element-ui";
 import { guid, serialize } from "./index";
 
 function showError(err) {
-  if (err.response) {
-    Message.error(err.response.data.message || err.response.config.url + "请求错误");
-  } else {
-    console.log("Error---ajax-", err);
-    Message.error(err.data.message || err.data);
-  }
+  console.log("请求错误", err);
+  //   if (err.response) {
+  //     Message.error(err.response.data.message || err.response.config.url + "请求错误");
+  //   } else {
+  //     console.log("Error---ajax-", err);
+  //     Message.error(err.data.message || err.data);
+  //   }
 }
 
 type RequestType = "post" | "postJson" | "get";
 
-export default <Reqtype = any, ResType = any>(type: RequestType, url: string, params: Reqtype, isresponse: boolean) => {
+const ajax = <Reqtype = any, ResType = any>(type: RequestType, url: string, params?: Reqtype, isresponse?: boolean) => {
   // 拼凑出erp 需要的四个header内容
   const timestamp = Math.round(new Date().getTime() / 1000);
   axios.defaults.timeout = 30 * 60 * 1000; // 不设置请求超时
@@ -126,3 +127,11 @@ export default <Reqtype = any, ResType = any>(type: RequestType, url: string, pa
     }
   });
 };
+
+export default ajax;
+
+declare module "vue/types/vue" {
+  interface Vue {
+    $ajax: typeof ajax;
+  }
+}

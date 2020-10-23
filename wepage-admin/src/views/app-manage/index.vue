@@ -9,7 +9,6 @@
       <el-table-column prop="appType" label="类型" width="180"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="createPage(scope.row.id)">创建页面</el-button>
           <el-button @click="pageManage(scope.row.id)">页面管理</el-button>
         </template>
       </el-table-column>
@@ -33,14 +32,21 @@ export default Vue.extend({
         }
       ],
       formData: {
-        id: 0,
         appName: "",
         appType: "web"
       },
       rules: {}
     };
   },
+  created() {
+    this.getAppList();
+  },
   methods: {
+    getAppList() {
+      this.$ajax("get", this.$api.appList).then(res => {
+        this.tableData = res.data;
+      });
+    },
     createApp() {
       getDialog()
         .show({
@@ -52,21 +58,18 @@ export default Vue.extend({
                   <el-input vModel={this.formData.appName}></el-input>
                 </el-form-item>
                 <el-form-item label="应用类型" prop="name">
-                  <el-input vModel={this.formData.appName}></el-input>
-                </el-form-item>
-                <el-form-item label="应用类型" prop="name">
-                  <el-input vModel={this.formData.appName}></el-input>
+                  <el-input vModel={this.formData.appType}></el-input>
                 </el-form-item>
               </el-form>
             );
           }
         })
         .then(() => {
-          console.log("创建应用");
+          this.$ajax("postJson", this.$api.appAdd, this.formData).then(() => {
+            this.$message.success("操作成功");
+            this.getAppList();
+          });
         });
-    },
-    createPage(appId) {
-      this.$router.push("/editor?appId=" + appId);
     },
     pageManage(appId) {
       this.$router.push("/pageManage?appId=" + appId);
