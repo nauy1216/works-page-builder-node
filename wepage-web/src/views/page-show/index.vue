@@ -1,7 +1,7 @@
 <script lang="tsx">
 import Vue from "vue";
-// import page1 from "@/mock/page1";
-
+import { mapStateTyped } from "@/types/store";
+import { AppConfig } from "@/types/appConfig";
 export default Vue.extend({
   data() {
     return {
@@ -24,7 +24,8 @@ export default Vue.extend({
   computed: {
     isRem(): boolean {
       return this.unit === "rem";
-    }
+    },
+    ...mapStateTyped(["appConfig"])
   },
   watch: {
     "$route.params.pageId"() {
@@ -37,17 +38,19 @@ export default Vue.extend({
         import("@/mock/page1").then(res => {
           console.log("res", res);
           this.pageConfig = res.default as any;
+          (this.pageConfig as any).children = (this.pageConfig as any).children.concat(JSON.parse(JSON.stringify(this.appConfig.appComponents)));
         });
       } else if (this.$route.params.pageId == "2") {
         import("@/mock/page2").then(res => {
           console.log("res", res);
           this.pageConfig = res.default as any;
+          (this.pageConfig as any).children = (this.pageConfig as any).children.concat(JSON.parse(JSON.stringify(this.appConfig.appComponents)));
         });
       }
     }
   },
   render(h) {
-    if (!this.pageConfig) return <div></div>;
+    if (this.pageConfig === null) return <div></div>;
     const pageConfig = this.pageConfig as any;
     const { unit, isRem } = this;
     const px2rem = px => px / this.fontSize;

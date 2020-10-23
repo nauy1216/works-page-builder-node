@@ -6,6 +6,7 @@ import { CustomVueConstructor } from "@/types/store";
 declare module "vue/types/vue" {
   interface Vue {
     $eventBus: Vue;
+    $appConfig: any;
     $compList: { [key: string]: CustomVueConstructor };
   }
 }

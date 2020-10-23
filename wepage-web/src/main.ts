@@ -29,12 +29,8 @@ Vue.prototype.$eventBus = new Vue();
 
 Vue.config.productionTip = false;
 
-function createApp() {
-  new Vue({
-    router,
-    store,
-    render: h => h(App)
-  }).$mount("#app");
-}
-
-createApp();
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount("#app");
