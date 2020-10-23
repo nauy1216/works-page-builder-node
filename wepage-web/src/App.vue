@@ -4,13 +4,35 @@
   </div>
 </template>
 <script lang="ts">
-import { mapMutationsTyped } from "@/types/store";
+import { mapMutationsTyped, mapStateTyped } from "@/types/store";
 export default {
   created() {
     this.getAppConfig();
+    this.addEvent();
+  },
+  computed: {
+    ...mapStateTyped(["isFrame"])
   },
   methods: {
     ...mapMutationsTyped(["setAppConfig"]),
+    addEvent() {
+      if (this.isFrame) {
+        window.top.postMessage(
+          {
+            from: "wepage-web",
+            type: "wepage",
+            data: "我是 wepage-web"
+          },
+          "*"
+        );
+
+        window.addEventListener("message", e => {
+          if (e.data.from === "wepage-admin") {
+            console.log("接受iframe的消息", e.data);
+          }
+        });
+      }
+    },
     getAppId() {
       console.log("appId === ", location.pathname.slice(1));
       return location.pathname.slice(1);

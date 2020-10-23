@@ -5,6 +5,7 @@ import { AppConfig } from "@/types/appConfig";
 Vue.use(Vuex);
 
 const state = {
+  isFrame: window.top !== window,
   appConfig: {} as AppConfig
 };
 const mutations = {
