@@ -1,5 +1,5 @@
 import { mapMutations, mapState, mapGetters, mapActions } from "vuex";
-import { MapStateTyped, StateWidthNamespace, MapMutationsTyped, MutatonsWidthNamespace, MapGettersTyped, MapActionsTyped } from "./vuex";
+import { MapStateTyped, MapMutationsTyped, MapGettersTyped, MapActionsTyped } from "./vuex";
 import { State, Mutations, Getters, Actions } from "../store";
 
 export const mapStateTyped: MapStateTyped<State> = mapState as any;
