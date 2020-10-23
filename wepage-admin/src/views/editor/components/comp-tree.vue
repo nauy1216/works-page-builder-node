@@ -30,7 +30,7 @@
 import Vue from "vue";
 import { mapMutationsTyped, mapStateTyped } from "@/types/store";
 import { PageLyout, PageComponentOptions } from "@/types/page";
-import Dialog, { DialogType } from "@/components/Dialog.vue";
+import Dialog, { DialogType } from "@/components/Dialog";
 import { uuid } from "@/utils";
 type TreeNode = {
   id: string;

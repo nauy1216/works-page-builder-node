@@ -1,7 +1,9 @@
-<script lang="tsx">
 import Vue, { VNode } from "vue";
 import { ExportPublicProps } from "@/types/utils";
 
+const Noop = function() {
+  //
+};
 const comp = Vue.extend({
   data() {
     return {
@@ -9,7 +11,9 @@ const comp = Vue.extend({
       renderContent: () => null,
       cancel: null,
       confirm: null,
-      title: "提示"
+      title: "提示",
+      resolve: Noop,
+      reject: Noop
     };
   },
   methods: {
@@ -19,6 +23,11 @@ const comp = Vue.extend({
       this.cancel = props.cancel as any;
       this.confirm = props.confirm as any;
       this.title = props.title as any;
+
+      return new Promise((resolve, reject) => {
+        this.resolve = resolve;
+        this.reject = reject;
+      });
     },
     close() {
       this.dialogVisible = false;
@@ -30,6 +39,7 @@ const comp = Vue.extend({
         this.close();
       }
       this.$emit("cancel");
+      this.reject();
     },
     handleconfirm() {
       if (this.confirm != null) {
@@ -38,6 +48,7 @@ const comp = Vue.extend({
         this.close();
       }
       this.$emit("confirm");
+      this.resolve();
     }
   },
   render() {
@@ -64,4 +75,12 @@ const comp = Vue.extend({
 
 export type DialogType = ExportPublicProps<typeof comp, "show">;
 export default comp;
-</script>
+
+let dialog;
+export function getDialog(): DialogType {
+  if (!dialog) {
+    dialog = new comp().$mount();
+    document.body.append(dialog.$el);
+  }
+  return dialog;
+}
