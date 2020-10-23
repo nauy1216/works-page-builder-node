@@ -5,6 +5,7 @@ import { useDatabase } from './customs'
 import { routingConfigs } from './routing.options'
 import { useMiddlewares } from './koa.middlewares'
 import { useKoaServer, useContainer } from 'routing-controllers'
+
 if (useDatabase) {
   require('./connection')
 }

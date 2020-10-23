@@ -15,5 +15,4 @@ Object.keys(parsedEnvs || {}).forEach(key => {
 })
 
 const Environment = env
-console.log("Environment ===> ", Environment)
 export default Environment

@@ -1,5 +1,5 @@
 import { Get, JsonController, QueryParam } from 'routing-controllers'
-import Environment from 'configs/environments'
+import redisClient from 'configs/redis'
 
 @JsonController()
 export class SessionsController {
@@ -7,6 +7,7 @@ export class SessionsController {
 
   @Get('/sessions')
   async session(@QueryParam('username') username: string): Promise<any> {
-    return `hello on ${Environment.identity}.`
+    const res = await redisClient.get("app:test")
+    return res
   }
 }
