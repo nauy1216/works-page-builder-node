@@ -1,7 +1,7 @@
 <template>
   <div class="app-manage">
     <div class="opera">
-      <el-button @click="createApp">创建应用</el-button>
+      <el-button @click="createApp">创建页面</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="id" label="Id" width="180"></el-table-column>
@@ -9,8 +9,7 @@
       <el-table-column prop="appType" label="类型" width="180"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="createPage(scope.row.id)">创建页面</el-button>
-          <el-button @click="pageManage(scope.row.id)">页面管理</el-button>
+          <el-button @click="createPage(scope.row.id)">编辑页面</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,9 +66,6 @@ export default Vue.extend({
     },
     createPage(appId) {
       this.$router.push("/editor?appId=" + appId);
-    },
-    pageManage(appId) {
-      this.$router.push("/pageManage?appId=" + appId);
     }
   }
 });
