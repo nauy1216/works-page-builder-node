@@ -1,6 +1,7 @@
 <script lang="tsx">
 import Vue from "vue";
 import { mapStateTyped } from "@/types/store";
+import { PageConfig } from "@/types/page";
 export default Vue.extend({
   data() {
     return {
@@ -22,10 +23,14 @@ export default Vue.extend({
     },
     save() {
       console.log("pageConfig", JSON.parse(JSON.stringify(this.pageConfig)));
+      const config: PageConfig = JSON.parse(JSON.stringify(this.pageConfig));
+      config.children.forEach(child => {
+        child.config.active = false;
+      });
       this.$ajax("postJson", this.$api.pageEdit, {
         appId: this.$route.query.appId,
         pageId: this.$route.query.pageId,
-        config: JSON.parse(JSON.stringify(this.pageConfig))
+        config
       }).then(res => {
         console.log(res);
         this.$message.success("操作成功");
@@ -49,18 +54,18 @@ export default Vue.extend({
       this.$router.push("/pageShow");
     },
     changeDragMode() {
-      this.pageConfig.dragMode = !this.pageConfig.dragMode;
+      this.editorConfig.dragMode = !this.editorConfig.dragMode;
     }
   },
   render() {
-    const { top, save, handleScale, requestFullScreen, preview, pageConfig, changeDragMode } = this;
+    const { top, save, handleScale, requestFullScreen, preview, changeDragMode } = this;
     return (
       <div class="top-tool" style={{ top: top + "px" }}>
         <el-button-group>
           <el-button onClick={save}>保存</el-button>
           <el-button onClick={preview}>预览</el-button>
           <el-button onClick={requestFullScreen}>{this.isFullScreen ? "退出全屏" : "全屏"}</el-button>
-          <el-button onClick={changeDragMode}>拖拽模式{pageConfig.dragMode ? <i class="el-icon-check"></i> : null}</el-button>
+          <el-button onClick={changeDragMode}>拖拽模式{this.editorConfig.dragMode ? <i class="el-icon-check"></i> : null}</el-button>
           <el-button onClick={() => handleScale(0.1)}>
             <i class="el-icon-zoom-in"></i>
           </el-button>

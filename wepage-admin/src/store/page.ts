@@ -12,26 +12,6 @@ export interface State {
 
 type CompId = string;
 
-const defaultLayout: PageLyout = {
-  id: uuid(),
-  name: "默认",
-  zIndex: 0,
-  show: true,
-  mode: "position"
-};
-
-const defaultConfig: PageConfig = {
-  id: uuid(),
-  key: uuid(),
-  alias: "测试",
-  width: 1920,
-  height: 1080,
-  dragMode: false,
-  // 图层
-  layouts: [defaultLayout],
-  children: []
-};
-
 function getCompIndex(state: State, comp: PageComponentOptions | CompId) {
   if (!comp) return -1;
   let index = -1;
@@ -62,15 +42,37 @@ function getLayoutIndex(state: State, layoutId: string) {
   return state.pageConfig.layouts.findIndex(child => child.id === layoutId);
 }
 
-const pageModule = {
-  namespaced: true,
-  state: {
+function initPageConfig(): State {
+  const defaultLayout: PageLyout = {
+    id: uuid(),
+    name: "默认",
+    zIndex: 0,
+    show: true,
+    mode: "position"
+  };
+
+  const defaultConfig: PageConfig = {
+    id: uuid(),
+    key: uuid(),
+    alias: "",
+    width: 1920,
+    height: 1080,
+    // 图层
+    layouts: [defaultLayout],
+    children: []
+  };
+  return {
     dragComp: null, // 从组件列表中拖动的组件
     activeComp: null, // 当前激活的组件
     activeLayout: defaultLayout, // 当前激活的图层
     // 页面配置， 用于生成页面
     pageConfig: defaultConfig
-  } as State,
+  };
+}
+
+const pageModule = {
+  namespaced: true,
+  state: initPageConfig(),
   mutations: {
     setActiveComp(state: State, comp: PageComp | CompId) {
       let getComp: PageComp;
@@ -128,8 +130,16 @@ const pageModule = {
       state.pageConfig.key = uuid();
     }) as (state: State) => void,
 
-    setPageConfig(state: State, config: PageConfig) {
+    setPageConfig(this: Store<State>, state: State, config: PageConfig) {
       state.pageConfig = config;
+    },
+
+    initPageConfig(state: State) {
+      const defaultState = initPageConfig();
+      state.activeComp = defaultState.activeComp;
+      state.dragComp = defaultState.dragComp;
+      state.activeLayout = defaultState.activeLayout;
+      state.pageConfig = defaultState.pageConfig;
     },
 
     setActiveLayout(this: Store<State>, state: State, layout: PageLyout | string | null) {

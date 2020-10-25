@@ -13,7 +13,7 @@
     >
       <div
         class="page-content"
-        :class="{ 'drag-mode': pageConfig.dragMode }"
+        :class="{ 'drag-mode': editorConfig.dragMode }"
         ref="pageContent"
         :key="pageConfig.key"
         :style="{
@@ -36,7 +36,7 @@
 // https://tingtas.com/vue-draggable-resizable-gorkys/
 import Vue from "vue";
 import ContextMenu, { MenuCommand } from "../components/ContextMenu.vue";
-import { PageComponentOptionsConfig } from "@/types/page";
+import { PageComponentOptionsConfig, PageConfig } from "@/types/page";
 import { mapStateTyped, mapMutationsTyped } from "@/types/store";
 import { uuid } from "@/utils";
 import LayoutPosition from "./layout-position.vue";
@@ -88,16 +88,18 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutationsTyped("page", ["setPageConfig", "setActiveComp", "addComponent", "removeComponent", "clearAllComponent", "refreshComponent"]),
+    ...mapMutationsTyped("page", ["initPageConfig", "setActiveLayout", "setPageConfig", "setActiveComp", "addComponent", "removeComponent", "clearAllComponent", "refreshComponent"]),
 
     getPageConfig() {
-      //   this.setPageConfig();
+      this.initPageConfig();
       this.$ajax("get", this.$api.getPageConfig, {
         appId: this.$route.query.appId,
         pageId: this.$route.query.pageId
       }).then(res => {
-        if (res.data) {
-          this.setPageConfig(res.data);
+        const pageConfig: PageConfig = res.data;
+        if (pageConfig) {
+          this.setActiveLayout(pageConfig.layouts[0]);
+          this.setPageConfig(pageConfig);
         }
       });
     },

@@ -58,6 +58,7 @@ export default Vue.extend({
   computed: {
     ...mapStateTyped("page", ["pageConfig", "activeComp", "activeLayout"]),
     treeData(): TreeNode[] {
+      console.log("this.pageConfig ====", this.pageConfig);
       const treeData: TreeNode[] = [];
 
       const LayoutMap = {};

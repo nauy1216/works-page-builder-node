@@ -11,7 +11,8 @@ const defaultConfig: EditorConfig = {
   parent: true,
   zoom: 1,
   showLeftTool: true,
-  showRightTool: true
+  showRightTool: true,
+  dragMode: false
 };
 
 const editorModule = {

@@ -7,7 +7,6 @@ export interface PageConfig {
   alias: string; // 页面别名
   width: number; // 页面设计稿宽度
   height: number; // 页面设计稿高度
-  dragMode: boolean; // 是否处于拖拽模式
   layouts: PageLyout[]; // 页面图层
   children: PageComponentOptions[]; // 页面组件
 }
@@ -58,4 +57,5 @@ export declare interface EditorConfig {
   zoom: number; // 放大
   showLeftTool: boolean;
   showRightTool: boolean;
+  dragMode: boolean; // 是否处于拖拽模式
 }

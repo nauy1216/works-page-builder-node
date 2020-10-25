@@ -1,9 +1,9 @@
 <template>
   <div class="editor">
+    <PageContent class="main"></PageContent>
     <TopTool class="top"></TopTool>
     <LeftTool class="left" v-show="showLeftTool"></LeftTool>
     <RightTool class="right" v-show="showRightTool"></RightTool>
-    <PageContent class="main"></PageContent>
   </div>
 </template>
 
@@ -21,14 +21,9 @@ export default Vue.extend({
     RightTool,
     PageContent
   },
-  created() {
-    // this.showLeftTool
-  },
+
   computed: {
     ...mapStateTyped("page", ["pageConfig"]),
-    ...mapStateTyped("editor", {
-      kk: "editorConfig"
-    }),
     ...mapStateTyped("editor", {
       showLeftTool(state): boolean {
         return state.editorConfig.showLeftTool;
