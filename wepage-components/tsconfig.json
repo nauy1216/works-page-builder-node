@@ -19,8 +19,8 @@
       "jest"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
+      "packages/*": [
+        "packages/*"
       ],
       "wepage-components": [
           "../wepage-components"
@@ -34,11 +34,11 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "packages/*.ts",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "packages/**/*.vue", 
+    "*.ts"
   ],
   "exclude": [
     "node_modules"
