@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-export default Vue.extend({
+import defineComponent from "../defineComponent"
+export default defineComponent({
   name: "Test",
   config: {
     alias: "测试",
@@ -15,6 +15,9 @@ export default Vue.extend({
     y: 0,
     width: 100,
     height: 100
+  },
+  created() {
+      console.log("jjjjj")
   },
   props: {
     msg: {

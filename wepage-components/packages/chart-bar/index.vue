@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import Vue from "vue";
+import defineComponent from "../defineComponent"
 import {VeBar} from "v-charts"
-export default Vue.extend({
+export default defineComponent({
   name: "ChartBar",
   config: {
     alias: "条形图",
@@ -17,6 +17,9 @@ export default Vue.extend({
   },
   components: {
     VeBar
+  },
+  created() {
+      console.log("kkkk")
   },
   data() {
     return {

@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import Vue from "vue";
-export default Vue.extend({
+import defineComponent from "../defineComponent"
+export default defineComponent({
   name: "ChartHistogram",
   config: {
     alias: "柱状图",

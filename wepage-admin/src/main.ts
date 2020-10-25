@@ -13,6 +13,12 @@ import compList from "wepage-components";
 import apis from "@/api";
 import ajax from "@/utils/ajax";
 
+Object.keys(compList).forEach(comp => {
+  if (typeof compList[comp] != "function") {
+    compList[comp] = Vue.extend(compList[comp]);
+  }
+});
+
 Vue.prototype.$compList = compList;
 Vue.prototype.$api = apis;
 Vue.prototype.$ajax = ajax;
