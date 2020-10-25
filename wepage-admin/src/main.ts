@@ -23,8 +23,8 @@ Vue.use(ElementUI, {
   size: "mini"
 });
 
-import VCharts from "v-charts";
-Vue.use(VCharts as PluginObject<null>);
+// import VCharts from "v-charts";
+// Vue.use(VCharts as PluginObject<null>);
 
 Vue.prototype.$eventBus = new Vue();
 

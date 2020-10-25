@@ -14,5 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "vue": "^2.6.12"
+  },
+  "dependencies": {
+    "v-charts": "^1.19.0"
   }
 }

@@ -4,6 +4,7 @@
 
 <script>
 import Vue from "vue";
+import {VeBar} from "v-charts"
 export default Vue.extend({
   name: "ChartBar",
   config: {
@@ -13,6 +14,9 @@ export default Vue.extend({
     y: 0,
     width: 400,
     height: 400
+  },
+  components: {
+    VeBar
   },
   data() {
     return {
