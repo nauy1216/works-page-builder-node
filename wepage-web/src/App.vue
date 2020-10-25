@@ -4,8 +4,10 @@
   </div>
 </template>
 <script lang="ts">
+import Vue from "vue";
 import { mapMutationsTyped, mapStateTyped } from "@/types/store";
-export default {
+import { getAppId, getPageId } from "@/utils/app";
+export default Vue.extend({
   created() {
     this.getAppConfig();
     this.addEvent();
@@ -25,7 +27,6 @@ export default {
           },
           "*"
         );
-
         window.addEventListener("message", e => {
           if (e.data.from === "wepage-admin") {
             console.log("接受iframe的消息", e.data);
@@ -33,25 +34,24 @@ export default {
         });
       }
     },
-    getAppId() {
-      console.log("appId === ", location.pathname.slice(1));
-      return location.pathname.slice(1);
-    },
-    getAppConfig() {
-      this.getAppId();
-      import("@/mock/appconfig").then(res => {
-        const appConfig = res.default;
-        this.setAppConfig(appConfig);
 
-        if (appConfig.pages.length > 0) {
+    getAppConfig() {
+      const appId = getAppId();
+      const pageId = getPageId();
+      this.$ajax("get", this.$api.getAppConfig, {
+        appId
+      }).then(res => {
+        debugger;
+        console.log("res", res);
+        const appConfig = res.data;
+        this.setAppConfig(appConfig);
+        if (appConfig.pages.length > 0 && !pageId) {
           this.$router.replace("/page/" + appConfig.pages[0].id);
-        } else {
-          this.$message.error("应用未配置页面");
         }
       });
     }
   }
-};
+});
 </script>
 
 <style lang="scss"></style>

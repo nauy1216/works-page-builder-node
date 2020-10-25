@@ -3,11 +3,11 @@ module.exports = {
   devServer: {
     port: "8002",
     proxy: {
-      "/api": {
-        target: "",
-        ws: false,
-        changeOrigin: true
-      }
+        "/apis": {
+            target: "http://localhost:3000",
+            ws: false,
+            changeOrigin: true
+        }
     }
   },
   configureWebpack(config) {

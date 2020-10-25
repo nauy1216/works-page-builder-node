@@ -11,9 +11,11 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import compList from "@/lib";
 import apis from "@/api";
+import ajax from "@/utils/ajax";
 
 Vue.prototype.$compList = compList;
 Vue.prototype.$api = apis;
+Vue.prototype.$ajax = ajax;
 console.log("compList", compList);
 
 Vue.component("vue-draggable-resizable", VueDraggableResizable);

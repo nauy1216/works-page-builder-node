@@ -1,6 +1,7 @@
 <script lang="tsx">
 import Vue from "vue";
 import { mapStateTyped } from "@/types/store";
+import { getAppId, getPageId } from "@/utils/app";
 export default Vue.extend({
   data() {
     return {
@@ -33,19 +34,12 @@ export default Vue.extend({
   },
   methods: {
     getPageConfig(): any {
-      if (this.$route.params.pageId == "1") {
-        import("@/mock/page1").then(res => {
-          console.log("res", res);
-          this.pageConfig = res.default as any;
-          (this.pageConfig as any).children = (this.pageConfig as any).children.concat(JSON.parse(JSON.stringify(this.appConfig.appComponents)));
-        });
-      } else if (this.$route.params.pageId == "2") {
-        import("@/mock/page2").then(res => {
-          console.log("res", res);
-          this.pageConfig = res.default as any;
-          (this.pageConfig as any).children = (this.pageConfig as any).children.concat(JSON.parse(JSON.stringify(this.appConfig.appComponents)));
-        });
-      }
+      this.$ajax("get", this.$api.getPageConfig, {
+        appId: getAppId(),
+        pageId: getPageId()
+      }).then(res => {
+        this.pageConfig = res.data as any;
+      });
     }
   },
   render(h) {

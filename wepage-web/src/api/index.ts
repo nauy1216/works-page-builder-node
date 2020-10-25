@@ -1,6 +1,6 @@
 const apis = {
-  testApi: "testApi",
-  testApi1: "testApi"
+  getAppConfig: "/apis/app/getAppConfig",
+  getPageConfig: "/apis/page/getConfig"
 };
 
 declare module "vue/types/vue" {
