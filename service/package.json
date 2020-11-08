@@ -1,0 +1,61 @@
+{
+  "name": "wepage-service",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "wepage-service",
+  "main": "app.ts",
+  "scripts": {
+    "test": "jest --config .jest.config.js --no-cache --detectOpenHandles",
+    "prettier": "prettier --write .",
+    "dev": "cross-env NODE_ENV=development nodemon --config nodemon.json",
+    "build": "bash ./build.sh",
+    "mongo": "docker-compose -f compose.yml up -d"
+  },
+  "author": "unix (unix.bio@gmail.com)",
+  "bugs": {
+    "url": "https://github.com/unix/koa-ts/issues"
+  },
+  "engines": {
+    "node": ">= 12.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.2",
+    "@types/koa": "^2.11.3",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/node": "^14.0.1",
+    "@types/node-uuid": "0.0.28",
+    "@types/redis": "^2.8.28",
+    "@zeit/ncc": "^0.22.1",
+    "cross-env": "^7.0.2",
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.0.0",
+    "ts-node": "^8.10.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "@types/uuid": "^8.3.0",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
+    "dotenv": "^8.2.0",
+    "koa": "^2.12.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-generic-session": "^2.1.1",
+    "koa-logger": "^3.2.1",
+    "koa-multer": "^1.0.2",
+    "koa-redis": "^4.0.1",
+    "koa-router": "^8.0.8",
+    "mongodb": "^3.5.7",
+    "mysql": "^2.18.1",
+    "node-uuid": "^1.4.8",
+    "redis": "^3.0.2",
+    "reflect-metadata": "^0.1.13",
+    "routing-controllers": "^0.8.1",
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.24",
+    "uuid": "^8.3.1"
+  }
+}
