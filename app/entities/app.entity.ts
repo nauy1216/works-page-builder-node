@@ -1,9 +1,4 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column
-} from 'typeorm'
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
 @Entity('app')
 export class App extends BaseEntity {
@@ -11,11 +6,8 @@ export class App extends BaseEntity {
   id: string
 
   @Column()
-  name: string
+  app_name: string
 
   @Column()
-  desc: string
-
-  @Column()
-  created_time: string
+  app_type: string
 }
