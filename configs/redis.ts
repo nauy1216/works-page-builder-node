@@ -1,4 +1,3 @@
-import { resolve } from "path"
 import redis from "redis"
 
 const REDIS_CONF = {
@@ -14,6 +13,8 @@ const redisClient = redis.createClient({
   password: REDIS_CONF.password
 })
 
+
+/* eslint-disable */
 redisClient.on('error', err => {
   console.log('Redis err')
   console.log(err)
@@ -52,7 +53,7 @@ function get(key: string) {
   })
 }
 
-function zadd(setName: string, val: any, score: number = 1) {
+function zadd(setName: string, val: any, score = 1) {
     if (typeof val === 'object') {
         val = JSON.stringify(val)
     }

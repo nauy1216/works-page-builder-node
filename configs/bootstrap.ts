@@ -15,7 +15,11 @@ export const before = (): object => {
 }
 
 // "after" will trigger after the "container" lift.
-export const after = (): any => {}
+export const after = (): any => {
+  // override
+}
 
 // "connected" will trigger after the connects completed.
-export const connected = (): any => {}
+export const connected = (): any => {
+  // override
+}

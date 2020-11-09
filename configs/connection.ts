@@ -15,4 +15,5 @@ import { createConnection, getConnectionOptions } from 'typeorm'
   }
 
   bootstrap.connected()
+  /* eslint-disable */
 })().catch(error => console.log(error))

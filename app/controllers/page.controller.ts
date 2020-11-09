@@ -4,8 +4,6 @@ import uuid from "node-uuid"
 
 @JsonController("/page")
 export class PageController {
-  constructor() {}
-
   @Post('/add')
   async add(@Body() data: any): Promise<any> {
     data.id = uuid.v1()
