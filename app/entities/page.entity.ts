@@ -5,6 +5,9 @@ export class Page extends BaseEntity {
   @PrimaryColumn()
   id: string
 
+  @Column()
+  pageId: string
+
   @Column({
     length: 20,
   })
