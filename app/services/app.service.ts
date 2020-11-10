@@ -1,20 +1,20 @@
-// import { getMongoRepository, MongoRepository } from 'typeorm'
+import { getRepository, Repository } from 'typeorm'
 import { Service } from 'typedi'
 import { App } from 'app/entities'
 
 @Service()
 export class AppService {
-  // repository: MongoRepository<App>
+  repository: Repository<App>
 
-  // constructor() {
-  //   this.repository = getMongoRepository(App)
-  // }
+  constructor() {
+    this.repository = getRepository(App)
+  }
 
-  // async create(session: App): Promise<App> {
-  //   return await this.repository.save(session)
-  // }
+  async add(app: App): Promise<App> {
+    return await this.repository.save(app)
+  }
 
-  async getList(): Promise<any> {
-    return await App.find()
+  async list(): Promise<App[]> {
+    return await this.repository.find()
   }
 }

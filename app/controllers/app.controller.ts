@@ -31,8 +31,7 @@ export class AppController {
 
   @Get('/list1')
   async list1(): Promise<any> {
-    const res = await this.appService.getList()
-    return res
+    return await this.appService.list()
   }
 
   @Get('/getAppConfig')
