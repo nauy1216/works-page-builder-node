@@ -1,9 +1,14 @@
 import { Post, Get, JsonController, Body, QueryParam } from 'routing-controllers'
 import redisClient from 'configs/redis'
 import uuid from 'node-uuid'
+import { AppService } from 'app/services'
+import { Inject } from 'typedi'
 
 @JsonController('/app')
 export class AppController {
+  @Inject()
+  appService: AppService
+
   @Post('/add')
   async add(@Body() app: any): Promise<any> {
     app.id = uuid.v1()
@@ -26,7 +31,8 @@ export class AppController {
 
   @Get('/list1')
   async list1(): Promise<any> {
-    //
+    const res = await this.appService.getList()
+    return res
   }
 
   @Get('/getAppConfig')

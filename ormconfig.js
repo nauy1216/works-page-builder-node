@@ -15,4 +15,8 @@ module.exports = {
   database: Environment.DATABASE,
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  // Setting synchronize makes sure your entities will be synced with the database, every time you run the application.
+  synchronize: true,
+  // sql日志
+  logging: true
 }
