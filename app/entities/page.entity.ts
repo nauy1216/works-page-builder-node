@@ -8,13 +8,13 @@ export class Page extends BaseEntity {
   @Column({
     length: 20,
   })
-  page_name: string
+  pageName: string
 
   @Column()
-  design_width: number
+  designWidth: number
 
   @Column()
-  design_height: number
+  designHeight: number
 
   @Column({
     length: 100,
@@ -22,7 +22,7 @@ export class Page extends BaseEntity {
   desc: string
 
   @Column()
-  created_time: Date
+  createdTime: Date
 
   @Column('text')
   config: string

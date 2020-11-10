@@ -1,7 +1,8 @@
 import { Post, Get, JsonController, Body, QueryParam } from 'routing-controllers'
 import redisClient from 'configs/redis'
-import uuid from 'node-uuid'
+import { uuid } from 'app/helpers'
 import { AppService } from 'app/services'
+import { App } from 'app/entities'
 import { Inject } from 'typedi'
 
 @JsonController('/app')
@@ -9,10 +10,13 @@ export class AppController {
   @Inject()
   appService: AppService
 
-  @Post('/add')
-  async add(@Body() app: any): Promise<any> {
-    app.id = uuid.v1()
-    await redisClient.hmset(`app`, app.id, app)
+  @Post('/addOrUpdate')
+  async add(@Body() app: App): Promise<any> {
+    if (!app.id) {
+      app.id = uuid()
+      app.createTime = new Date()
+    }
+    this.appService.add(app)
     return {
       code: 200,
       message: '操作成功',
@@ -21,7 +25,7 @@ export class AppController {
 
   @Get('/list')
   async list(): Promise<any> {
-    const data = await redisClient.hvals('app')
+    const data = await this.appService.list()
     return {
       code: 200,
       data,
@@ -29,9 +33,13 @@ export class AppController {
     }
   }
 
-  @Get('/list1')
-  async list1(): Promise<any> {
-    return await this.appService.list()
+  @Get('/delete')
+  async delete(@QueryParam('id') id: string): Promise<any> {
+    await this.appService.delete(id)
+    return {
+      code: 200,
+      message: '操作成功',
+    }
   }
 
   @Get('/getAppConfig')

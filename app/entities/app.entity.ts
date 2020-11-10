@@ -8,19 +8,19 @@ export class App extends BaseEntity {
 
   @IsNotEmpty({ message: 'app_name为必填' })
   @Column()
-  app_name: string
+  appName: string
 
   @IsNotEmpty({ message: 'app_type为必填' })
   @Column()
-  app_type: string
+  appType: string
 
   @IsNotEmpty({ message: 'design_width为必填' })
   @Column()
-  design_width: number
+  designWidth: number
 
   @IsNotEmpty({ message: 'design_height为必填' })
   @Column()
-  design_height: number
+  designHeight: number
 
   @MaxLength(100, { message: 'desc长度不能超过100' })
   @Column({
@@ -35,5 +35,5 @@ export class App extends BaseEntity {
   desc: string
 
   @Column()
-  create_time: Date
+  createTime: Date
 }

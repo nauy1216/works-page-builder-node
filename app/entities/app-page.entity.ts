@@ -6,8 +6,8 @@ export class AppPage extends BaseEntity {
   id: number
 
   @Column()
-  app_id: string
+  appId: string
 
   @Column()
-  page_id: string
+  pageId: string
 }
