@@ -15,7 +15,10 @@ export class PageService {
   }
 
   async list(appId: string): Promise<Page[]> {
-    return await this.repository.query('')
+    return await this.repository
+      .createQueryBuilder('page')
+      .where('page.appId = :id', { id: appId })
+      .getMany()
   }
 
   async delete(id: string): Promise<any> {
