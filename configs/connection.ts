@@ -4,7 +4,6 @@ import { print } from './utils'
 import { createConnection, getConnectionOptions } from 'typeorm'
 ;(async () => {
   const connectionOptions = await getConnectionOptions()
-  console.log('entities===> ', connectionOptions)
   const connection = await createConnection({
     ...connectionOptions,
     entities: Object.keys(entities).map(name => entities[name]),

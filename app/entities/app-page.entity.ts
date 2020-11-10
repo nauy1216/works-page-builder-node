@@ -1,21 +1,13 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column
-} from 'typeorm'
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity('appPage')
+@Entity('app_page')
 export class AppPage extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: string
+  id: number
 
   @Column()
-  name: string
+  app_id: string
 
   @Column()
-  desc: string
-
-  @Column()
-  created_time: string
+  page_id: string
 }
