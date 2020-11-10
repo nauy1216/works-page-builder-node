@@ -5,13 +5,16 @@ import * as interceptors from './interceptors'
 import { dictToArray } from './utils'
 
 export const routingConfigs: RoutingControllersOptions = {
+  // 所有controllers
   controllers: dictToArray(controllers),
 
+  // 中间件
   middlewares: dictToArray(middlewares),
 
+  // 拦截器
   interceptors: dictToArray(interceptors),
 
-  // router prefix
+  // router prefix 路由前缀
   // e.g. api => http://hostname:port/{routePrefix}/{controller.method}
   routePrefix: '/apis',
 

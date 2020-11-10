@@ -1,5 +1,6 @@
 /* eslint-disable */
-export const dictToArray = (dict: object): Array<any> =>
+// 对象转数组
+export const dictToArray = (dict: Record<string, any>): Array<any> =>
   Object.keys(dict).map(name => dict[name])
 
 export const print = {

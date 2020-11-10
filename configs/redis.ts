@@ -1,18 +1,17 @@
-import redis from "redis"
+import redis from 'redis'
 
 const REDIS_CONF = {
-    port: 6379,
-    host: '127.0.0.1',
-    password: '123456'
+  port: 6379,
+  host: '127.0.0.1',
+  password: '123456',
 }
 
 // 创建客户端
 const redisClient = redis.createClient({
   host: REDIS_CONF.host,
   port: REDIS_CONF.port,
-  password: REDIS_CONF.password
+  password: REDIS_CONF.password,
 })
-
 
 /* eslint-disable */
 redisClient.on('error', err => {
@@ -43,9 +42,7 @@ function get(key: string) {
       }
 
       try {
-        resolve(
-          JSON.parse(val)
-        )
+        resolve(JSON.parse(val))
       } catch (ex) {
         resolve(val)
       }
@@ -54,64 +51,64 @@ function get(key: string) {
 }
 
 function zadd(setName: string, val: any, score = 1) {
-    if (typeof val === 'object') {
-        val = JSON.stringify(val)
-    }
-    redisClient.zadd(setName, score, val)
+  if (typeof val === 'object') {
+    val = JSON.stringify(val)
+  }
+  redisClient.zadd(setName, score, val)
 }
 
 function hmset(setName: string, key: string, val: any) {
-    if (typeof val === 'object') {
-        val = JSON.stringify(val)
-    }
-    redisClient.hmset(setName, key, val)
+  if (typeof val === 'object') {
+    val = JSON.stringify(val)
+  }
+  redisClient.hmset(setName, key, val)
 }
 
 function hmget(setName: string, key: string) {
-    return new Promise((resolve, reject) => {
-        redisClient.hmget(setName, key, (err, val) => {
-            if (err) {
-                reject(err)
-                return
-            }
-            if (val == null) {
-                resolve(null)
-                return
-            }
-            const list = val.map(item => {
-                try {
-                    return JSON.parse(item)
-                } catch (ex) {
-                    return item
-                }     
-            })
-            resolve(list)
-        })
+  return new Promise((resolve, reject) => {
+    redisClient.hmget(setName, key, (err, val) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      if (val == null) {
+        resolve(null)
+        return
+      }
+      const list = val.map(item => {
+        try {
+          return JSON.parse(item)
+        } catch (ex) {
+          return item
+        }
+      })
+      resolve(list)
     })
+  })
 }
 
 function hvals(setName: string) {
-    return new Promise((resolve, reject) => {
-        redisClient.hvals(setName, (err, val) => {
-            if (err) {
-                reject(err)
-                return
-            }
-            if (val == null) {
-                resolve(null)
-                return
-            }
-              
-            const list = val.map(item => {
-                try {
-                    return JSON.parse(item)
-                } catch (ex) {
-                    return item
-                }     
-            })
-            resolve(list)
-        })
+  return new Promise((resolve, reject) => {
+    redisClient.hvals(setName, (err, val) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      if (val == null) {
+        resolve(null)
+        return
+      }
+
+      const list = val.map(item => {
+        try {
+          return JSON.parse(item)
+        } catch (ex) {
+          return item
+        }
+      })
+      resolve(list)
     })
+  })
 }
 
 export default {
@@ -120,5 +117,5 @@ export default {
   zadd,
   hmset,
   hmget,
-  hvals
+  hvals,
 }

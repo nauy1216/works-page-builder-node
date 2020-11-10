@@ -14,6 +14,7 @@ module.exports = (async (): Promise<Server> => {
       bootstrap.after()
     })
   } catch (e) {
+    /* eslint-disable */
     console.log(e)
   }
 })()

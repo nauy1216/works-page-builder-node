@@ -1,5 +1,6 @@
 import { KoaMiddlewareInterface, Middleware } from 'routing-controllers'
 
+// 路由中间件
 @Middleware({ type: 'before' })
 export class HeaderMiddleware implements KoaMiddlewareInterface {
   async use(context: any, next: (err?: any) => any): Promise<any> {
