@@ -6,7 +6,7 @@ export class Page extends BaseEntity {
   id: string
 
   @Column()
-  pageId: string
+  appId: string
 
   @Column({
     length: 20,

@@ -4,6 +4,7 @@ import { uuid } from 'app/helpers'
 import { AppService } from 'app/services'
 import { App } from 'app/entities'
 import { Inject } from 'typedi'
+import Exception from 'app/response/exception'
 
 @JsonController('/app')
 export class AppController {
@@ -35,6 +36,9 @@ export class AppController {
 
   @Get('/delete')
   async delete(@QueryParam('id') id: string): Promise<any> {
+    if (!id) {
+      throw new Exception(400, 'id不能为空')
+    }
     await this.appService.delete(id)
     return {
       code: 200,

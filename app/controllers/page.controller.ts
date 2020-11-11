@@ -12,12 +12,19 @@ export class PageController {
 
   @Post('/addOrUpdate')
   async add(@Body() data: Page): Promise<any> {
-    // data.id = uuid()
-    // redisClient.hmset(`page:${data.appId}`, data.id, data)
-    if (!data.id) {
-      data.id = uuid()
+    try {
+      if (!data.id) {
+        data.id = uuid()
+        data.createdTime = new Date()
+      }
+      this.pageService.add(data)
+    } catch (e) {
+      return {
+        code: 400,
+        message: e,
+      }
     }
-    this.pageService.add(data)
+
     return {
       code: 200,
       message: '操作成功',
@@ -26,10 +33,6 @@ export class PageController {
 
   @Get('/list')
   async list(@QueryParam('appId') appId: string): Promise<any> {
-    // const data = (await redisClient.hvals(`page:${appId}`)) as any
-    // data.forEach(item => {
-    //   delete item.config
-    // })
     const data = await this.pageService.list(appId)
     return {
       code: 200,
