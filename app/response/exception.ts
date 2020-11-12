@@ -5,7 +5,6 @@ export default class Exception extends HttpError {
   public code: number
 
   constructor(code: number, message: string, args: any[] = []) {
-    debugger
     super(200)
     this.code = code
     this.message = message
@@ -13,7 +12,6 @@ export default class Exception extends HttpError {
   }
 
   toJson() {
-    debugger
     return {
       code: this.code,
       status: this.httpCode,

@@ -23,4 +23,11 @@ export class AppService {
     app.id = id
     return await this.repository.remove(app)
   }
+
+  async getOne(id: string): Promise<App> {
+    return await this.repository
+      .createQueryBuilder('app')
+      .where('app.id = :id', { id })
+      .getOne()
+  }
 }

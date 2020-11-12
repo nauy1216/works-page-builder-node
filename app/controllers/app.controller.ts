@@ -1,7 +1,7 @@
 import { Post, Get, JsonController, Body, QueryParam } from 'routing-controllers'
 import redisClient from 'configs/redis'
 import { uuid } from 'app/helpers'
-import { AppService } from 'app/services'
+import { AppService, PageService } from 'app/services'
 import { App } from 'app/entities'
 import { Inject } from 'typedi'
 import Exception from 'app/response/exception'
@@ -10,6 +10,9 @@ import Exception from 'app/response/exception'
 export class AppController {
   @Inject()
   appService: AppService
+
+  @Inject()
+  pageService: PageService
 
   @Post('/addOrUpdate')
   async add(@Body() app: App): Promise<any> {
@@ -42,6 +45,21 @@ export class AppController {
     await this.appService.delete(id)
     return {
       code: 200,
+      message: '操作成功',
+    }
+  }
+
+  @Get('/getOne')
+  async getOne(@QueryParam('appId') appId: string): Promise<any> {
+    const app = await this.appService.getOne(appId)
+    const pages = await this.pageService.list(appId)
+
+    return {
+      code: 200,
+      data: {
+        ...app,
+        pages,
+      },
       message: '操作成功',
     }
   }
