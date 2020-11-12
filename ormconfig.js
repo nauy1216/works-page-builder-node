@@ -18,5 +18,5 @@ module.exports = {
   // Setting synchronize makes sure your entities will be synced with the database, every time you run the application.
   synchronize: true,
   // sql日志
-  logging: false
+  logging: true
 }

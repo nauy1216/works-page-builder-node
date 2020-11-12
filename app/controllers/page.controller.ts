@@ -4,6 +4,7 @@ import { uuid } from 'app/helpers'
 import { Page } from 'app/entities'
 import { PageService } from 'app/services'
 import { Inject } from 'typedi'
+import Exception from 'app/response/exception'
 
 @JsonController('/page')
 export class PageController {
@@ -41,15 +42,27 @@ export class PageController {
     }
   }
 
-  @Get('/getConfig')
-  async getConfig(
+  @Get('/getOne')
+  async getOne(
     @QueryParam('appId') appId: string,
     @QueryParam('pageId') pageId: string,
   ): Promise<any> {
-    const data = (await redisClient.hmget(`page:${appId}`, pageId)) as any
+    const data = await this.pageService.getOne(pageId)
     return {
       code: 200,
-      data: data ? data[0].config : null,
+      data,
+      message: '操作成功',
+    }
+  }
+
+  @Get('/delete')
+  async delete(@QueryParam('id') id: string): Promise<any> {
+    if (!id) {
+      throw new Exception(400, 'id不能为空')
+    }
+    await this.pageService.delete(id)
+    return {
+      code: 200,
       message: '操作成功',
     }
   }

@@ -21,6 +21,13 @@ export class PageService {
       .getMany()
   }
 
+  async getOne(pageId: string): Promise<Page> {
+    return await this.repository
+      .createQueryBuilder('page')
+      .where('page.id = :id', { id: pageId })
+      .getOne()
+  }
+
   async delete(id: string): Promise<any> {
     const page = new Page()
     page.id = id
