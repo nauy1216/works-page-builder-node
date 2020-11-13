@@ -8,19 +8,19 @@ export class App extends BaseEntity {
 
   @IsNotEmpty({ message: 'app_name为必填' })
   @Column()
-  appName: string
+  appName: string // 应用名称
 
   @IsNotEmpty({ message: 'app_type为必填' })
   @Column()
-  appType: string
+  appType: string // 应用类型
 
   @IsNotEmpty({ message: 'design_width为必填' })
   @Column()
-  designWidth: number
+  designWidth: number // 设计宽度
 
   @IsNotEmpty({ message: 'design_height为必填' })
   @Column()
-  designHeight: number
+  designHeight: number // 设计高度
 
   @MaxLength(100, { message: 'desc长度不能超过100' })
   @Column({
@@ -32,8 +32,11 @@ export class App extends BaseEntity {
     primary: false, // 是否为主键
     comment: '应用描述',
   })
-  desc: string
+  desc: string // 应用描述
 
   @Column()
-  createTime: Date
+  createTime: Date // 创建时间
+
+  @Column('text')
+  config: string // 创建时间
 }

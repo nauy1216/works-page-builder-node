@@ -13,4 +13,7 @@ export class Component extends BaseEntity {
 
   @Column('text')
   config: string
+
+  @Column()
+  type: string // 组件使用类型 app | page  app: 应用使用  page: 页面使用
 }

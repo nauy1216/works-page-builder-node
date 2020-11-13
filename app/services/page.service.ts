@@ -18,6 +18,7 @@ export class PageService {
     return await this.repository
       .createQueryBuilder('page')
       .where('page.appId = :id', { id: appId })
+      .orderBy('page.createdTime')
       .getMany()
   }
 

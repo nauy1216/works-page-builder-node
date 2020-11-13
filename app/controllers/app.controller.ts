@@ -20,9 +20,10 @@ export class AppController {
       app.id = uuid()
       app.createTime = new Date()
     }
-    this.appService.add(app)
+    const data = this.appService.add(app)
     return {
       code: 200,
+      data,
       message: '操作成功',
     }
   }

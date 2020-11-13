@@ -13,21 +13,15 @@ export class PageController {
 
   @Post('/addOrUpdate')
   async add(@Body() data: Page): Promise<any> {
-    try {
-      if (!data.id) {
-        data.id = uuid()
-        data.createdTime = new Date()
-      }
-      this.pageService.add(data)
-    } catch (e) {
-      return {
-        code: 400,
-        message: e,
-      }
+    if (!data.id) {
+      data.id = uuid()
+      data.createdTime = new Date()
     }
+    const pageData = this.pageService.add(data)
 
     return {
       code: 200,
+      data: pageData,
       message: '操作成功',
     }
   }
@@ -43,10 +37,7 @@ export class PageController {
   }
 
   @Get('/getOne')
-  async getOne(
-    @QueryParam('appId') appId: string,
-    @QueryParam('pageId') pageId: string,
-  ): Promise<any> {
+  async getOne(@QueryParam('pageId') pageId: string): Promise<any> {
     const data = await this.pageService.getOne(pageId)
     return {
       code: 200,
