@@ -1,5 +1,4 @@
 import { Post, Get, JsonController, Body, QueryParam } from 'routing-controllers'
-import redisClient from 'configs/redis'
 import { uuid } from 'app/helpers'
 import { AppService, PageService } from 'app/services'
 import { App } from 'app/entities'
@@ -60,22 +59,6 @@ export class AppController {
       data: {
         ...app,
         pages,
-      },
-      message: '操作成功',
-    }
-  }
-
-  @Get('/getAppConfig')
-  async getAppConfig(@QueryParam('appId') appId: string): Promise<any> {
-    const app = (await redisClient.hmget('app', appId)) as any
-    const data = (await redisClient.hvals(`page:${appId}`)) as any
-    return {
-      code: 200,
-      data: {
-        id: app[0].id,
-        appName: app[0].appName,
-        appType: app[0].appType,
-        pages: data,
       },
       message: '操作成功',
     }

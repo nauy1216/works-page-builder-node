@@ -6,6 +6,7 @@ import { routingConfigs } from './routing.options'
 import { useMiddlewares } from './koa.middlewares'
 import { useKoaServer, useContainer } from 'routing-controllers'
 import { catchError } from 'configs/middlewares/exception'
+
 // 使用数据库
 if (useDatabase) {
   require('./connection')
@@ -16,12 +17,11 @@ if (useRedis) {
   require('./redis')
 }
 
-const createServer = async (): Promise<Koa> => {
+const createKoaServer = async (): Promise<Koa> => {
   const koa: Koa = new Koa()
   koa.use(catchError)
   // 中间件
   useMiddlewares(koa)
-
   const app: Koa = useKoaServer<Koa>(koa, routingConfigs)
 
   useContainer(Container)
@@ -29,4 +29,4 @@ const createServer = async (): Promise<Koa> => {
   return app
 }
 
-export default createServer
+export default createKoaServer

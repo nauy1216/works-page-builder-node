@@ -1,5 +1,4 @@
 import { Post, Get, JsonController, Body, QueryParam } from 'routing-controllers'
-import redisClient from 'configs/redis'
 import { uuid } from 'app/helpers'
 import { Page } from 'app/entities'
 import { PageService } from 'app/services'
@@ -52,17 +51,6 @@ export class PageController {
       throw new Exception(400, 'id不能为空')
     }
     await this.pageService.delete(id)
-    return {
-      code: 200,
-      message: '操作成功',
-    }
-  }
-
-  @Post('/edit')
-  async edit(@Body() body: any): Promise<any> {
-    const data = (await redisClient.hmget(`page:${body.appId}`, body.pageId)) as any
-    data[0].config = body.config
-    redisClient.hmset(`page:${body.appId}`, body.pageId, data[0])
     return {
       code: 200,
       message: '操作成功',
